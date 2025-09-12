@@ -1,0 +1,18 @@
+{
+  "extends": ["next", "next/core-web-vitals"],
+  "plugins": ["unicorn"],
+  "rules": {
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "kebabCase": true,
+          "pascalCase": true
+        }
+      }
+    ]
+  }
+}
+{
+  "extends": "next/core-web-vitals"
+}

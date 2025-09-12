@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: theme('colors.background');
+  color: theme('colors.text');
+  font-family: theme('fontFamily.sans');
+}
+
+html {
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+}
+
+/* Animasi Aurora */
+@keyframes aurora {
+  0% { transform: scale(1) translateY(0) rotate(0deg); }
+  50% { transform: scale(1.1) translateY(-20px) rotate(8deg); }
+  100% { transform: scale(1) translateY(0) rotate(0deg); }
+}
+.animate-aurora {
+  animation: aurora 8s ease-in-out infinite;
+}
+@keyframes aurora2 {
+  0% { transform: scale(1) translateX(0) rotate(0deg); }
+  50% { transform: scale(1.08) translateX(30px) rotate(-6deg); }
+  100% { transform: scale(1) translateX(0) rotate(0deg); }
+}
+.animate-aurora2 {
+  animation: aurora2 10s ease-in-out infinite;
+}
+
+/* Micro-interaction untuk tombol dan link */
+a, button, .btn {
+  transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+a:hover, button:hover, .btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 24px 0 rgb(0 90 156 / 8%);
+}
+a:active, button:active, .btn:active {
+  transform: scale(0.97);
+} 
