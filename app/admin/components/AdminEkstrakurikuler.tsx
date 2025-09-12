@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import Image from 'next/image'
-import { supabase } from "../../utils/supabaseClient"
-import NoPhotoPlaceholder from "@/components/NoPhotoPlaceholder"
+import { supabase } from "../../utils/SupabaseClient"
+import NoPhotoPlaceholder from "@/components/PenggantiTanpaFoto"
 import { Trash2, UploadCloud } from "lucide-react"
 
 interface Ekstrakurikuler {

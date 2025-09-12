@@ -1,7 +1,7 @@
 import './globals.css'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Footer from '../components/Footer'
-import PageTransitionProvider from '../components/PageTransition'
+import PageTransitionProvider from '../components/TransisiHalaman'
 import { fetchSiteName } from './utils/api'
 import Navbar from '@/components/Navbar'
 

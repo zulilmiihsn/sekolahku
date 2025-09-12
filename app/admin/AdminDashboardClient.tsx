@@ -7,10 +7,9 @@ import dynamic from "next/dynamic"
 import "leaflet/dist/leaflet.css"
 import { createPortal } from "react-dom"
 import Image from 'next/image'
-import { supabase } from "../utils/supabaseClient"
+import { supabase } from "../utils/SupabaseClient"
 import Cropper from 'react-easy-crop'
 import { DragDropContext, Droppable, Draggable } from './components/DndClient'
-import NoPhotoPlaceholder from "@/components/NoPhotoPlaceholder"
 const ReactMde = dynamic(() => import("react-mde"), { ssr: false })
 import "react-mde/lib/styles/css/react-mde-all.css"
 import Showdown from "showdown"
@@ -327,7 +326,7 @@ export default function AdminDashboardClient() {
     e.preventDefault()
     setLoading(true)
     setNotif("")
-    const res = await fetch("/api/pengaturan/site-name", {
+    const res = await fetch("/api/pengaturan/nama-situs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ value: input })

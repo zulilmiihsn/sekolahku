@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/app/utils/supabaseClient'
+import { supabase } from '@/app/utils/SupabaseClient'
 
 // GET: Detail berita by ID
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {

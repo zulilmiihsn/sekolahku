@@ -2,10 +2,10 @@
 
 import Navbar from '../../components/Navbar'
 import { motion } from 'framer-motion'
-import PageEnter from '../../components/PageEnter'
+import MasukHalaman from '../../components/MasukHalaman'
 import SectionReveal from '../../components/SectionReveal'
 import { useEffect, useState, useRef } from 'react'
-import NoPhotoPlaceholder from '../../components/NoPhotoPlaceholder'
+import NoPhotoPlaceholder from '../../components/PenggantiTanpaFoto'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import useSWR from 'swr'
@@ -30,7 +30,7 @@ export default function Prestasi() {
   }
 
   return (
-    <PageEnter>
+    <MasukHalaman>
       <Navbar />
       <main className="max-w-4xl mx-auto py-24 px-4">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Prestasi</h1>
@@ -95,7 +95,7 @@ export default function Prestasi() {
           </div>
         )}
       </main>
-    </PageEnter>
+    </MasukHalaman>
   )
 }
 

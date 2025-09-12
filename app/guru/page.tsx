@@ -2,7 +2,7 @@
 
 import Navbar from '../../components/Navbar'
 import { motion } from 'framer-motion'
-import PageEnter from '../../components/PageEnter'
+import MasukHalaman from '../../components/MasukHalaman'
 import SectionReveal from '../../components/SectionReveal'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
@@ -46,7 +46,7 @@ export default function GuruStaff() {
   // Filter data kosong
   const filterValid = (arr: any[]) => (arr || []).filter(item => item.nama?.trim() || item.jabatan?.trim())
   return (
-    <PageEnter>
+    <MasukHalaman>
       <Navbar />
       <main className="max-w-5xl mx-auto py-24 px-4">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Guru & Staff</h1>
@@ -56,7 +56,7 @@ export default function GuruStaff() {
           ))}
         </div>
       </main>
-    </PageEnter>
+    </MasukHalaman>
   )
 }
 

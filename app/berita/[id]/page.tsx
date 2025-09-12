@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react'
 import Navbar from '@/components/Navbar'
-import PageEnter from '@/components/PageEnter'
+import MasukHalaman from '@/components/MasukHalaman'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Head from 'next/head'
@@ -39,7 +39,7 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
   }, [params.id])
 
   return (
-    <PageEnter>
+    <MasukHalaman>
       <Navbar />
       {berita && (
         <Head>
@@ -66,6 +66,6 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
           </article>
         )}
       </main>
-    </PageEnter>
+    </MasukHalaman>
   )
 } 

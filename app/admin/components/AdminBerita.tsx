@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import Image from 'next/image'
 import dynamic from "next/dynamic"
-import { supabase } from "../../utils/supabaseClient"
+import { supabase } from "../../utils/SupabaseClient"
 import ReactMde from "react-mde"
 import Showdown from "showdown"
 import ReactMarkdown from "react-markdown"

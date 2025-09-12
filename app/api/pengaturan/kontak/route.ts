@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/app/utils/supabaseClient'
+import { supabase } from '@/app/utils/SupabaseClient'
 
 export async function GET() {
   const keys = ['alamat', 'email_kontak', 'telepon', 'lat_sekolah', 'lng_sekolah']

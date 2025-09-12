@@ -1,9 +1,9 @@
 import Navbar from '../../components/Navbar'
-import PageEnter from '../../components/PageEnter'
+import PageEnter from '../../components/MasukHalaman'
 import SectionReveal from '../../components/SectionReveal'
 import Image from 'next/image'
 import Link from 'next/link'
-import NoPhotoPlaceholder from '../../components/NoPhotoPlaceholder'
+import PenggantiTanpaFoto from '../../components/PenggantiTanpaFoto'
 
 export const revalidate = 120
 
@@ -49,7 +49,7 @@ export default async function Berita() {
                         className="object-cover w-full h-full"
                       />
                     ) : (
-                      <NoPhotoPlaceholder className="w-full h-full" />
+                      <PenggantiTanpaFoto className="w-full h-full" />
                     )}
                   </div>
                   <div className="flex-1">

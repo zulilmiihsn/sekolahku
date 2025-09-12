@@ -1,5 +1,5 @@
 import Navbar from '@/components/Navbar'
-import PageEnter from '@/components/PageEnter'
+import PageEnter from '@/components/MasukHalaman'
 import SectionReveal from '@/components/SectionReveal'
 import EkstraClient from './EkstraClient'
 

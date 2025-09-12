@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image'
 import { Image as ImageIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import NoPhotoPlaceholder from "./NoPhotoPlaceholder";
+import PenggantiTanpaFoto from "./PenggantiTanpaFoto";
 import { createPortal } from "react-dom";
 
 export default function GaleriSection() {
@@ -109,7 +109,7 @@ export default function GaleriSection() {
               <Image src={url} alt={`Galeri ${start + i + 1}`} width={400} height={192} sizes="(max-width: 768px) 50vw, 25vw" className="object-cover w-full h-48 transition hover:scale-105" />
             </button>
           ) : (
-            <NoPhotoPlaceholder key={i} className="h-48" />
+            <PenggantiTanpaFoto key={i} className="h-48" />
           )
         )}
       </div>

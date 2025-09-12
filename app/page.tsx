@@ -1,13 +1,13 @@
 import Navbar from '../components/Navbar'
-import Hero from '../components/Hero'
-import PageEnter from '../components/PageEnter'
+import Hero from '../components/Sampul'
+import PageEnter from '../components/MasukHalaman'
 import dynamic from 'next/dynamic'
 import SectionReveal from '../components/SectionReveal'
 
 export const revalidate = 60
 
 const BeritaSection = dynamic(() => import('../components/BeritaSection'), { ssr: false })
-const GaleriSection = dynamic(() => import('../components/GaleriSection'), { ssr: false })
+const GaleriSection = dynamic(() => import('../components/BagianGaleri'), { ssr: false })
 const MapSekolah = dynamic(() => import('../components/MapSekolah'), { ssr: false })
 
 type SectionProps = { id: string; title: string; children: React.ReactNode }
@@ -32,7 +32,7 @@ async function getServerData() {
     const beritaRes = await fetch(`${baseUrl}/api/berita`, { cache: 'no-store' })
     const beritaDataRaw = await beritaRes.json()
     const beritaData: any[] = Array.isArray(beritaDataRaw) ? beritaDataRaw : []
-    const kontakRes = await fetch(`${baseUrl}/api/settings/kontak`, { cache: 'no-store' })
+    const kontakRes = await fetch(`${baseUrl}/api/pengaturan/kontak`, { cache: 'no-store' })
     const kontakDataRaw = await kontakRes.json()
     const kontakData: any = (kontakDataRaw && typeof kontakDataRaw === 'object') ? kontakDataRaw : {}
     return {

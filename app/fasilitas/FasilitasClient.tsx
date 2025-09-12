@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import SectionReveal from '../../components/SectionReveal'
-import NoPhotoPlaceholder from "@/components/NoPhotoPlaceholder"
+import NoPhotoPlaceholder from "@/components/PenggantiTanpaFoto"
 import Image from 'next/image'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 

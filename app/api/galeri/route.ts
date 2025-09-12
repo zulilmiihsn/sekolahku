@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/app/utils/supabaseClient';
+import { supabase } from '@/app/utils/SupabaseClient';
 
 // GET: List semua gambar di bucket 'galeri'
 export async function GET() {
