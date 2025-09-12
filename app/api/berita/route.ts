@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/app/utils/SupabaseClient'
+import { supabase } from '@/app/utils/supabaseClient'
 
 // GET: Ambil semua berita
 export const revalidate = 60

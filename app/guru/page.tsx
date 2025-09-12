@@ -1,9 +1,9 @@
 "use client"
 
-import Navbar from '../../components/Navbar'
+import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
-import MasukHalaman from '../../components/MasukHalaman'
-import SectionReveal from '../../components/SectionReveal'
+import MasukHalaman from '../../components/masukHalaman'
+import SectionReveal from '../../components/sectionReveal'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { User } from 'lucide-react'

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from 'next/image'
-import { supabase } from "../../utils/SupabaseClient";
-import NoPhotoPlaceholder from "@/components/PenggantiTanpaFoto";
+import { supabase } from "../../utils/supabaseClient";
+import NoPhotoPlaceholder from "@/components/penggantiTanpaFoto";
 import { Trash2, UploadCloud } from "lucide-react";
 
 export default function AdminGaleri() {

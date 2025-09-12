@@ -1,11 +1,11 @@
 "use client"
 
-import Navbar from '../../components/Navbar'
+import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
-import MasukHalaman from '../../components/MasukHalaman'
-import SectionReveal from '../../components/SectionReveal'
+import MasukHalaman from '../../components/masukHalaman'
+import SectionReveal from '../../components/sectionReveal'
 import { useEffect, useState, useRef } from 'react'
-import NoPhotoPlaceholder from '../../components/PenggantiTanpaFoto'
+import NoPhotoPlaceholder from '../../components/penggantiTanpaFoto'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import useSWR from 'swr'

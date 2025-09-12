@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { School, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
-import { usePageTransition } from './TransisiHalaman'
+import { usePageTransition } from './transisiHalaman'
 import { useRouter } from 'next/navigation'
 import { clientFetchSiteName } from '../app/utils/api'
 

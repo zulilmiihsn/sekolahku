@@ -1,6 +1,6 @@
-import Navbar from '../../components/Navbar'
+import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
-import PageEnter from '../../components/MasukHalaman'
+import PageEnter from '../../components/masukHalaman'
 
 const faq = [
   { q: 'Bagaimana cara mendaftar?', a: 'Silakan kunjungi halaman Pendaftaran dan isi formulir yang tersedia.' },

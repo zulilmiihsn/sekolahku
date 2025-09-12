@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import NoPhotoPlaceholder from './PenggantiTanpaFoto'
+import NoPhotoPlaceholder from './penggantiTanpaFoto'
 
 interface BeritaSectionProps {
   initialBerita: any[]

@@ -7,18 +7,18 @@ import dynamic from "next/dynamic"
 import "leaflet/dist/leaflet.css"
 import { createPortal } from "react-dom"
 import Image from 'next/image'
-import { supabase } from "../utils/SupabaseClient"
+import { supabase } from "../utils/supabaseClient"
 import Cropper from 'react-easy-crop'
-import { DragDropContext, Droppable, Draggable } from './components/DndClient'
+import { DragDropContext, Droppable, Draggable } from './components/dndClient'
 const ReactMde = dynamic(() => import("react-mde"), { ssr: false })
 import "react-mde/lib/styles/css/react-mde-all.css"
 import Showdown from "showdown"
-import AdminBerita from "./components/AdminBerita"
-import AdminFasilitas from "./components/AdminFasilitas"
-import AdminPrestasi from "./components/AdminPrestasi"
-import AdminGaleri from "./components/AdminGaleri"
-import AdminEkstrakurikuler from "./components/AdminEkstrakurikuler"
-import AdminProfil from "./components/AdminProfil"
+import AdminBerita from "./components/adminBerita"
+import AdminFasilitas from "./components/adminFasilitas"
+import AdminPrestasi from "./components/adminPrestasi"
+import AdminGaleri from "./components/adminGaleri"
+import AdminEkstrakurikuler from "./components/adminEkstrakurikuler"
+import AdminProfil from "./components/adminProfil"
 
 interface Berita {
   id: number

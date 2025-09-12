@@ -1,9 +1,9 @@
-import Navbar from '../../components/Navbar'
-import PageEnter from '../../components/MasukHalaman'
-import SectionReveal from '../../components/SectionReveal'
+import Navbar from '../../components/navbar'
+import PageEnter from '../../components/masukHalaman'
+import SectionReveal from '../../components/sectionReveal'
 import Image from 'next/image'
 import Link from 'next/link'
-import PenggantiTanpaFoto from '../../components/PenggantiTanpaFoto'
+import PenggantiTanpaFoto from '../../components/penggantiTanpaFoto'
 
 export const revalidate = 120
 

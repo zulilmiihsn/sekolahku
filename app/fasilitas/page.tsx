@@ -1,7 +1,7 @@
-import Navbar from '../../components/Navbar'
-import PageEnter from '../../components/MasukHalaman'
-import SectionReveal from '../../components/SectionReveal'
-import FasilitasClient from './FasilitasClient'
+import Navbar from '../../components/navbar'
+import PageEnter from '../../components/masukHalaman'
+import SectionReveal from '../../components/sectionReveal'
+import FasilitasClient from './fasilitasClient'
 
 export const revalidate = 300
 

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image'
 import { Image as ImageIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import PenggantiTanpaFoto from "./PenggantiTanpaFoto";
+import PenggantiTanpaFoto from "./penggantiTanpaFoto";
 import { createPortal } from "react-dom";
 
 export default function GaleriSection() {

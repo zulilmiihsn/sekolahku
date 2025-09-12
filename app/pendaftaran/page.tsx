@@ -1,8 +1,8 @@
 "use client"
 
-import Navbar from '../../components/Navbar'
+import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
-import MasukHalaman from '../../components/MasukHalaman'
+import MasukHalaman from '../../components/masukHalaman'
 
 export default function Pendaftaran() {
   return (

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/app/utils/SupabaseClient'
+import { supabase } from '@/app/utils/supabaseClient'
 const revalidate = 120
 
 // GET: List semua fasilitas

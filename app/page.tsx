@@ -1,14 +1,14 @@
-import Navbar from '../components/Navbar'
-import Hero from '../components/Sampul'
-import PageEnter from '../components/MasukHalaman'
+import Navbar from '../components/navbar'
+import Hero from '../components/sampul'
+import PageEnter from '../components/masukHalaman'
 import dynamic from 'next/dynamic'
-import SectionReveal from '../components/SectionReveal'
+import SectionReveal from '../components/sectionReveal'
 
 export const revalidate = 60
 
-const BeritaSection = dynamic(() => import('../components/BeritaSection'), { ssr: false })
-const GaleriSection = dynamic(() => import('../components/BagianGaleri'), { ssr: false })
-const MapSekolah = dynamic(() => import('../components/MapSekolah'), { ssr: false })
+const BeritaSection = dynamic(() => import('../components/beritaSection'), { ssr: false })
+const GaleriSection = dynamic(() => import('../components/bagianGaleri'), { ssr: false })
+const MapSekolah = dynamic(() => import('../components/mapSekolah'), { ssr: false })
 
 type SectionProps = { id: string; title: string; children: React.ReactNode }
 function Section({ id, title, children }: SectionProps) {
@@ -25,16 +25,26 @@ function Section({ id, title, children }: SectionProps) {
 // Server-side data fetching
 async function getServerData() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const profilRes = await fetch(`${baseUrl}/api/profil-sekolah`, { cache: 'no-store' })
+    // Gunakan path relatif untuk menghindari masalah build
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ''
+    const profilRes = await fetch(`${baseUrl}/api/profil-sekolah`, { 
+      next: { revalidate: 60 }
+    })
     const profilDataRaw = await profilRes.json()
     const profilData: any[] = Array.isArray(profilDataRaw) ? profilDataRaw : []
-    const beritaRes = await fetch(`${baseUrl}/api/berita`, { cache: 'no-store' })
+    
+    const beritaRes = await fetch(`${baseUrl}/api/berita`, { 
+      next: { revalidate: 60 }
+    })
     const beritaDataRaw = await beritaRes.json()
     const beritaData: any[] = Array.isArray(beritaDataRaw) ? beritaDataRaw : []
-    const kontakRes = await fetch(`${baseUrl}/api/pengaturan/kontak`, { cache: 'no-store' })
+    
+    const kontakRes = await fetch(`${baseUrl}/api/pengaturan/kontak`, { 
+      next: { revalidate: 300 }
+    })
     const kontakDataRaw = await kontakRes.json()
     const kontakData: any = (kontakDataRaw && typeof kontakDataRaw === 'object') ? kontakDataRaw : {}
+    
     return {
       profil: (profilData as any[]).find((item: any) => item.section === 'profil'),
       program: (profilData as any[]).find((item: any) => item.section === 'program'),
@@ -42,7 +52,7 @@ async function getServerData() {
       kontak: kontakData
     }
   } catch (error) {
-    console.error('Error fetching server data:', error)
+    // Tidak log error saat build untuk menghindari spam
     return { profil: null, program: null, berita: [], kontak: { alamat: '', email: '', telepon: '' } }
   }
 }

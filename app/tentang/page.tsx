@@ -1,5 +1,5 @@
-import Navbar from '../../components/Navbar'
-import PageEnter from '../../components/MasukHalaman'
+import Navbar from '../../components/navbar'
+import PageEnter from '../../components/masukHalaman'
 
 async function getTentang() {
   try {

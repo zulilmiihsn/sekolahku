@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useRef } from 'react'
-import SectionReveal from '../../components/SectionReveal'
-import NoPhotoPlaceholder from "@/components/PenggantiTanpaFoto"
+import SectionReveal from '../../components/sectionReveal'
+import NoPhotoPlaceholder from "@/components/penggantiTanpaFoto"
 import Image from 'next/image'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 
