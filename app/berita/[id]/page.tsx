@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react'
-import Navbar from '@/components/navbar'
-import MasukHalaman from '@/components/masukHalaman'
+import Navbar from '../../../components/navbar'
+import MasukHalaman from '../../../components/masukHalaman'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Head from 'next/head'

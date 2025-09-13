@@ -9,7 +9,12 @@ interface EkstraItem {
   id: number
   nama: string
   deskripsi: string
-  foto: string[]
+  foto: string
+  pembina: string
+  jadwal: string
+  kuota: number
+  aktif: boolean
+  kategori?: string
 }
 
 async function getEkstra(): Promise<EkstraItem[]> {
