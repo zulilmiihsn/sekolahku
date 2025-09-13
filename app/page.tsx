@@ -1,4 +1,3 @@
-import Navbar from '../components/navbar'
 import Hero from '../components/sampul'
 import PageEnter from '../components/masukHalaman'
 import dynamic from 'next/dynamic'
@@ -60,15 +59,15 @@ async function getServerData() {
 export default async function Home() {
   const serverData = await getServerData()
   const profil = serverData.profil ? {
-    deskripsi: serverData.profil.deskripsi,
-    jumlahSiswa: serverData.profil.konten ? JSON.parse(serverData.profil.konten).jumlahSiswa || 320 : 320,
-    jumlahGuru: serverData.profil.konten ? JSON.parse(serverData.profil.konten).jumlahGuru || 18 : 18,
-    jumlahStaff: serverData.profil.konten ? JSON.parse(serverData.profil.konten).jumlahStaff || 6 : 6
+    deskripsi: serverData.profil.deskripsi || 'Belum ada deskripsi sekolah yang tersedia.',
+    jumlahSiswa: serverData.profil.konten ? JSON.parse(serverData.profil.konten).jumlahSiswa || 0 : 0,
+    jumlahGuru: serverData.profil.konten ? JSON.parse(serverData.profil.konten).jumlahGuru || 0 : 0,
+    jumlahStaff: serverData.profil.konten ? JSON.parse(serverData.profil.konten).jumlahStaff || 0 : 0
   } : {
-    deskripsi: 'Deskripsi singkat tentang sekolah, visi, misi, dan keunggulan utama. (Konten dapat diubah dari dashboard admin)',
-    jumlahSiswa: 320,
-    jumlahGuru: 18,
-    jumlahStaff: 6
+    deskripsi: 'Belum ada deskripsi sekolah yang tersedia.',
+    jumlahSiswa: 0,
+    jumlahGuru: 0,
+    jumlahStaff: 0
   }
   const programs: { judul: string; deskripsi: string }[] = serverData.program && serverData.program.konten
     ? (JSON.parse(serverData.program.konten) as { judul: string; deskripsi: string }[])
@@ -77,38 +76,49 @@ export default async function Home() {
 
   return (
     <PageEnter>
-      <Navbar />
       <main className="pt-16">
         <Hero />
         <SectionReveal>
           <Section id="profil" title="Profil Sekolah">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
-                <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahSiswa}</span>
-                <span className="text-sm text-text/70 font-medium">Siswa Sekarang</span>
+            {profil.jumlahSiswa > 0 || profil.jumlahGuru > 0 || profil.jumlahStaff > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+                <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+                  <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahSiswa}</span>
+                  <span className="text-sm text-text/70 font-medium">Siswa Sekarang</span>
+                </div>
+                <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+                  <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahGuru}</span>
+                  <span className="text-sm text-text/70 font-medium">Guru</span>
+                </div>
+                <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
+                  <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahStaff}</span>
+                  <span className="text-sm text-text/70 font-medium">Staff</span>
+                </div>
               </div>
-              <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
-                <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahGuru}</span>
-                <span className="text-sm text-text/70 font-medium">Guru</span>
+            ) : (
+              <div className="text-center py-8 mb-8">
+                <p className="text-gray-500 text-lg">Data statistik sekolah belum tersedia.</p>
               </div>
-              <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
-                <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahStaff}</span>
-                <span className="text-sm text-text/70 font-medium">Staff</span>
-              </div>
-            </div>
+            )}
             <p className="text-lg text-text/80 text-justify">{profil.deskripsi}</p>
           </Section>
         </SectionReveal>
         <SectionReveal delay={0.08}>
           <Section id="program" title="Program Unggulan">
-            <ul className="grid md:grid-cols-2 gap-6">
-              {programs.map((program: { judul: string; deskripsi: string }, i: number) => (
-                <li key={i} className="p-6 rounded-xl bg-background shadow transition hover:scale-105">
-                  <h3 className="font-semibold text-primary mb-2">{program.judul}</h3>
-                  <p className="text-text/70">{program.deskripsi}</p>
-                </li>
-              ))}
-            </ul>
+            {programs.length > 0 ? (
+              <ul className="grid md:grid-cols-2 gap-6">
+                {programs.map((program: { judul: string; deskripsi: string }, i: number) => (
+                  <li key={i} className="p-6 rounded-xl bg-background shadow transition hover:scale-105">
+                    <h3 className="font-semibold text-primary mb-2">{program.judul}</h3>
+                    <p className="text-text/70">{program.deskripsi}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500 text-lg">Belum ada program unggulan yang tersedia.</p>
+              </div>
+            )}
           </Section>
         </SectionReveal>
         <SectionReveal delay={0.16}>
@@ -123,24 +133,36 @@ export default async function Home() {
         </SectionReveal>
         <SectionReveal delay={0.24}>
           <Section id="kontak" title="Kontak">
-            <form className="grid gap-4 max-w-md mx-auto" action={`mailto:${kontak.email}`} method="POST" encType="text/plain">
-              <input type="text" name="nama" placeholder="Nama" className="p-3 rounded-lg border border-primary/30 focus:ring-2 focus:ring-accent outline-none" required />
-              <input type="email" name="email" placeholder="Email" className="p-3 rounded-lg border border-primary/30 focus:ring-2 focus:ring-accent outline-none" required />
-              <textarea name="pesan" placeholder="Pesan" rows={4} className="p-3 rounded-lg border border-primary/30 focus:ring-2 focus:ring-accent outline-none" required />
-              <button type="submit" className="mt-2 px-6 py-3 rounded-full bg-primary text-white font-semibold shadow-lg hover:bg-accent transition-colors duration-200">Kirim Pesan</button>
-            </form>
+            {kontak.email ? (
+              <form className="grid gap-4 max-w-md mx-auto" action={`mailto:${kontak.email}`} method="POST" encType="text/plain">
+                <input type="text" name="nama" placeholder="Nama" className="p-3 rounded-lg border border-primary/30 focus:ring-2 focus:ring-accent outline-none" required />
+                <input type="email" name="email" placeholder="Email" className="p-3 rounded-lg border border-primary/30 focus:ring-2 focus:ring-accent outline-none" required />
+                <textarea name="pesan" placeholder="Pesan" rows={4} className="p-3 rounded-lg border border-primary/30 focus:ring-2 focus:ring-accent outline-none" required />
+                <button type="submit" className="mt-2 px-6 py-3 rounded-full bg-primary text-white font-semibold shadow-lg hover:bg-accent transition-colors duration-200">Kirim Pesan</button>
+              </form>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500 text-lg">Informasi kontak belum tersedia.</p>
+              </div>
+            )}
           </Section>
         </SectionReveal>
         <SectionReveal delay={0.32}>
           <Section id="lokasi" title="Lokasi Sekolah">
-            <div className="flex flex-col items-center">
-              <MapSekolah
-                lat={kontak.lat ? parseFloat(kontak.lat) : -6.2}
-                lng={kontak.lng ? parseFloat(kontak.lng) : 106.816666}
-                alamat={kontak.alamat}
-              />
-              <div className="mt-4 text-center text-text/70 text-sm">{kontak.alamat || "Jl. Pendidikan No. 123, Jakarta"}</div>
-            </div>
+            {kontak.lat && kontak.lng ? (
+              <div className="flex flex-col items-center">
+                <MapSekolah
+                  lat={parseFloat(kontak.lat)}
+                  lng={parseFloat(kontak.lng)}
+                  alamat={kontak.alamat}
+                />
+                <div className="mt-4 text-center text-text/70 text-sm">{kontak.alamat}</div>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500 text-lg">Informasi lokasi sekolah belum tersedia.</p>
+              </div>
+            )}
           </Section>
         </SectionReveal>
       </main>

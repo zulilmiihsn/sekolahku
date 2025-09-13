@@ -9,11 +9,16 @@ export async function GET() {
       .eq('key', 'site_name')
       .single();
     if (error) {
-      return NextResponse.json({ site_name: 'Sekolah Modern', error: error.message });
+      // Hanya log error jika bukan error tabel tidak ditemukan
+      if (!error.message.includes('Could not find the table')) {
+        console.error('Setting GET error:', error.message);
+      }
+      return NextResponse.json({ site_name: 'Sekolah Modern' });
     }
     return NextResponse.json({ site_name: data?.value || 'Sekolah Modern' });
   } catch (err) {
-    return NextResponse.json({ site_name: 'Sekolah Modern', error: String(err) });
+    console.error('Setting GET exception:', err);
+    return NextResponse.json({ site_name: 'Sekolah Modern' });
   }
 }
 

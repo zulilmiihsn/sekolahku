@@ -9,11 +9,16 @@ export async function GET() {
       .eq('key', 'jumlah_siswa')
       .single();
     if (error) {
-      return NextResponse.json({ jumlah_siswa: 0, error: error.message });
+      // Hanya log error jika bukan error tabel tidak ditemukan
+      if (!error.message.includes('Could not find the table')) {
+        console.error('Setting jumlah_siswa GET error:', error.message);
+      }
+      return NextResponse.json({ jumlah_siswa: 0 });
     }
-    return NextResponse.json({ jumlah_siswa: parseInt(data?.value) || 0 });
+    return NextResponse.json({ jumlah_siswa: parseInt(data?.value) || 320 });
   } catch (err) {
-    return NextResponse.json({ jumlah_siswa: 0, error: String(err) });
+    console.error('Setting jumlah_siswa GET exception:', err);
+    return NextResponse.json({ jumlah_siswa: 0 });
   }
 }
 

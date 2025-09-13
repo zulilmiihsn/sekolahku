@@ -3,15 +3,24 @@ import { supabase } from '@/app/utils/supabaseClient'
 const revalidate = 300
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from('ProfilSekolah')
-    .select('*')
-    .order('id', { ascending: true })
-  // Jika error, balas array kosong agar tidak 500
-  if (error) {
+  try {
+    const { data, error } = await supabase
+      .from('ProfilSekolah')
+      .select('*')
+      .order('id', { ascending: true })
+    
+    if (error) {
+      // Hanya log error jika bukan error tabel tidak ditemukan
+      if (!error.message.includes('Could not find the table')) {
+        console.error('ProfilSekolah GET error:', error.message);
+      }
+      return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
+    }
+    return NextResponse.json(data || [], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
+  } catch (err) {
+    console.error('ProfilSekolah GET exception:', err);
     return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
   }
-  return NextResponse.json(data, { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
 }
 
 export async function POST(req: NextRequest) {

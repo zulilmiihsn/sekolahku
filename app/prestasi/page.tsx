@@ -13,7 +13,12 @@ import useSWR from 'swr'
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 export default function Prestasi() {
-  const { data: prestasi = [], error, isLoading } = useSWR('/api/prestasi', fetcher)
+  const { data: prestasi = [], error, isLoading } = useSWR('/api/prestasi', fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshInterval: 0, // Matikan auto refresh
+    dedupingInterval: 60000, // Cache selama 1 menit
+  })
   const [galeriOpen, setGaleriOpen] = useState(false)
   const [galeriFoto, setGaleriFoto] = useState<string[]>([])
   const [galeriIdx, setGaleriIdx] = useState(0)

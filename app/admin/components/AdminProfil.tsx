@@ -20,7 +20,7 @@ export default function AdminProfil() {
     setLoading(true);
     try {
       const [siteNameRes, deskripsiRes, siswaRes, guruRes, staffRes] = await Promise.all([
-        fetch('/api/pengaturan/site-name').then(r => r.json()),
+        fetch('/api/pengaturan/nama-situs').then(r => r.json()),
         fetch('/api/pengaturan/deskripsi').then(r => r.json()),
         fetch('/api/pengaturan/jumlah-siswa').then(r => r.json()),
         fetch('/api/pengaturan/jumlah-guru').then(r => r.json()),
@@ -43,7 +43,7 @@ export default function AdminProfil() {
     setMessage('');
     try {
       const [siteNameRes, deskripsiRes, siswaRes, guruRes, staffRes] = await Promise.all([
-        fetch('/api/pengaturan/site-name', {
+        fetch('/api/pengaturan/nama-situs', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ site_name: siteName.trim() })

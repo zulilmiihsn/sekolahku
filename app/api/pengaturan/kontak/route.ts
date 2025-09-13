@@ -2,13 +2,37 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/app/utils/supabaseClient'
 
 export async function GET() {
-  const keys = ['alamat', 'email_kontak', 'telepon', 'lat_sekolah', 'lng_sekolah']
-  const { data, error } = await supabase
-    .from('Setting')
-    .select('*')
-    .in('key', keys)
-  // Jika error, balas data kosong agar tidak 500
-  if (error) {
+  try {
+    const keys = ['alamat', 'email_kontak', 'telepon', 'lat_sekolah', 'lng_sekolah']
+    const { data, error } = await supabase
+      .from('Setting')
+      .select('*')
+      .in('key', keys)
+    
+    if (error) {
+      // Hanya log error jika bukan error tabel tidak ditemukan
+      if (!error.message.includes('Could not find the table')) {
+        console.error('Setting kontak GET error:', error.message);
+      }
+      return NextResponse.json({
+        alamat: '',
+        email: '',
+        telepon: '',
+        lat: '',
+        lng: ''
+      })
+    }
+    
+    const result = Object.fromEntries(keys.map(k => [k, data?.find(s => s.key === k)?.value || '']))
+    return NextResponse.json({
+      alamat: result.alamat || 'Jl. Pendidikan No. 123, Jakarta',
+      email: result.email_kontak || 'info@sekolahmodern.com',
+      telepon: result.telepon || '021-12345678',
+      lat: result.lat_sekolah || '-6.2',
+      lng: result.lng_sekolah || '106.816666'
+    })
+  } catch (err) {
+    console.error('Setting kontak GET exception:', err);
     return NextResponse.json({
       alamat: '',
       email: '',
@@ -17,14 +41,6 @@ export async function GET() {
       lng: ''
     })
   }
-  const result = Object.fromEntries(keys.map(k => [k, data?.find(s => s.key === k)?.value || '']))
-  return NextResponse.json({
-    alamat: result.alamat,
-    email: result.email_kontak,
-    telepon: result.telepon,
-    lat: result.lat_sekolah,
-    lng: result.lng_sekolah
-  })
 }
 
 export async function POST(req: NextRequest) {

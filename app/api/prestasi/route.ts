@@ -4,9 +4,22 @@ const revalidate = 120
 
 // GET: List semua prestasi
 export async function GET() {
-  const { data, error } = await supabase.from('Prestasi').select('*').order('id', { ascending: true })
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json(data, { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
+  try {
+    const { data, error } = await supabase.from('Prestasi').select('*').order('id', { ascending: true })
+    
+    if (error) {
+      // Hanya log error jika bukan error tabel tidak ditemukan
+      if (!error.message.includes('Could not find the table')) {
+        console.error('Prestasi GET error:', error.message);
+      }
+      return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
+    }
+    
+    return NextResponse.json(data || [], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
+  } catch (err) {
+    console.error('Prestasi GET exception:', err);
+    return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
+  }
 }
 
 // POST: Tambah atau edit prestasi

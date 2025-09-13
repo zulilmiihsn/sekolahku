@@ -2,24 +2,32 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/app/utils/supabaseClient'
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from('Setting')
-    .select('*')
-    .eq('key', 'kategori_guru')
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from('Setting')
+      .select('*')
+      .eq('key', 'kategori_guru')
+      .single()
 
-  // Jika terjadi error apa pun, balas array kosong agar tidak 500
-  if (error) {
+    if (error) {
+      // Hanya log error jika bukan error tabel tidak ditemukan
+      if (!error.message.includes('Could not find the table')) {
+        console.error('Setting kategori_guru GET error:', error.message);
+      }
+      return NextResponse.json([])
+    }
+
+    let value = [] as any[]
+    try {
+      value = data?.value ? JSON.parse(data.value) : []
+    } catch {
+      value = []
+    }
+    return NextResponse.json(value)
+  } catch (err) {
+    console.error('Setting kategori_guru GET exception:', err);
     return NextResponse.json([])
   }
-
-  let value = [] as any[]
-  try {
-    value = data?.value ? JSON.parse(data.value) : []
-  } catch {
-    value = []
-  }
-  return NextResponse.json(value)
 }
 
 export async function POST(req: NextRequest) {

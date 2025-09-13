@@ -23,28 +23,26 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
   const [berita, setBerita] = useState<Berita[]>(initialBerita)
   const [loading, setLoading] = useState(false)
 
-  const fetchMoreBerita = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
-    
-    try {
-      const res = await fetch('/api/berita')
-      if (res.ok) {
-        const data = await res.json()
-        setBerita(data)
-      }
-    } catch (error) {
-      console.error('Error fetching berita:', error)
-    } finally {
-      setLoading(false)
-    }
-  }, [loading])
-
   useEffect(() => {
+    // Hanya fetch sekali jika initialBerita kosong
     if (initialBerita.length === 0) {
-      fetchMoreBerita()
+      const fetchBerita = async () => {
+        setLoading(true)
+        try {
+          const res = await fetch('/api/berita')
+          if (res.ok) {
+            const data = await res.json()
+            setBerita(data)
+          }
+        } catch (error) {
+          console.error('Error fetching berita:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchBerita()
     }
-  }, [initialBerita.length, fetchMoreBerita])
+  }, []) // Hanya jalankan sekali saat mount
 
   return (
     <div className="space-y-8">

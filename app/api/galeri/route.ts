@@ -7,7 +7,12 @@ export async function GET() {
     const { data, error } = await supabase.storage.from('galeri').list('', { limit: 100 });
     
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      // Hanya log error jika bukan error storage tidak ditemukan
+      if (!error.message.includes('Could not find') && !error.message.includes('Invalid API key')) {
+        console.error('Galeri storage error:', error.message);
+      }
+      const revalidate = 300;
+      return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
     }
     
     // Kembalikan array URL gambar
@@ -18,7 +23,9 @@ export async function GET() {
     const revalidate = 300
     return NextResponse.json(urls, { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
   } catch (err) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Galeri GET exception:', err);
+    const revalidate = 300;
+    return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
   }
 }
 
