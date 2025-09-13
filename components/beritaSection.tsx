@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -23,7 +23,7 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
   const [berita, setBerita] = useState<Berita[]>(initialBerita)
   const [loading, setLoading] = useState(false)
 
-  const fetchMoreBerita = async () => {
+  const fetchMoreBerita = useCallback(async () => {
     if (loading) return
     setLoading(true)
     
@@ -38,7 +38,7 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
     } finally {
       setLoading(false)
     }
-  }
+  }, [loading])
 
   useEffect(() => {
     if (initialBerita.length === 0) {
