@@ -1,1 +1,0 @@
-"use strict";exports.id=652,exports.ids=[652],exports.modules={4652:(e,t,r)=>{r.r(t),r.d(t,{default:()=>s});let s=(0,r(8570).createProxy)(String.raw`D:\sekolahku\components\beritaSection.tsx#default`)}};
