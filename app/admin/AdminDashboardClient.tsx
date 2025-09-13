@@ -13,12 +13,12 @@ import { DragDropContext, Droppable, Draggable } from './components/dndClient'
 const ReactMde = dynamic(() => import("react-mde"), { ssr: false })
 import "react-mde/lib/styles/css/react-mde-all.css"
 import Showdown from "showdown"
-import AdminBerita from "./components/adminBerita"
-import AdminFasilitas from "./components/adminFasilitas"
-import AdminPrestasi from "./components/adminPrestasi"
-import AdminGaleri from "./components/adminGaleri"
-import AdminEkstrakurikuler from "./components/adminEkstrakurikuler"
-import AdminProfil from "./components/adminProfil"
+import adminBerita from "./components/adminBerita"
+import adminFasilitas from "./components/adminFasilitas"
+import adminPrestasi from "./components/adminPrestasi"
+import adminGaleri from "./components/adminGaleri"
+import adminEkstrakurikuler from "./components/adminEkstrakurikuler"
+import adminProfil from "./components/adminProfil"
 
 interface Berita {
   id: number
@@ -866,7 +866,7 @@ export default function AdminDashboardClient() {
                 </div>
               </div>
             )}
-            {activeTab === "profil" && <AdminProfil />}
+            {activeTab === "profil" && <adminProfil />}
             {activeTab === "program" && (
               <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col gap-6">
                 <h2 className="text-lg font-bold text-primary mb-2">Program Unggulan</h2>
@@ -909,7 +909,7 @@ export default function AdminDashboardClient() {
                 )}
               </div>
             )}
-            {activeTab === "berita" && <AdminBerita siteName={siteName} onNotif={setNotif} />}
+            {activeTab === "berita" && <adminBerita siteName={siteName} onNotif={setNotif} />}
             {activeTab === "tentang" && (
               <form onSubmit={handleSaveTentang} className="bg-white rounded-2xl shadow-lg p-8 flex flex-col gap-4 max-w-2xl mx-auto">
                 <h2 className="text-lg font-bold text-primary mb-2">Edit Halaman Tentang</h2>
@@ -1006,8 +1006,8 @@ export default function AdminDashboardClient() {
                 {notifGuru && <div className="text-green-600 text-sm mt-2">{notifGuru}</div>}
               </form>
             )}
-            {activeTab === "fasilitas" && <AdminFasilitas />}
-            {activeTab === "prestasi" && <AdminPrestasi />}
+            {activeTab === "fasilitas" && <adminFasilitas />}
+            {activeTab === "prestasi" && <adminPrestasi />}
             {activeTab === "kontak" && (
               <form onSubmit={handleSaveKontak} className="bg-white rounded-2xl shadow-lg p-8 flex flex-col gap-4">
                 <h2 className="text-lg font-bold text-primary mb-2">Kontak & Lokasi Sekolah</h2>
@@ -1106,8 +1106,8 @@ export default function AdminDashboardClient() {
                 )}
               </div>
             )}
-            {activeTab === "galeri" && <AdminGaleri />}
-            {activeTab === "ekstrakurikuler" && <AdminEkstrakurikuler />}
+            {activeTab === "galeri" && <adminGaleri />}
+            {activeTab === "ekstrakurikuler" && <adminEkstrakurikuler />}
           </div>
         </main>
       </div>
