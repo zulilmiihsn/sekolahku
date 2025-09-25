@@ -3,15 +3,35 @@ import { supabase } from '@/app/utils/supabaseClient'
 import { getCacheHeaders, getCacheTime } from '@/app/utils/cache'
 import { logError } from '@/app/utils/logger'
 
-// GET: Ambil semua berita
+// GET: Ambil berita dengan pagination dan filtering
 export const revalidate = getCacheTime('berita')
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const { data, error } = await supabase
+    const { searchParams } = new URL(req.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const search = searchParams.get('search')
+    const featured = searchParams.get('featured')
+    const offset = (page - 1) * limit
+
+    let query = supabase
       .from('Berita')
-      .select('*')
+      .select('id, judul, deskripsi, gambar, tanggal, slug, views', { count: 'exact' })
+      .eq('status', 'published')
       .order('tanggal', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (featured === 'true') {
+      query = query.eq('featured', true)
+    }
+
+    if (search) {
+      query = query.textSearch('judul', search, { type: 'websearch' })
+    }
+
+    const { data, error, count } = await query
+
     if (error) {
       // Hanya log error jika bukan error tabel tidak ditemukan
       if (!error.message.includes('Could not find the table')) {
@@ -19,7 +39,18 @@ export async function GET() {
       }
       return NextResponse.json([], { headers: { 'Cache-Control': getCacheHeaders('berita') } })
     }
-    return NextResponse.json(data || [], { headers: { 'Cache-Control': getCacheHeaders('berita') } })
+
+    const revalidate = search || featured ? 60 : 300 // Shorter cache for filtered results
+
+    return NextResponse.json({
+      data: data || [],
+      pagination: {
+        page,
+        limit,
+        total: count || 0,
+        totalPages: Math.ceil((count || 0) / limit)
+      }
+    }, { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
   } catch (e: unknown) {
     const error = e instanceof Error ? e : new Error('Unknown error')
     logError('Berita GET exception', error.message, 'API')

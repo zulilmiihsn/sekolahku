@@ -1,31 +1,58 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/app/utils/supabaseClient';
 
-// GET: List semua gambar di bucket 'galeri'
-export async function GET() {
+// GET: List semua galeri dengan pagination dan filtering
+export async function GET(req: NextRequest) {
   try {
-    const { data, error } = await supabase.storage.from('galeri').list('', { limit: 100 });
-    
-    if (error) {
-      // Hanya log error jika bukan error storage tidak ditemukan
-      if (!error.message.includes('Could not find') && !error.message.includes('Invalid API key')) {
-        console.error('Galeri storage error:', error.message);
-      }
-      const revalidate = 300;
-      return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
+    const { searchParams } = new URL(req.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '20')
+    const category = searchParams.get('category')
+    const search = searchParams.get('search')
+    const offset = (page - 1) * limit
+
+    let query = supabase
+      .from('Galeri')
+      .select('id, judul, deskripsi, foto, kategori, tanggal', { count: 'exact' })
+      .eq('status', 'published')
+      .order('tanggal', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (category) {
+      query = query.eq('kategori', category)
     }
-    
-    // Kembalikan array URL gambar
-    const urls = (data || [])
-      .filter(item => item.name && !item.name.endsWith('/'))
-      .map(item => supabase.storage.from('galeri').getPublicUrl(item.name).data.publicUrl);
-    
-    const revalidate = 300
-    return NextResponse.json(urls, { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
+
+    if (search) {
+      query = query.textSearch('judul', search, { type: 'websearch' })
+    }
+
+    const { data, error, count } = await query
+
+    if (error) {
+      console.error('Galeri GET error:', error.message);
+      return NextResponse.json([], { 
+        headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=300' } 
+      });
+    }
+
+    const revalidate = search || category ? 60 : 300 // Shorter cache for filtered results
+
+    return NextResponse.json({
+      data: data || [],
+      pagination: {
+        page,
+        limit,
+        total: count || 0,
+        totalPages: Math.ceil((count || 0) / limit)
+      }
+    }, { 
+      headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } 
+    });
   } catch (err) {
     console.error('Galeri GET exception:', err);
-    const revalidate = 300;
-    return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
+    return NextResponse.json([], { 
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=300' } 
+    });
   }
 }
 

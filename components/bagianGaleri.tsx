@@ -27,10 +27,10 @@ export default function BagianGaleri() {
 
   const fetchGaleri = async () => {
     try {
-      const res = await fetch('/api/galeri')
+      const res = await fetch('/api/galeri?limit=6')
       if (res.ok) {
-        const data = await res.json()
-        setGaleri(data.slice(0, 6)) // Ambil 6 item terbaru
+        const response = await res.json()
+        setGaleri(response.data || []) // Ambil 6 item terbaru
       }
     } catch (error) {
       console.error('Error fetching galeri:', error)

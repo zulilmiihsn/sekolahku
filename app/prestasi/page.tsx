@@ -61,7 +61,7 @@ export default function Prestasi() {
     <PageTemplate title="Prestasi" maxWidth="6xl">
       {prestasi.length > 0 ? (
         <PageGrid cols={2} gap={8}>
-          {prestasi.map((item: { nama?: string; judul?: string; peraih?: string; siswa?: string; tahun: number | string; foto?: string[] }, i: number) => (
+          {prestasi.map((item: { judul: string; peraih: string; tahun: number | string; foto?: string[]; tingkat?: string; kategori?: string; deskripsi?: string }, i: number) => (
             <PageCard key={i} className="group">
               <div className="relative mb-4">
                 {Array.isArray(item.foto) && item.foto.length > 0 ? (
@@ -77,12 +77,17 @@ export default function Prestasi() {
               </div>
               <div className="space-y-3">
                 <h3 className="font-bold text-xl text-primary group-hover:text-accent transition-colors">
-                  {item.nama || item.judul}
+                  {item.judul}
                 </h3>
                 <div className="flex items-center gap-2 text-text/70">
                   <Award className="w-4 h-4" />
-                  <span>{item.peraih || item.siswa}</span>
+                  <span>{item.peraih}</span>
                 </div>
+                {item.tingkat && (
+                  <div className="text-sm text-text/60 bg-accent/10 px-3 py-1 rounded-full inline-block">
+                    {item.tingkat}
+                  </div>
+                )}
                 <div className="text-sm text-text/60 bg-primary/5 px-3 py-1 rounded-full inline-block">
                   Tahun {item.tahun}
                 </div>

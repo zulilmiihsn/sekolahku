@@ -25,18 +25,34 @@ export async function GET() {
 // POST: Tambah atau edit prestasi
 export async function POST(req: NextRequest) {
   const body = await req.json()
-  const { id, nama, peraih, tahun, foto } = body
-  if (!nama || !peraih || !tahun) return NextResponse.json({ error: 'Field wajib tidak boleh kosong' }, { status: 400 })
+  const { id, judul, peraih, tahun, foto, tingkat, kategori, deskripsi } = body
+  if (!judul || !peraih || !tahun) return NextResponse.json({ error: 'Field wajib tidak boleh kosong' }, { status: 400 })
   if (!Array.isArray(foto)) return NextResponse.json({ error: 'Foto harus array' }, { status: 400 })
 
   if (id) {
     // Update
-    const { error } = await supabase.from('Prestasi').update({ nama, peraih, tahun, foto }).eq('id', id)
+    const { error } = await supabase.from('Prestasi').update({ 
+      judul, 
+      peraih, 
+      tahun, 
+      foto, 
+      tingkat, 
+      kategori, 
+      deskripsi 
+    }).eq('id', id)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ success: true, updated: true })
   } else {
     // Insert
-    const { data, error } = await supabase.from('Prestasi').insert([{ nama, peraih, tahun, foto }]).select().single()
+    const { data, error } = await supabase.from('Prestasi').insert([{ 
+      judul, 
+      peraih, 
+      tahun, 
+      foto, 
+      tingkat, 
+      kategori, 
+      deskripsi 
+    }]).select().single()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ success: true, prestasi: data })
   }

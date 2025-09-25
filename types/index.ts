@@ -7,6 +7,10 @@ export interface Berita {
   gambar?: string
   tanggal: string
   konten: string
+  slug?: string
+  status?: string
+  featured?: boolean
+  views?: number
   created_at?: string
   updated_at?: string
 }
@@ -18,6 +22,8 @@ export interface GaleriItem {
   foto: string[]
   kategori: string
   tanggal: string
+  tags?: string[]
+  status?: string
   created_at?: string
   updated_at?: string
 }
@@ -52,8 +58,9 @@ export interface Fasilitas {
   id: number
   nama: string
   deskripsi: string
-  foto?: string
-  kategori: string
+  foto: string[]
+  kategori?: string
+  status?: string
   created_at?: string
   updated_at?: string
 }
@@ -61,10 +68,12 @@ export interface Fasilitas {
 export interface Prestasi {
   id: number
   judul: string
-  deskripsi: string
-  foto?: string
-  kategori: string
+  peraih: string
   tahun: number
+  tingkat?: string
+  kategori?: string
+  foto: string[]
+  deskripsi?: string
   created_at?: string
   updated_at?: string
 }
@@ -73,9 +82,11 @@ export interface Ekstrakurikuler {
   id: number
   nama: string
   deskripsi: string
-  foto?: string
-  pembina?: string
+  foto: string[]
+  kategori?: string
   jadwal?: string
+  pembina?: string
+  status?: string
   created_at?: string
   updated_at?: string
 }
@@ -180,4 +191,17 @@ export interface FilterConfig {
   field: string
   value: string | number | boolean
   operator: 'eq' | 'ne' | 'gt' | 'lt' | 'like' | 'in'
+}
+
+// API Response types
+export interface PaginationInfo {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
+export interface PaginatedResponse<T> {
+  data: T[]
+  pagination: PaginationInfo
 }

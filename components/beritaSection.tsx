@@ -30,10 +30,10 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
       const fetchBerita = async () => {
         setLoading(true)
         try {
-          const res = await fetch('/api/berita')
+          const res = await fetch('/api/berita?limit=3')
           if (res.ok) {
-            const data = await res.json()
-            setBerita(data)
+            const response = await res.json()
+            setBerita(response.data || [])
           }
         } catch (error) {
           console.error('Error fetching berita:', error)

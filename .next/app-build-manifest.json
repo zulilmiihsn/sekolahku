@@ -47,6 +47,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/admin/masuk/layout.js"
+    ],
+    "/fasilitas/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/fasilitas/page.js"
+    ],
+    "/berita/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/berita/page.js"
     ]
   }
 }

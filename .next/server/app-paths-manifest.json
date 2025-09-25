@@ -1,9 +1,9 @@
 {
   "/page": "app/page.js",
   "/guru/page": "app/guru/page.js",
+  "/tentang/page": "app/tentang/page.js",
+  "/berita/page": "app/berita/page.js",
+  "/api/profil-sekolah/route": "app/api/profil-sekolah/route.js",
   "/api/berita/route": "app/api/berita/route.js",
-  "/api/pengaturan/nama-situs/route": "app/api/pengaturan/nama-situs/route.js",
-  "/api/galeri/route": "app/api/galeri/route.js",
-  "/api/pengaturan/kontak/route": "app/api/pengaturan/kontak/route.js",
-  "/api/profil-sekolah/route": "app/api/profil-sekolah/route.js"
+  "/fasilitas/page": "app/fasilitas/page.js"
 }

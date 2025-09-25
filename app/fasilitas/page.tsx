@@ -13,9 +13,10 @@ interface FasilitasItem {
 
 async function getFasilitas(): Promise<FasilitasItem[]> {
   try {
-    const res = await fetch(`/api/fasilitas`, { next: { revalidate } })
+    const res = await fetch(`/api/fasilitas?limit=50`, { next: { revalidate } })
     if (!res.ok) return []
-    return res.json()
+    const response = await res.json()
+    return response.data || []
   } catch {
     return []
   }

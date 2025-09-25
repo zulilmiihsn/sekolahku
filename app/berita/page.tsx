@@ -16,9 +16,10 @@ interface BeritaItem {
 
 async function getBerita(): Promise<BeritaItem[]> {
   try {
-    const res = await fetch(`/api/berita`, { next: { revalidate } })
+    const res = await fetch(`/api/berita?limit=20`, { next: { revalidate } })
     if (!res.ok) return []
-    return res.json()
+    const response = await res.json()
+    return response.data || []
   } catch {
     return []
   }
