@@ -1,4 +1,4 @@
-// File: D:\sekolahku\app\api\berita\[id]\route.ts
+// File: D:\Project\sekolahku\app\api\berita\[id]\route.ts
 import * as entry from '../../../../../../app/api/berita/[id]/route.js'
 import type { NextRequest } from 'next/server.js'
 

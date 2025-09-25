@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight } from 'lucide-react'
+import { LoadingSpinner, CardSkeleton } from '@/components/LoadingSpinner'
 
 interface Berita {
   id: number
@@ -76,9 +77,13 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
 
       {/* Loading State */}
       {loading && (
-        <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <p className="mt-2 text-gray-500">Memuat berita...</p>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <CardSkeleton key={index} />
+            ))}
+          </div>
+          <LoadingSpinner />
         </div>
       )}
 

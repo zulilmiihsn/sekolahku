@@ -4,6 +4,7 @@ import Footer from '../components/footer'
 import PageTransitionProvider from '../components/transisiHalaman'
 import { fetchSiteName } from './utils/api'
 import Navbar from '@/components/navbar'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -28,15 +29,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" className="h-full">
       <body className={`${plusJakarta.className} bg-background text-text min-h-screen flex flex-col`}>
-        <Navbar />
-        <PageTransitionProvider>
-          <main className="flex-1 min-h-screen">
-            <div className="min-h-screen">
-              {children}
-            </div>
-            <Footer />
-          </main>
-        </PageTransitionProvider>
+        <ErrorBoundary>
+          <Navbar />
+          <PageTransitionProvider>
+            <main className="flex-1 min-h-screen">
+              <div className="min-h-screen">
+                {children}
+              </div>
+              <Footer />
+            </main>
+          </PageTransitionProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

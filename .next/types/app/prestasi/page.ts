@@ -1,4 +1,4 @@
-// File: D:\sekolahku\app\prestasi\page.tsx
+// File: D:\Project\sekolahku\app\prestasi\page.tsx
 import * as entry from '../../../../app/prestasi/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/app/utils/supabaseClient'
+import { getCacheHeaders, getCacheTime } from '@/app/utils/cache'
+import { logError } from '@/app/utils/logger'
 
 // GET: Ambil semua berita
-export const revalidate = 60
+export const revalidate = getCacheTime('berita')
 
 export async function GET() {
   try {
@@ -13,14 +15,15 @@ export async function GET() {
     if (error) {
       // Hanya log error jika bukan error tabel tidak ditemukan
       if (!error.message.includes('Could not find the table')) {
-        console.error('Berita GET error:', error.message)
+        logError('Berita GET error', error.message, 'API')
       }
-      return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
+      return NextResponse.json([], { headers: { 'Cache-Control': getCacheHeaders('berita') } })
     }
-    return NextResponse.json(data || [], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
-  } catch (e: any) {
-    console.error('Berita GET exception:', e?.message || e)
-    return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } })
+    return NextResponse.json(data || [], { headers: { 'Cache-Control': getCacheHeaders('berita') } })
+  } catch (e: unknown) {
+    const error = e instanceof Error ? e : new Error('Unknown error')
+    logError('Berita GET exception', error.message, 'API')
+    return NextResponse.json([], { headers: { 'Cache-Control': getCacheHeaders('berita') } })
   }
 }
 

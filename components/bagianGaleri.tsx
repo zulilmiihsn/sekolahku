@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { LoadingSpinner, CardSkeleton } from '@/components/LoadingSpinner'
 
 interface GaleriItem {
   id: number

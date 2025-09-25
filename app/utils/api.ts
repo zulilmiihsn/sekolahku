@@ -1,4 +1,5 @@
 // Utility functions untuk API calls yang aman
+import { logError } from './logger'
 
 export async function fetchSiteName(revalidateSeconds: number = 300) {
   try {
@@ -16,7 +17,7 @@ export async function fetchSiteName(revalidateSeconds: number = 300) {
     const data = await res.json()
     return data.site_name || 'Sekolah Modern'
   } catch (error) {
-    console.error('Error fetching site name:', error)
+    logError('Error fetching site name', error, 'API')
     return 'Sekolah Modern'
   }
 }

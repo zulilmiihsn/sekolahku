@@ -1,1 +1,1 @@
-"use strict";exports.id=652,exports.ids=[652],exports.modules={4652:(e,t,r)=>{r.r(t),r.d(t,{default:()=>s});let s=(0,r(8570).createProxy)(String.raw`D:\sekolahku\components\beritaSection.tsx#default`)}};
+"use strict";exports.id=652,exports.ids=[652],exports.modules={24652:(e,t,r)=>{r.r(t),r.d(t,{default:()=>o});let o=(0,r(68570).createProxy)(String.raw`D:\Project\sekolahku\components\beritaSection.tsx#default`)}};

@@ -1,4 +1,4 @@
-// File: D:\sekolahku\app\admin\masuk\layout.tsx
+// File: D:\Project\sekolahku\app\admin\masuk\layout.tsx
 import * as entry from '../../../../../app/admin/masuk/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
