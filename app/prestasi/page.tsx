@@ -1,11 +1,9 @@
 "use client"
 
-import { motion } from 'framer-motion'
-import MasukHalaman from '../../components/masukHalaman'
-import SectionReveal from '../../components/sectionReveal'
+import PageTemplate, { PageCard, PageGrid, EmptyState } from '../../components/PageTemplate'
 import { useEffect, useState, useRef } from 'react'
 import NoPhotoPlaceholder from '../../components/penggantiTanpaFoto'
-import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, Trophy, Award } from 'lucide-react'
 import Image from 'next/image'
 import useSWR from 'swr'
 
@@ -15,8 +13,8 @@ export default function Prestasi() {
   const { data: prestasi = [], error, isLoading } = useSWR('/api/prestasi', fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
-    refreshInterval: 0, // Matikan auto refresh
-    dedupingInterval: 60000, // Cache selama 1 menit
+    refreshInterval: 0,
+    dedupingInterval: 60000,
   })
   const [galeriOpen, setGaleriOpen] = useState(false)
   const [galeriFoto, setGaleriFoto] = useState<string[]>([])
@@ -33,72 +31,115 @@ export default function Prestasi() {
     setGaleriIdx(0)
   }
 
+  if (isLoading) {
+    return (
+      <PageTemplate title="Prestasi">
+        <div className="text-center py-16">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-text/60">Memuat data prestasi...</p>
+        </div>
+      </PageTemplate>
+    )
+  }
+
+  if (error) {
+    return (
+      <PageTemplate title="Prestasi">
+        <EmptyState 
+          message="Gagal memuat data prestasi"
+          icon={
+            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto">
+              <X className="w-8 h-8 text-red-500" />
+            </div>
+          }
+        />
+      </PageTemplate>
+    )
+  }
+
   return (
-    <MasukHalaman>
-      <main className="max-w-4xl mx-auto py-24 px-4 min-h-screen">
-        <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Prestasi</h1>
-        {isLoading ? (
-          <div className="text-center text-text/60 py-16">Memuat data prestasi...</div>
-        ) : error ? (
-          <div className="text-center text-red-500 py-16">Gagal memuat data prestasi</div>
-        ) : prestasi.length === 0 ? (
-          <div className="text-center text-text/60 py-16">Belum ada data prestasi.</div>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-8">
-            <SectionReveal stagger as="fragment">
-              {prestasi.map((item: { nama?: string; judul?: string; peraih?: string; siswa?: string; tahun: number | string; foto?: string[] }, i: number) => (
-                <div key={i} className="bg-white/80 rounded-2xl shadow-lg p-6">
-                  {Array.isArray(item.foto) && item.foto.length > 0 ? (
-                    <PrestasiSlider foto={item.foto as string[]} onClick={idx => openGaleri(item.foto as string[], idx)} />
-                  ) : (
+    <PageTemplate title="Prestasi" maxWidth="6xl">
+      {prestasi.length > 0 ? (
+        <PageGrid cols={2} gap={8}>
+          {prestasi.map((item: { nama?: string; judul?: string; peraih?: string; siswa?: string; tahun: number | string; foto?: string[] }, i: number) => (
+            <PageCard key={i} className="group">
+              <div className="relative mb-4">
+                {Array.isArray(item.foto) && item.foto.length > 0 ? (
+                  <PrestasiSlider foto={item.foto as string[]} onClick={idx => openGaleri(item.foto as string[], idx)} />
+                ) : (
+                  <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center">
                     <NoPhotoPlaceholder />
-                  )}
-                  <div className="font-bold text-accent text-lg mb-1">{item.nama || item.judul}</div>
-                  <div className="text-text/80 mb-1">{item.peraih || item.siswa}</div>
-                  <div className="text-xs text-text/60 mb-2">Tahun {item.tahun}</div>
+                  </div>
+                )}
+                <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                  <Trophy className="w-5 h-5 text-white" />
                 </div>
-              ))}
-            </SectionReveal>
-          </div>
-        )}
-        {/* Modal galeri */}
-        {galeriOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-            <div className="relative bg-white rounded-2xl shadow-2xl p-4 md:p-8 flex flex-col items-center max-w-2xl w-full">
-              <button className="absolute top-3 right-3 text-gray-400 hover:text-red-500" onClick={closeGaleri}><X className="w-7 h-7" /></button>
-              <div className="flex items-center gap-4 w-full">
-                <button
-                  className="p-2 rounded-full bg-primary/10 hover:bg-accent/10 text-primary disabled:opacity-30"
-                  onClick={() => setGaleriIdx(idx => (idx === 0 ? galeriFoto.length - 1 : idx - 1))}
-                  disabled={galeriFoto.length <= 1}
-                >
-                  <ChevronLeft className="w-7 h-7" />
-                </button>
-                <Image
-                  src={galeriFoto[galeriIdx]}
-                  alt={`Galeri Prestasi ${galeriIdx+1}`}
-                  width={900}
-                  height={600}
-                  sizes="(max-width: 768px) 90vw, 900px"
-                  className="max-h-[60vh] max-w-[60vw] rounded-xl object-contain mx-auto"
-                  style={{ boxShadow: '0 4px 32px 0 rgba(0,0,0,0.10)' }}
-                />
-                <button
-                  className="p-2 rounded-full bg-primary/10 hover:bg-accent/10 text-primary disabled:opacity-30"
-                  onClick={() => setGaleriIdx(idx => (idx === galeriFoto.length - 1 ? 0 : idx + 1))}
-                  disabled={galeriFoto.length <= 1}
-                >
-                  <ChevronRight className="w-7 h-7" />
-                </button>
               </div>
-              <div className="mt-4 text-center text-text/70 text-sm">
-                Foto {galeriIdx + 1} dari {galeriFoto.length}
+              <div className="space-y-3">
+                <h3 className="font-bold text-xl text-primary group-hover:text-accent transition-colors">
+                  {item.nama || item.judul}
+                </h3>
+                <div className="flex items-center gap-2 text-text/70">
+                  <Award className="w-4 h-4" />
+                  <span>{item.peraih || item.siswa}</span>
+                </div>
+                <div className="text-sm text-text/60 bg-primary/5 px-3 py-1 rounded-full inline-block">
+                  Tahun {item.tahun}
+                </div>
               </div>
+            </PageCard>
+          ))}
+        </PageGrid>
+      ) : (
+        <EmptyState 
+          message="Belum ada data prestasi."
+          icon={
+            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto">
+              <Trophy className="w-8 h-8 text-primary" />
+            </div>
+          }
+        />
+      )}
+
+      {/* Modal galeri */}
+      {galeriOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="relative bg-white rounded-2xl shadow-2xl p-4 md:p-8 flex flex-col items-center max-w-2xl w-full">
+            <button className="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors" onClick={closeGaleri}>
+              <X className="w-7 h-7" />
+            </button>
+            <div className="flex items-center gap-4 w-full">
+              <button
+                className="p-2 rounded-full bg-primary/10 hover:bg-accent/10 text-primary disabled:opacity-30 transition-colors"
+                onClick={() => setGaleriIdx(idx => (idx === 0 ? galeriFoto.length - 1 : idx - 1))}
+                disabled={galeriFoto.length <= 1}
+              >
+                <ChevronLeft className="w-7 h-7" />
+              </button>
+              <Image
+                src={galeriFoto[galeriIdx]}
+                alt={`Galeri Prestasi ${galeriIdx+1}`}
+                width={900}
+                height={600}
+                sizes="(max-width: 768px) 90vw, 900px"
+                className="max-h-[60vh] max-w-[60vw] rounded-xl object-contain mx-auto"
+                style={{ boxShadow: '0 4px 32px 0 rgba(0,0,0,0.10)' }}
+              />
+              <button
+                className="p-2 rounded-full bg-primary/10 hover:bg-accent/10 text-primary disabled:opacity-30 transition-colors"
+                onClick={() => setGaleriIdx(idx => (idx === galeriFoto.length - 1 ? 0 : idx + 1))}
+                disabled={galeriFoto.length <= 1}
+              >
+                <ChevronRight className="w-7 h-7" />
+              </button>
+            </div>
+            <div className="mt-4 text-center text-text/70 text-sm">
+              Foto {galeriIdx + 1} dari {galeriFoto.length}
             </div>
           </div>
-        )}
-      </main>
-    </MasukHalaman>
+        </div>
+      )}
+    </PageTemplate>
   )
 }
 

@@ -12,9 +12,9 @@ const MapSekolah = dynamic(() => import('../components/mapSekolah'), { ssr: fals
 type SectionProps = { id: string; title: string; children: React.ReactNode }
 function Section({ id, title, children }: SectionProps) {
   return (
-    <section id={id} className="max-w-5xl mx-auto py-24 px-4 md:px-0">
+    <section id={id} className="min-h-[90vh] flex flex-col justify-center max-w-5xl mx-auto py-24 px-4 md:px-0">
       <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8 text-center drop-shadow-sm">{title}</h2>
-      <div className="bg-white/70 rounded-2xl shadow-lg p-8 backdrop-blur-md border border-white/40">
+      <div className="bg-white/70 rounded-2xl shadow-lg p-8 backdrop-blur-md border border-white/40 flex-1 flex flex-col justify-center">
         {children}
       </div>
     </section>

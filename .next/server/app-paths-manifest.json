@@ -1,11 +1,9 @@
 {
-  "/berita/page": "app/berita/page.js",
-  "/guru/page": "app/guru/page.js",
-  "/tentang/page": "app/tentang/page.js",
   "/page": "app/page.js",
-  "/api/pengaturan/nama-situs/route": "app/api/pengaturan/nama-situs/route.js",
-  "/api/profil-sekolah/route": "app/api/profil-sekolah/route.js",
-  "/api/pengaturan/kontak/route": "app/api/pengaturan/kontak/route.js",
+  "/guru/page": "app/guru/page.js",
   "/api/berita/route": "app/api/berita/route.js",
-  "/admin/masuk/page": "app/admin/masuk/page.js"
+  "/api/pengaturan/nama-situs/route": "app/api/pengaturan/nama-situs/route.js",
+  "/api/galeri/route": "app/api/galeri/route.js",
+  "/api/pengaturan/kontak/route": "app/api/pengaturan/kontak/route.js",
+  "/api/profil-sekolah/route": "app/api/profil-sekolah/route.js"
 }

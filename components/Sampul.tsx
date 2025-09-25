@@ -33,7 +33,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[85vh] overflow-hidden">
+    <section className="relative flex flex-col items-center justify-center min-h-[90vh] overflow-hidden">
       {/* Aurora Gradient */}
       <motion.div
         initial={{ opacity: 0 }}

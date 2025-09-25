@@ -1,11 +1,9 @@
 "use client"
 
-import { motion } from 'framer-motion'
-import MasukHalaman from '../../components/masukHalaman'
-import SectionReveal from '../../components/sectionReveal'
+import PageTemplate, { PageSection, PageCard, PageGrid, EmptyState } from '../../components/PageTemplate'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { User } from 'lucide-react'
+import { User, Users, GraduationCap, Briefcase } from 'lucide-react'
 
 async function getGuru() {
   try {
@@ -35,77 +33,124 @@ async function getKategoriGuru() {
 }
 
 export default function GuruStaff() {
-  // Note: dijalankan di client; fetch data via efek
   const [dataGuru, setDataGuru] = useState<any>({})
   const [kategoriGuru, setKategoriGuru] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
-    getGuru().then((d) => setDataGuru(d || {}))
-    getKategoriGuru().then((k) => setKategoriGuru(k || []))
+    const fetchData = async () => {
+      try {
+        const [guruData, kategoriData] = await Promise.all([
+          getGuru(),
+          getKategoriGuru()
+        ])
+        setDataGuru(guruData || {})
+        setKategoriGuru(kategoriData || [])
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
   }, [])
-  // Filter data kosong
+
   const filterValid = (arr: any[]) => (arr || []).filter(item => item.nama?.trim() || item.jabatan?.trim())
-  return (
-    <MasukHalaman>
-      <main className="max-w-5xl mx-auto py-24 px-4 min-h-screen">
-        <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Guru & Staff</h1>
-        <div className="space-y-12">
-          {kategoriGuru.map((kat: any) => (
-            <SectionHierarki key={kat.key} title={kat.label} data={filterValid(dataGuru[kat.key] || [])} />
-          ))}
+
+  const getIconForCategory = (key: string) => {
+    switch (key.toLowerCase()) {
+      case 'guru':
+        return <GraduationCap className="w-6 h-6" />
+      case 'staff':
+        return <Briefcase className="w-6 h-6" />
+      default:
+        return <Users className="w-6 h-6" />
+    }
+  }
+
+  if (loading) {
+    return (
+      <PageTemplate title="Guru & Staff">
+        <div className="text-center py-16">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-text/60">Memuat data guru dan staff...</p>
         </div>
-      </main>
-    </MasukHalaman>
+      </PageTemplate>
+    )
+  }
+
+  return (
+    <PageTemplate title="Guru & Staff" maxWidth="6xl">
+      <div className="space-y-16">
+        {kategoriGuru.map((kat: any) => (
+          <GuruSection 
+            key={kat.key} 
+            title={kat.label} 
+            data={filterValid(dataGuru[kat.key] || [])}
+            icon={getIconForCategory(kat.key)}
+          />
+        ))}
+      </div>
+    </PageTemplate>
   )
 }
 
-function SectionHierarki({ title, data }: { title: string, data: { nama: string, jabatan: string, foto?: string }[] }) {
-  const isFew = !data || data.length < 3;
+function GuruSection({ 
+  title, 
+  data, 
+  icon 
+}: { 
+  title: string
+  data: { nama: string, jabatan: string, foto?: string }[]
+  icon: React.ReactNode
+}) {
   return (
-    <section>
-      <h2 className="text-2xl font-bold text-accent mb-4">{title}</h2>
+    <PageSection title={title}>
       {data && data.length > 0 ? (
-        isFew ? (
-          <div className="flex justify-center gap-6 flex-wrap w-full items-stretch">
-            {data.map((item, i) => (
-              <SectionReveal key={i} delay={i * 0.08}>
-                <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col justify-between items-center w-80 h-full">
-                  {item.foto ? (
-                    <Image src={item.foto} alt={item.nama} width={80} height={80} className="w-20 h-20 rounded-full object-cover mb-3 border-2 border-primary/30 bg-background" />
-                  ) : (
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-primary/30 to-accent/30 mb-3 flex items-center justify-center text-2xl font-bold text-primary">
-                      {item.nama?.split(' ')[0][0] || '?'}
+        <PageGrid cols={3} gap={6}>
+          {data.map((item, i) => (
+            <PageCard key={i} className="text-center group">
+              <div className="relative mb-6">
+                {item.foto ? (
+                  <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <Image 
+                      src={item.foto} 
+                      alt={item.nama} 
+                      width={96} 
+                      height={96} 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                ) : (
+                  <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+                      <User className="w-6 h-6 text-white" />
                     </div>
-                  )}
-                  <div className="font-semibold text-primary text-lg mb-1 text-center">{item.nama}</div>
-                  <div className="text-sm text-text/70 text-center">{item.jabatan}</div>
+                  </div>
+                )}
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
+                  {icon}
                 </div>
-              </SectionReveal>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full items-stretch">
-            <SectionReveal stagger as="fragment">
-              {data.map((item, i) => (
-                <div key={i} className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col justify-between items-center w-80 h-full">
-                  {item.foto ? (
-                    <Image src={item.foto} alt={item.nama} width={80} height={80} className="w-20 h-20 rounded-full object-cover mb-3 border-2 border-primary/30 bg-background" />
-                  ) : (
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-primary/30 to-accent/30 mb-3 flex items-center justify-center text-2xl font-bold text-primary">
-                      {item.nama?.split(' ')[0][0] || '?'}
-                    </div>
-                  )}
-                  <div className="font-semibold text-primary text-lg mb-1 text-center">{item.nama}</div>
-                  <div className="text-sm text-text/70 text-center">{item.jabatan}</div>
-                </div>
-              ))}
-            </SectionReveal>
-          </div>
-        )
+              </div>
+              <h3 className="font-bold text-lg text-primary mb-2 group-hover:text-accent transition-colors">
+                {item.nama}
+              </h3>
+              <p className="text-text/70 text-sm leading-relaxed">
+                {item.jabatan}
+              </p>
+            </PageCard>
+          ))}
+        </PageGrid>
       ) : (
-        <div className="w-full flex justify-center">
-          <div className="text-text/60 italic text-center py-8">Belum ada data {title.toLowerCase()}.</div>
-        </div>
+        <EmptyState 
+          message={`Belum ada data ${title.toLowerCase()}.`}
+          icon={
+            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto">
+              {icon}
+            </div>
+          }
+        />
       )}
-    </section>
+    </PageSection>
   )
 } 

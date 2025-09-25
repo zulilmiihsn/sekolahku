@@ -1,139 +1,52 @@
 {
   "pages": {
-    "/admin/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/admin/page-0da39b1b6b0463fc.js"
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/page.css",
+      "static/chunks/app/page.js"
     ],
     "/layout": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/css/c9c3f1108d4a4781.css",
-      "static/chunks/864-50545c28a585ba3f.js",
-      "static/chunks/972-62f8aa40f84cf422.js",
-      "static/chunks/621-985c157cbcf00a7f.js",
-      "static/chunks/app/layout-b3c87c6ff071e0bc.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/error": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/error.js"
     ],
     "/not-found": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/not-found-9e82e872716e9f22.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/not-found.js"
     ],
-    "/_not-found/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/_not-found/page-8623cd8c4e007af5.js"
-    ],
-    "/berita/[id]/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/878-0eec498c8edfae11.js",
-      "static/chunks/869-277d454c6b21bebb.js",
-      "static/chunks/app/berita/[id]/page-dd8720a6cf355a0d.js"
-    ],
-    "/guru/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/864-50545c28a585ba3f.js",
-      "static/chunks/878-0eec498c8edfae11.js",
-      "static/chunks/app/guru/page-91f0a8c61338372e.js"
-    ],
-    "/pendaftaran/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/pendaftaran/page-b38b6b4712a00e2a.js"
-    ],
-    "/tanya-jawab/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/tanya-jawab/page-78def9d50922cdf1.js"
-    ],
-    "/prestasi/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/864-50545c28a585ba3f.js",
-      "static/chunks/878-0eec498c8edfae11.js",
-      "static/chunks/314-62ccb6ffb10f9e33.js",
-      "static/chunks/app/prestasi/page-37e14b997a5bd05b.js"
+    "/admin/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/admin/page.css",
+      "static/chunks/app/admin/page.js"
     ],
     "/tentang/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/tentang/page-aa562fd81d40c371.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/tentang/page.js"
     ],
-    "/ekstrakurikuler/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/864-50545c28a585ba3f.js",
-      "static/chunks/878-0eec498c8edfae11.js",
-      "static/chunks/app/ekstrakurikuler/page-68f5bdf33b7be86d.js"
-    ],
-    "/fasilitas/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/864-50545c28a585ba3f.js",
-      "static/chunks/878-0eec498c8edfae11.js",
-      "static/chunks/app/fasilitas/page-ad40a865dc3fb7b3.js"
-    ],
-    "/berita/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/864-50545c28a585ba3f.js",
-      "static/chunks/878-0eec498c8edfae11.js",
-      "static/chunks/972-62f8aa40f84cf422.js",
-      "static/chunks/app/berita/page-41c5b815222deb89.js"
-    ],
-    "/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/css/fc1c9daac70c093b.css",
-      "static/chunks/d0deef33-08e72c68cc07d6b8.js",
-      "static/chunks/864-50545c28a585ba3f.js",
-      "static/chunks/878-0eec498c8edfae11.js",
-      "static/chunks/154-273cd1f2636bf11e.js",
-      "static/chunks/app/page-3d9df5a0410807d6.js"
+    "/guru/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/guru/page.js"
     ],
     "/admin/masuk/page": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/admin/masuk/page-e07b1b8400517855.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/admin/masuk/page.js"
     ],
     "/admin/masuk/layout": [
-      "static/chunks/webpack-8c55da53bdb61e5a.js",
-      "static/chunks/fd9d1056-22104479c9bdca7e.js",
-      "static/chunks/117-c79c2185a211dd06.js",
-      "static/chunks/main-app-daf6532d5d0c646d.js",
-      "static/chunks/app/admin/masuk/layout-98aec696f5a50656.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/admin/masuk/layout.js"
     ]
   }
 }

@@ -1,8 +1,8 @@
-import PageEnter from '../../components/masukHalaman'
-import SectionReveal from '../../components/sectionReveal'
+import PageTemplate, { PageCard, EmptyState } from '../../components/PageTemplate'
 import Image from 'next/image'
 import Link from 'next/link'
 import PenggantiTanpaFoto from '../../components/penggantiTanpaFoto'
+import { Newspaper, Calendar, ArrowRight } from 'lucide-react'
 
 export const revalidate = 120
 
@@ -28,41 +28,69 @@ export default async function Berita() {
   const berita = await getBerita()
 
   return (
-    <PageEnter>
-      <main className="pt-16 min-h-screen">
-        <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Berita & Artikel</h1>
+    <PageTemplate title="Berita & Artikel" maxWidth="4xl">
+      {Array.isArray(berita) && berita.length > 0 ? (
         <div className="space-y-8">
-          {Array.isArray(berita) && berita.length > 0 ? (
-            <SectionReveal stagger as="fragment">
-              {berita.map((item) => (
-                <div key={item.id} className="bg-background rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-start">
-                  <div className="w-full md:w-48 aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-tr from-primary/20 to-accent/20 flex items-center justify-center mb-4 md:mb-0">
-                    {item.gambar ? (
-                      <Image
-                        src={item.gambar}
-                        alt={item.judul}
-                        width={400}
-                        height={300}
-                        sizes="(max-width: 768px) 100vw, 12rem"
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <PenggantiTanpaFoto className="w-full h-full" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <Link href={`/berita/${item.id}`} className="font-bold text-lg text-primary mb-1 hover:underline hover:text-accent transition-colors">{item.judul}</Link>
-                    <div className="text-xs text-text/60 mb-2">{new Date(item.tanggal).toLocaleString()}</div>
-                    <div className="text-text/80">{item.deskripsi}</div>
-                  </div>
+          {berita.map((item) => (
+            <PageCard key={item.id} className="group">
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="w-full md:w-64 aspect-[4/3] rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center flex-shrink-0">
+                  {item.gambar ? (
+                    <Image
+                      src={item.gambar}
+                      alt={item.judul}
+                      width={400}
+                      height={300}
+                      sizes="(max-width: 768px) 100vw, 16rem"
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <PenggantiTanpaFoto className="w-full h-full" />
+                  )}
                 </div>
-              ))}
-            </SectionReveal>
-          ) : (
-            <div className="text-center text-text/60 py-8">Belum ada berita.</div>
-          )}
+                <div className="flex-1 space-y-4">
+                  <div>
+                    <Link 
+                      href={`/berita/${item.id}`} 
+                      className="font-bold text-xl text-primary mb-2 hover:text-accent transition-colors group-hover:underline block"
+                    >
+                      {item.judul}
+                    </Link>
+                    <div className="flex items-center gap-2 text-text/60 text-sm mb-3">
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(item.tanggal).toLocaleDateString('id-ID', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}</span>
+                    </div>
+                  </div>
+                  <p className="text-text/80 leading-relaxed line-clamp-3">
+                    {item.deskripsi}
+                  </p>
+                  <Link 
+                    href={`/berita/${item.id}`}
+                    className="inline-flex items-center gap-2 text-primary hover:text-accent font-medium transition-colors group/link"
+                  >
+                    Baca Selengkapnya
+                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+            </PageCard>
+          ))}
         </div>
-      </main>
-    </PageEnter>
+      ) : (
+        <EmptyState 
+          message="Belum ada berita yang tersedia."
+          icon={
+            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto">
+              <Newspaper className="w-8 h-8 text-primary" />
+            </div>
+          }
+        />
+      )}
+    </PageTemplate>
   )
 } 

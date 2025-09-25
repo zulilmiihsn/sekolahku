@@ -1,1 +1,0 @@
-"use strict";exports.id=194,exports.ids=[194],exports.modules={91194:(e,t,r)=>{r.r(t),r.d(t,{default:()=>s});let s=(0,r(68570).createProxy)(String.raw`D:\Project\sekolahku\components\bagianGaleri.tsx#default`)}};
