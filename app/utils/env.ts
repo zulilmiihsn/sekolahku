@@ -10,8 +10,9 @@ const envSchema = z.object({
   
   // Application
   NEXT_PUBLIC_BASE_URL: z.string().url('Invalid base URL').default('http://localhost:3000'),
-  NEXTAUTH_URL: z.string().url('Invalid NextAuth URL').default('http://localhost:3000'),
-  NEXTAUTH_SECRET: z.string().min(32, 'NextAuth secret must be at least 32 characters'),
+  // NextAuth is optional in this project
+  NEXTAUTH_URL: z.string().url('Invalid NextAuth URL').optional(),
+  NEXTAUTH_SECRET: z.string().min(32, 'NextAuth secret must be at least 32 characters').optional(),
   
   // JWT
   JWT_SECRET: z.string().min(32, 'JWT secret must be at least 32 characters'),
@@ -46,8 +47,7 @@ export function validateEnv() {
         NEXT_PUBLIC_SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd2d1c292Z2JqZ2tzeXdpaXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI5NzQ5NzQsImV4cCI6MjA2ODU1MDk3NH0.Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8',
         SUPABASE_SERVICE_ROLE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd2d1c292Z2JqZ2tzeXdpaXNmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Mjk3NDk3NCwiZXhwIjoyMDY4NTUwOTc0fQ.Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8Ej8',
         NEXT_PUBLIC_BASE_URL: 'http://localhost:3000',
-        NEXTAUTH_URL: 'http://localhost:3000',
-        NEXTAUTH_SECRET: 'development_secret_32_chars_minimum',
+        // NEXTAUTH_URL and NEXTAUTH_SECRET are optional
         JWT_SECRET: 'development_jwt_secret_32_chars_minimum',
         JWT_EXPIRES_IN: '7d',
         BCRYPT_ROUNDS: 12,

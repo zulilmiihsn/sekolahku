@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/app/utils/supabaseClient'
+import { supabaseAdmin } from '@/app/utils/supabaseClient'
 import { generateTokenPair } from '@/app/utils/jwt'
 import { rateLimits } from '@/app/utils/rateLimit'
 import bcrypt from 'bcryptjs'
@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
     
     const { username, password } = validationResult.data
     
-    // Find user
-    const { data: user, error } = await supabase
+    // Find user (use service role to bypass RLS for credential check)
+    const { data: user, error } = await supabaseAdmin
       .from('User')
       .select('id, username, password, role, is_active')
       .eq('username', username)
