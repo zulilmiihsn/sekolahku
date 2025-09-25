@@ -42,6 +42,9 @@ export default function Navbar() {
               <Link href="/ekstrakurikuler" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">
                 Ekstrakurikuler
               </Link>
+              <Link href="/admin" className="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                Admin
+              </Link>
               <Link href="/pendaftaran" className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-accent transition-colors">
                 Pendaftaran
               </Link>
@@ -84,6 +87,9 @@ export default function Navbar() {
             </Link>
             <Link href="/ekstrakurikuler" className="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">
               Ekstrakurikuler
+            </Link>
+            <Link href="/admin" className="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium">
+              Admin
             </Link>
             <Link href="/pendaftaran" className="bg-primary text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-accent">
               Pendaftaran

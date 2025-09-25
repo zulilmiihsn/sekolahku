@@ -13,7 +13,7 @@ export default function AdminLogin() {
     e.preventDefault()
     setLoading(true)
     setError("")
-    const res = await fetch("/api/login", {
+    const res = await fetch("/api/masuk", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password })
