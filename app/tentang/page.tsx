@@ -1,4 +1,3 @@
-import Navbar from '../../components/navbar'
 import PageEnter from '../../components/masukHalaman'
 
 async function getTentang() {
@@ -22,8 +21,7 @@ export default async function TentangKami() {
   }
   return (
     <PageEnter>
-      <Navbar />
-      <main className="max-w-4xl mx-auto py-24 px-4">
+      <main className="max-w-4xl mx-auto py-24 px-4 min-h-screen">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">{tentang?.judul || 'Tentang Kami'}</h1>
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-2">Sejarah Singkat</h2>

@@ -2,16 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: theme('colors.background');
-  color: theme('colors.text');
-  font-family: theme('fontFamily.sans');
-}
-
 html {
   scroll-behavior: smooth;
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+body {
+  background: theme('colors.background');
+  color: theme('colors.text');
+  font-family: theme('fontFamily.sans');
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
 }
 
 /* Animasi Aurora */

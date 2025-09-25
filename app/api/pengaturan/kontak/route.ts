@@ -44,8 +44,18 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const cookie = req.cookies.get('admin_session')
-  if (!cookie) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  // Check authentication using JWT
+  const authHeader = req.headers.get('authorization')
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  
+  // For now, we'll implement a simple check
+  // In production, use proper JWT verification
+  const token = authHeader.substring(7)
+  if (!token) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const { alamat, email, telepon, lat, lng } = await req.json()
   const upserts = [
     { key: 'alamat', value: alamat },

@@ -45,15 +45,7 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
   }, []) // Hanya jalankan sekali saat mount
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-primary mb-4">Berita & Artikel Terbaru</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Dapatkan informasi terbaru tentang kegiatan, prestasi, dan perkembangan sekolah kami.
-        </p>
-      </div>
-
+    <div className="space-y-6">
       {/* Grid Berita */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {berita.map((item, index) => (
@@ -75,26 +67,8 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
                 />
               </div>
             )}
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-primary mb-2 line-clamp-2">
-                {item.judul}
-              </h3>
-              <p className="text-gray-600 mb-4 line-clamp-3">
-                {item.deskripsi}
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  {new Date(item.tanggal).toLocaleDateString('id-ID')}
-                </div>
-                <Link
-                  href={`/berita/${item.id}`}
-                  className="flex items-center text-primary font-medium hover:text-accent transition-colors"
-                >
-                  Baca Selengkapnya
-                  <ArrowRight className="w-4 h-4 ml-1" />
-                </Link>
-              </div>
+            <div className="p-4">
+              <p className="text-gray-600 text-sm">{item.deskripsi}</p>
             </div>
           </motion.div>
         ))}
@@ -110,21 +84,8 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
 
       {/* Empty State */}
       {berita.length === 0 && !loading && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Belum ada berita yang tersedia.</p>
-        </div>
-      )}
-
-      {/* View All Button */}
-      {berita.length > 0 && (
-        <div className="text-center">
-          <Link
-            href="/berita"
-            className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-accent transition-colors"
-          >
-            Lihat Semua Berita
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Link>
+        <div className="text-center py-8">
+          <p className="text-gray-500">Belum ada berita yang tersedia.</p>
         </div>
       )}
     </div>

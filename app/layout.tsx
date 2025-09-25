@@ -26,12 +26,14 @@ export async function generateMetadata() {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id">
-      <body className={`${plusJakarta.className} bg-background text-text`}>
+    <html lang="id" className="h-full">
+      <body className={`${plusJakarta.className} bg-background text-text min-h-screen flex flex-col`}>
         <Navbar />
         <PageTransitionProvider>
-          <main>
-            {children}
+          <main className="flex-1 min-h-screen">
+            <div className="min-h-screen">
+              {children}
+            </div>
             <Footer />
           </main>
         </PageTransitionProvider>

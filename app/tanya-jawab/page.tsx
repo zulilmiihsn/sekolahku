@@ -1,4 +1,3 @@
-import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
 import PageEnter from '../../components/masukHalaman'
 
@@ -11,8 +10,7 @@ const faq = [
 export default function FAQ() {
   return (
     <PageEnter>
-      <Navbar />
-      <main className="max-w-2xl mx-auto py-24 px-4">
+      <main className="max-w-2xl mx-auto py-24 px-4 min-h-screen flex flex-col justify-center">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">FAQ</h1>
         <div className="space-y-6">
           {faq.map((item, i) => (

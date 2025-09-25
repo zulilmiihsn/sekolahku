@@ -1,6 +1,5 @@
 "use client"
 
-import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
 import MasukHalaman from '../../components/masukHalaman'
 import SectionReveal from '../../components/sectionReveal'
@@ -47,8 +46,7 @@ export default function GuruStaff() {
   const filterValid = (arr: any[]) => (arr || []).filter(item => item.nama?.trim() || item.jabatan?.trim())
   return (
     <MasukHalaman>
-      <Navbar />
-      <main className="max-w-5xl mx-auto py-24 px-4">
+      <main className="max-w-5xl mx-auto py-24 px-4 min-h-screen">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Guru & Staff</h1>
         <div className="space-y-12">
           {kategoriGuru.map((kat: any) => (

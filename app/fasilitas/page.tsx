@@ -1,4 +1,3 @@
-import Navbar from '../../components/navbar'
 import PageEnter from '../../components/masukHalaman'
 import SectionReveal from '../../components/sectionReveal'
 import FasilitasClient from './fasilitasClient'
@@ -26,8 +25,7 @@ export default async function Fasilitas() {
   const fasilitas = await getFasilitas()
   return (
     <PageEnter>
-      <Navbar />
-      <main className="max-w-5xl mx-auto py-24 px-4">
+      <main className="max-w-5xl mx-auto py-24 px-4 min-h-screen">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Fasilitas</h1>
         <FasilitasClient fasilitas={fasilitas} />
       </main>

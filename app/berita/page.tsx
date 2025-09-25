@@ -1,4 +1,3 @@
-import Navbar from '../../components/navbar'
 import PageEnter from '../../components/masukHalaman'
 import SectionReveal from '../../components/sectionReveal'
 import Image from 'next/image'
@@ -30,8 +29,7 @@ export default async function Berita() {
 
   return (
     <PageEnter>
-      <Navbar />
-      <main className="pt-16">
+      <main className="pt-16 min-h-screen">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Berita & Artikel</h1>
         <div className="space-y-8">
           {Array.isArray(berita) && berita.length > 0 ? (

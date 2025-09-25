@@ -1,14 +1,12 @@
 "use client"
 
-import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
 import MasukHalaman from '../../components/masukHalaman'
 
 export default function Pendaftaran() {
   return (
     <MasukHalaman>
-      <Navbar />
-      <main className="max-w-md mx-auto py-24 px-4">
+      <main className="max-w-md mx-auto py-24 px-4 min-h-screen flex flex-col justify-center">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Pendaftaran Siswa Baru</h1>
         <form className="bg-white/80 rounded-2xl shadow-lg p-8 grid gap-5">
           <input type="text" placeholder="Nama Lengkap" className="p-3 rounded-lg border border-primary/30 focus:ring-2 focus:ring-accent outline-none" />

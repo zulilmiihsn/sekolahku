@@ -1,6 +1,5 @@
 "use client"
 
-import Navbar from '../../components/navbar'
 import { motion } from 'framer-motion'
 import MasukHalaman from '../../components/masukHalaman'
 import SectionReveal from '../../components/sectionReveal'
@@ -36,8 +35,7 @@ export default function Prestasi() {
 
   return (
     <MasukHalaman>
-      <Navbar />
-      <main className="max-w-4xl mx-auto py-24 px-4">
+      <main className="max-w-4xl mx-auto py-24 px-4 min-h-screen">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Prestasi</h1>
         {isLoading ? (
           <div className="text-center text-text/60 py-16">Memuat data prestasi...</div>

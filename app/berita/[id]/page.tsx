@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react'
-import Navbar from '../../../components/navbar'
 import MasukHalaman from '../../../components/masukHalaman'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -40,7 +39,6 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
 
   return (
     <MasukHalaman>
-      <Navbar />
       {berita && (
         <Head>
           <title>{berita.judul} | Berita Sekolah</title>
@@ -48,7 +46,7 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
           {berita.gambar && <meta property="og:image" content={berita.gambar} />}
         </Head>
       )}
-      <main className="max-w-2xl mx-auto py-24 px-4">
+      <main className="max-w-2xl mx-auto py-24 px-4 min-h-screen">
         {loading ? <div>Loading...</div> : error ? (
           <div className="text-center text-red-500 py-16">{error}</div>
         ) : berita && (

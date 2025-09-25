@@ -72,15 +72,7 @@ export default function BagianGaleri() {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-primary mb-4">Galeri Sekolah</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Dokumentasi kegiatan, prestasi, dan momen berharga di sekolah kami.
-        </p>
-      </div>
-
+    <div className="space-y-6">
       {/* Grid Galeri */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {galeri.map((item, index) => (
@@ -115,17 +107,8 @@ export default function BagianGaleri() {
                 </div>
               </div>
             )}
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-primary mb-2">{item.judul}</h3>
-              <p className="text-gray-600 line-clamp-2">{item.deskripsi}</p>
-              <div className="flex items-center justify-between mt-4">
-                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                  {item.kategori}
-                </span>
-                <span className="text-xs text-gray-500">
-                  {new Date(item.tanggal).toLocaleDateString('id-ID')}
-                </span>
-              </div>
+            <div className="p-4">
+              <p className="text-gray-600 text-sm">{item.deskripsi}</p>
             </div>
           </motion.div>
         ))}
@@ -133,8 +116,8 @@ export default function BagianGaleri() {
 
       {/* Empty State */}
       {galeri.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Belum ada galeri yang tersedia.</p>
+        <div className="text-center py-8">
+          <p className="text-gray-500">Belum ada galeri yang tersedia.</p>
         </div>
       )}
 

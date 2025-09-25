@@ -80,27 +80,13 @@ export default async function Home() {
         <Hero />
         <SectionReveal>
           <Section id="profil" title="Profil Sekolah">
-            {profil.jumlahSiswa > 0 || profil.jumlahGuru > 0 || profil.jumlahStaff > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
-                  <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahSiswa}</span>
-                  <span className="text-sm text-text/70 font-medium">Siswa Sekarang</span>
-                </div>
-                <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
-                  <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahGuru}</span>
-                  <span className="text-sm text-text/70 font-medium">Guru</span>
-                </div>
-                <div className="bg-white/80 rounded-2xl shadow-lg p-6 flex flex-col items-center">
-                  <span className="text-4xl font-extrabold text-primary mb-1">{profil.jumlahStaff}</span>
-                  <span className="text-sm text-text/70 font-medium">Staff</span>
-                </div>
-              </div>
+            {profil.deskripsi && profil.deskripsi !== 'Belum ada deskripsi sekolah yang tersedia.' ? (
+              <p className="text-lg text-text/80 text-justify">{profil.deskripsi}</p>
             ) : (
-              <div className="text-center py-8 mb-8">
-                <p className="text-gray-500 text-lg">Data statistik sekolah belum tersedia.</p>
+              <div className="text-center py-8">
+                <p className="text-gray-500">Belum ada deskripsi sekolah yang tersedia.</p>
               </div>
             )}
-            <p className="text-lg text-text/80 text-justify">{profil.deskripsi}</p>
           </Section>
         </SectionReveal>
         <SectionReveal delay={0.08}>
@@ -108,15 +94,14 @@ export default async function Home() {
             {programs.length > 0 ? (
               <ul className="grid md:grid-cols-2 gap-6">
                 {programs.map((program: { judul: string; deskripsi: string }, i: number) => (
-                  <li key={i} className="p-6 rounded-xl bg-background shadow transition hover:scale-105">
-                    <h3 className="font-semibold text-primary mb-2">{program.judul}</h3>
-                    <p className="text-text/70">{program.deskripsi}</p>
+                  <li key={i} className="p-4 rounded-xl bg-background shadow transition hover:scale-105">
+                    <p className="text-text/70 text-sm">{program.deskripsi}</p>
                   </li>
                 ))}
               </ul>
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-500 text-lg">Belum ada program unggulan yang tersedia.</p>
+                <p className="text-gray-500">Belum ada program unggulan yang tersedia.</p>
               </div>
             )}
           </Section>
@@ -142,7 +127,7 @@ export default async function Home() {
               </form>
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-500 text-lg">Informasi kontak belum tersedia.</p>
+                <p className="text-gray-500">Informasi kontak belum tersedia.</p>
               </div>
             )}
           </Section>
@@ -160,7 +145,7 @@ export default async function Home() {
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-500 text-lg">Informasi lokasi sekolah belum tersedia.</p>
+                <p className="text-gray-500">Informasi lokasi sekolah belum tersedia.</p>
               </div>
             )}
           </Section>
