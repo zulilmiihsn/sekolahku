@@ -5,6 +5,7 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
   ],
+  // Optimisasi untuk production - menggunakan content array yang sudah ada
   theme: {
     extend: {
       colors: {
