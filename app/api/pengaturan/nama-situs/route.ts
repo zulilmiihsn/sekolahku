@@ -7,7 +7,8 @@ export async function GET() {
       .from('Setting')
       .select('value')
       .eq('key', 'site_name')
-      .single();
+      .limit(1)
+      .maybeSingle();
     if (error) {
       // Hanya log error jika bukan error tabel tidak ditemukan
       if (!error.message.includes('Could not find the table')) {

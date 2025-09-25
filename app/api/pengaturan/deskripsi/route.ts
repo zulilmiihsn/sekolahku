@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/app/utils/supabaseClient';
+import { supabase, supabaseAdmin } from '@/app/utils/supabaseClient';
 
 export async function GET() {
   try {
@@ -7,7 +7,8 @@ export async function GET() {
       .from('Setting')
       .select('value')
       .eq('key', 'deskripsi')
-      .single();
+      .limit(1)
+      .maybeSingle();
     if (error) {
       // Hanya log error jika bukan error tabel tidak ditemukan
       if (!error.message.includes('Could not find the table')) {
@@ -28,7 +29,7 @@ export async function PUT(req: NextRequest) {
     if (!deskripsi || typeof deskripsi !== 'string') {
       return NextResponse.json({ error: 'Deskripsi wajib diisi' }, { status: 400 });
     }
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('Setting')
       .upsert([{ key: 'deskripsi', value: deskripsi.trim() }]);
     if (error) {
