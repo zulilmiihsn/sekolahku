@@ -1,10 +1,9 @@
 import './globals.css'
 import { Plus_Jakarta_Sans } from 'next/font/google'
-import Footer from '../components/footer'
 import PageTransitionProvider from '../components/transisiHalaman'
 import { fetchSiteName } from './utils/api'
-import Navbar from '@/components/navbar'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import AppShell from '@/components/AppShell'
 
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -30,14 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="id" className="h-full">
       <body className={`${plusJakarta.className} bg-background text-text min-h-screen flex flex-col`}>
         <ErrorBoundary>
-          <Navbar />
           <PageTransitionProvider>
-            <main className="flex-1 min-h-screen">
-              <div className="min-h-screen">
-                {children}
-              </div>
-              <Footer />
-            </main>
+            <AppShell>
+              {children}
+            </AppShell>
           </PageTransitionProvider>
         </ErrorBoundary>
       </body>
