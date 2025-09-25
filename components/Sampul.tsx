@@ -68,7 +68,7 @@ export default function Hero() {
         </motion.p>
         <div className="flex justify-center mt-10">
           <motion.a
-            href="#profil"
+            href="/tentang"
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.7 }}
@@ -78,7 +78,7 @@ export default function Hero() {
             onMouseEnter={handleHoverStart}
             onMouseLeave={handleHoverEnd}
           >
-          Lihat Profil Sekolah
+          Tentang Kami
             <motion.span
               className="absolute -top-2 -right-2 bg-white/90 rounded-full shadow-lg p-1 flex items-center justify-center z-10"
               animate={controls}
