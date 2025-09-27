@@ -20,6 +20,11 @@ const AdminPrestasi = dynamic(() => import("./components/adminPrestasi"), { ssr:
 const AdminGaleri = dynamic(() => import("./components/adminGaleri"), { ssr: false })
 const AdminEkstrakurikuler = dynamic(() => import("./components/adminEkstrakurikuler"), { ssr: false })
 const AdminProfil = dynamic(() => import("./components/adminProfil"), { ssr: false })
+const AdminProgram = dynamic(() => import("./components/adminProgram"), { ssr: false })
+const AdminTentang = dynamic(() => import("./components/adminTentang"), { ssr: false })
+const AdminGuru = dynamic(() => import("./components/adminGuru"), { ssr: false })
+const AdminKategoriGuru = dynamic(() => import("./components/adminKategoriGuru"), { ssr: false })
+const AdminKontak = dynamic(() => import("./components/adminKontak"), { ssr: false })
 
 interface Berita {
   id: number
@@ -137,9 +142,14 @@ export default function AdminDashboardClient() {
               </div>
             )}
             {activeTab === "profil" && <AdminProfil />}
+            {activeTab === "program" && <AdminProgram />}
             {activeTab === "berita" && <AdminBerita siteName={siteName} onNotif={setNotif} />}
+            {activeTab === "tentang" && <AdminTentang />}
+            {activeTab === "guru" && <AdminGuru />}
+            {activeTab === "kategori_guru" && <AdminKategoriGuru />}
             {activeTab === "fasilitas" && <AdminFasilitas />}
             {activeTab === "prestasi" && <AdminPrestasi />}
+            {activeTab === "kontak" && <AdminKontak />}
             {activeTab === "galeri" && <AdminGaleri />}
             {activeTab === "ekstrakurikuler" && <AdminEkstrakurikuler />}
           </div>
