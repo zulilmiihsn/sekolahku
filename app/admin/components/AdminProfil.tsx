@@ -7,8 +7,8 @@ import AdminInput from './AdminInput';
 import AdminTextarea from './AdminTextarea';
 import AdminButton from './AdminButton';
 import AdminAlert from './AdminAlert';
-import AdminLoadingSpinner from '../../components/AdminLoadingSpinner';
-import AdminSkeletonLoader from '../../components/AdminSkeletonLoader';
+import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner';
+import AdminSkeletonLoader from '../../../components/AdminSkeletonLoader';
 
 export default function AdminProfil() {
   const [siteName, setSiteName] = useState('');

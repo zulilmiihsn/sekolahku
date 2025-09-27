@@ -10,8 +10,8 @@ import AdminSelect from './AdminSelect'
 import AdminButton from './AdminButton'
 import AdminModal from './AdminModal'
 import AdminAlert from './AdminAlert'
-import AdminLoadingSpinner from '../../components/AdminLoadingSpinner'
-import AdminSkeletonLoader from '../../components/AdminSkeletonLoader'
+import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner'
+import AdminSkeletonLoader from '../../../components/AdminSkeletonLoader'
 
 interface Fasilitas {
   id: number

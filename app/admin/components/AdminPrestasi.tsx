@@ -10,7 +10,7 @@ import AdminSelect from './AdminSelect'
 import AdminButton from './AdminButton'
 import AdminModal from './AdminModal'
 import AdminAlert from './AdminAlert'
-import AdminLoadingSpinner from '../../components/AdminLoadingSpinner'
+import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner'
 
 interface Prestasi {
   id: number
