@@ -44,10 +44,13 @@ export default function AdminEkstrakurikuler() {
       const res = await fetch('/api/ekstrakurikuler')
       if (res.ok) {
         const data = await res.json()
-        setEkstrakurikuler(data)
+        setEkstrakurikuler(Array.isArray(data) ? data : [])
+      } else {
+        setEkstrakurikuler([])
       }
     } catch (error) {
       console.error('Error fetching ekstrakurikuler:', error)
+      setEkstrakurikuler([])
     } finally {
       setLoading(false)
     }
@@ -191,7 +194,7 @@ export default function AdminEkstrakurikuler() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {ekstrakurikuler.map((item) => (
+        {Array.isArray(ekstrakurikuler) && ekstrakurikuler.map((item) => (
           <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden">
             {item.foto && (
               <div className="aspect-video relative">

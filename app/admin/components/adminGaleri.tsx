@@ -34,10 +34,13 @@ export default function AdminGaleri() {
       const res = await fetch('/api/galeri')
       if (res.ok) {
         const data = await res.json()
-        setGaleri(data)
+        setGaleri(Array.isArray(data) ? data : [])
+      } else {
+        setGaleri([])
       }
     } catch (error) {
       console.error('Error fetching galeri:', error)
+      setGaleri([])
     } finally {
       setLoading(false)
     }
@@ -173,7 +176,7 @@ export default function AdminGaleri() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {galeri.map((item) => (
+        {Array.isArray(galeri) && galeri.map((item) => (
           <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden">
             {item.foto.length > 0 && (
               <div className="aspect-video relative">

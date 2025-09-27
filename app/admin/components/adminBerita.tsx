@@ -38,10 +38,13 @@ export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
       const res = await fetch('/api/berita')
       if (res.ok) {
         const data = await res.json()
-        setBerita(data)
+        setBerita(Array.isArray(data) ? data : [])
+      } else {
+        setBerita([])
       }
     } catch (error) {
       console.error('Error fetching berita:', error)
+      setBerita([])
     } finally {
       setLoading(false)
     }
@@ -145,7 +148,7 @@ export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
       )}
 
       <div className="space-y-4">
-        {berita.map((item) => (
+        {Array.isArray(berita) && berita.map((item) => (
           <div key={item.id} className="border border-gray-200 rounded-lg p-4">
             <div className="flex justify-between items-start">
               <div className="flex-1">
