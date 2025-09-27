@@ -10,6 +10,7 @@ import AdminSelect from './AdminSelect'
 import AdminButton from './AdminButton'
 import AdminModal from './AdminModal'
 import AdminAlert from './AdminAlert'
+import AdminLoadingSpinner from '../../components/AdminLoadingSpinner'
 
 interface Prestasi {
   id: number
@@ -226,13 +227,13 @@ export default function AdminPrestasi() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="bg-white rounded-2xl shadow border border-gray-100 p-6">
-          <div className="animate-pulse">
-            <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="h-10 bg-gray-200 rounded mb-4"></div>
-            <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-          </div>
-        </div>
+        <AdminCard
+          title="Kelola Prestasi"
+          description="Tambah, edit, dan hapus prestasi sekolah"
+          icon={Award}
+        >
+          <AdminLoadingSpinner message="Memuat data prestasi..." />
+        </AdminCard>
       </div>
     )
   }

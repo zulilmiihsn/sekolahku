@@ -125,7 +125,19 @@ export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
   }
 
   if (loading) {
-    return <div className="text-center py-8">Loading...</div>
+    return (
+      <div className="bg-white rounded-2xl shadow-lg p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-lg font-bold text-primary">Kelola Berita</h2>
+        </div>
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="w-8 h-8 border-3 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600">Memuat data berita...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

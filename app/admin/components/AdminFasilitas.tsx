@@ -10,6 +10,8 @@ import AdminSelect from './AdminSelect'
 import AdminButton from './AdminButton'
 import AdminModal from './AdminModal'
 import AdminAlert from './AdminAlert'
+import AdminLoadingSpinner from '../../components/AdminLoadingSpinner'
+import AdminSkeletonLoader from '../../components/AdminSkeletonLoader'
 
 interface Fasilitas {
   id: number
@@ -198,13 +200,13 @@ export default function AdminFasilitas() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="bg-white rounded-2xl shadow border border-gray-100 p-6">
-          <div className="animate-pulse">
-            <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="h-10 bg-gray-200 rounded mb-4"></div>
-            <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-          </div>
-        </div>
+        <AdminCard
+          title="Kelola Fasilitas"
+          description="Tambah, edit, dan hapus fasilitas sekolah"
+          icon={Building2}
+        >
+          <AdminLoadingSpinner message="Memuat data fasilitas..." />
+        </AdminCard>
       </div>
     )
   }

@@ -7,6 +7,8 @@ import AdminInput from './AdminInput';
 import AdminTextarea from './AdminTextarea';
 import AdminButton from './AdminButton';
 import AdminAlert from './AdminAlert';
+import AdminLoadingSpinner from '../../components/AdminLoadingSpinner';
+import AdminSkeletonLoader from '../../components/AdminSkeletonLoader';
 
 export default function AdminProfil() {
   const [siteName, setSiteName] = useState('');
@@ -113,13 +115,27 @@ export default function AdminProfil() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="bg-white rounded-2xl shadow border border-gray-100 p-6">
-          <div className="animate-pulse">
-            <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="h-10 bg-gray-200 rounded mb-4"></div>
-            <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-          </div>
-        </div>
+        <AdminCard
+          title="Informasi Dasar"
+          description="Kelola nama sekolah, deskripsi, dan informasi umum"
+          icon={School}
+        >
+          <AdminSkeletonLoader lines={4} />
+        </AdminCard>
+        <AdminCard
+          title="Statistik Sekolah"
+          description="Kelola jumlah siswa, guru, dan staff"
+          icon={Users}
+        >
+          <AdminSkeletonLoader lines={3} />
+        </AdminCard>
+        <AdminCard
+          title="Kontak & Lokasi"
+          description="Kelola informasi kontak dan alamat sekolah"
+          icon={MapPin}
+        >
+          <AdminSkeletonLoader lines={3} />
+        </AdminCard>
       </div>
     );
   }
