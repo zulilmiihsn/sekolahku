@@ -2,13 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { BookOpen, Save, Target, Heart, Users } from 'lucide-react'
-import AdminCard from './AdminCard'
-import AdminFormField from './AdminFormField'
-import AdminInput from './AdminInput'
-import AdminTextarea from './AdminTextarea'
-import AdminButton from './AdminButton'
-import AdminAlert from './AdminAlert'
-import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner'
+import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm'
+import { AdminAlert } from './komponenUI'
+import { LoadingSpinner } from '@/components/loadingSpinner'
 
 interface TentangData {
   sejarah: string
@@ -114,7 +110,7 @@ export default function AdminTentang() {
           description="Edit informasi sejarah, visi, misi, dan nilai-nilai sekolah"
           icon={BookOpen}
         >
-          <AdminLoadingSpinner message="Memuat data tentang sekolah..." />
+          <LoadingSpinner message="Memuat data tentang sekolah..." />
         </AdminCard>
       </div>
     )

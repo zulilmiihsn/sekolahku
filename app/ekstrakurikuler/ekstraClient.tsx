@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import SectionReveal from '../../components/sectionReveal'
+import AnimasiSection from '../../components/animasiSection'
 
 interface EkstraItem {
   id: number
@@ -52,7 +52,7 @@ export default function EkstraClient({ ekstrakurikuler }: EkstraClientProps) {
       {/* Grid Ekstrakurikuler */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredEkstrakurikuler.map((item, index) => (
-          <SectionReveal key={item.id} delay={index * 0.1}>
+          <AnimasiSection key={item.id} delay={index * 0.1}>
             <motion.div
               whileHover={{ y: -5 }}
               className="bg-white/80 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
@@ -96,7 +96,7 @@ export default function EkstraClient({ ekstrakurikuler }: EkstraClientProps) {
                 </button>
               </div>
             </motion.div>
-          </SectionReveal>
+          </AnimasiSection>
         ))}
       </div>
 

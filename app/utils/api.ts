@@ -58,11 +58,19 @@ export async function getSiteName(): Promise<string> {
 // Fungsi untuk client-side fetch nama sekolah
 export async function clientFetchSiteName(): Promise<string> {
   try {
+    // Skip fetch saat build time untuk menghindari ECONNREFUSED
+    if (typeof window === 'undefined') {
+      return 'Sekolah Modern';
+    }
+    
     const response = await fetch('/api/pengaturan/nama-situs');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data = await response.json();
     return data.site_name || 'Sekolah Modern';
   } catch (error) {
-    console.error('Error fetching site name:', error);
+    // Tidak log error untuk menghindari spam di console
     return 'Sekolah Modern';
   }
 }

@@ -1,64 +1,42 @@
 "use client"
 
-import PageTemplate, { PageSection, PageCard, PageGrid, EmptyState } from '../../components/PageTemplate'
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { User, Users, GraduationCap, Briefcase } from 'lucide-react'
+import PageWrapper from '../../components/pageWrapper'
+import AnimasiSection from '../../components/animasiSection'
 
-async function getGuru() {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/profil-sekolah`, { cache: 'no-store' })
-    const data = await res.json()
-    const g = data.find((item: any) => item.section === 'guru')
-    if (g && g.konten) {
-      try {
-        return JSON.parse(g.konten)
-      } catch {}
-    }
-    return null
-  } catch {
-    return null
-  }
-}
-
-async function getKategoriGuru() {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/pengaturan/kategori-guru`, { cache: 'no-store' })
-    return await res.json()
-  } catch {
-    return []
-  }
+interface GuruItem {
+  id: number
+  nama: string
+  jabatan: string
+  foto?: string
+  kategori: 'guru' | 'staff'
 }
 
 export default function GuruStaff() {
-  const [dataGuru, setDataGuru] = useState<any>({})
-  const [kategoriGuru, setKategoriGuru] = useState<any[]>([])
+  const [guru, setGuru] = useState<GuruItem[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchGuru = async () => {
       try {
-        const [guruData, kategoriData] = await Promise.all([
-          getGuru(),
-          getKategoriGuru()
-        ])
-        setDataGuru(guruData || {})
-        setKategoriGuru(kategoriData || [])
+        const res = await fetch('/api/guru')
+        if (res.ok) {
+          const data = await res.json()
+          setGuru(Array.isArray(data) ? data : [])
+        }
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching guru:', error)
       } finally {
         setLoading(false)
       }
     }
-    fetchData()
+    fetchGuru()
   }, [])
 
-  const filterValid = (arr: any[]) => (arr || []).filter(item => item.nama?.trim() || item.jabatan?.trim())
-
-  const getIconForCategory = (key: string) => {
-    switch (key.toLowerCase()) {
+  const getIconForCategory = (kategori: string) => {
+    switch (kategori) {
       case 'guru':
         return <GraduationCap className="w-6 h-6" />
       case 'staff':
@@ -68,30 +46,63 @@ export default function GuruStaff() {
     }
   }
 
+  const getKategoriLabel = (kategori: string) => {
+    switch (kategori) {
+      case 'guru':
+        return 'Guru'
+      case 'staff':
+        return 'Staff'
+      default:
+        return 'Lainnya'
+    }
+  }
+
+  // Group guru by kategori
+  const groupedGuru = guru.reduce((acc, item) => {
+    if (!acc[item.kategori]) {
+      acc[item.kategori] = []
+    }
+    acc[item.kategori].push(item)
+    return acc
+  }, {} as Record<string, GuruItem[]>)
+
   if (loading) {
     return (
-      <PageTemplate title="Guru & Staff">
-        <div className="text-center py-16">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-text/60">Memuat data guru dan staff...</p>
-        </div>
-      </PageTemplate>
+      <PageWrapper>
+        <main className="pt-16">
+          <div className="container mx-auto px-4 py-16">
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-text/60">Memuat data guru dan staff...</p>
+            </div>
+          </div>
+        </main>
+      </PageWrapper>
     )
   }
 
   return (
-    <PageTemplate title="Guru & Staff" maxWidth="6xl">
-      <div className="space-y-16">
-        {kategoriGuru.map((kat: any) => (
-          <GuruSection 
-            key={kat.key} 
-            title={kat.label} 
-            data={filterValid(dataGuru[kat.key] || [])}
-            icon={getIconForCategory(kat.key)}
-          />
-        ))}
-      </div>
-    </PageTemplate>
+    <PageWrapper>
+      <main className="pt-16">
+        <div className="container mx-auto px-4 py-16 max-w-6xl">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl font-bold text-primary mb-4">Guru & Staff</h1>
+            <p className="text-text/70 text-lg">Kenali tim pengajar dan staff sekolah kami</p>
+          </div>
+          
+          <div className="space-y-16">
+            {Object.entries(groupedGuru).map(([kategori, data]) => (
+              <GuruSection 
+                key={kategori} 
+                title={getKategoriLabel(kategori)} 
+                data={data}
+                icon={getIconForCategory(kategori)}
+              />
+            ))}
+          </div>
+        </div>
+      </main>
+    </PageWrapper>
   )
 }
 
@@ -101,56 +112,66 @@ function GuruSection({
   icon 
 }: { 
   title: string
-  data: { nama: string, jabatan: string, foto?: string }[]
+  data: GuruItem[]
   icon: React.ReactNode
 }) {
   return (
-    <PageSection title={title}>
-      {data && data.length > 0 ? (
-        <PageGrid cols={3} gap={6}>
-          {data.map((item, i) => (
-            <PageCard key={i} className="text-center group">
-              <div className="relative mb-6">
-                {item.foto ? (
-                  <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Image 
-                      src={item.foto} 
-                      alt={item.nama} 
-                      width={96} 
-                      height={96} 
-                      className="w-full h-full object-cover" 
-                    />
-                  </div>
-                ) : (
-                  <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-                      <User className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                )}
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
-                  {icon}
-                </div>
-              </div>
-              <h3 className="font-bold text-lg text-primary mb-2 group-hover:text-accent transition-colors">
-                {item.nama}
-              </h3>
-              <p className="text-text/70 text-sm leading-relaxed">
-                {item.jabatan}
-              </p>
-            </PageCard>
-          ))}
-        </PageGrid>
-      ) : (
-        <EmptyState 
-          message={`Belum ada data ${title.toLowerCase()}.`}
-          icon={
-            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto">
+    <AnimasiSection>
+      <section className="mb-16">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center text-white">
               {icon}
             </div>
-          }
-        />
-      )}
-    </PageSection>
+            <h2 className="text-3xl font-bold text-primary">{title}</h2>
+          </div>
+          <p className="text-text/60">Total {data.length} {title.toLowerCase()}</p>
+        </div>
+        
+        {data && data.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.map((item, i) => (
+              <div key={i} className="bg-white/70 backdrop-blur-md rounded-2xl p-6 text-center group hover:shadow-xl transition-all duration-300 hover:scale-105 border border-white/40">
+                <div className="relative mb-6">
+                  {item.foto ? (
+                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Image 
+                        src={item.foto} 
+                        alt={item.nama} 
+                        width={96} 
+                        height={96} 
+                        className="w-full h-full object-cover" 
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
+                        <User className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                  )}
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
+                    {icon}
+                  </div>
+                </div>
+                <h3 className="font-bold text-lg text-primary mb-2 group-hover:text-accent transition-colors">
+                  {item.nama}
+                </h3>
+                <p className="text-text/70 text-sm leading-relaxed">
+                  {item.jabatan}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              {icon}
+            </div>
+            <p className="text-text/60">Belum ada data {title.toLowerCase()}.</p>
+          </div>
+        )}
+      </section>
+    </AnimasiSection>
   )
-} 
+}

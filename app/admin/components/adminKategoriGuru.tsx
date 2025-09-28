@@ -2,13 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { Settings, Plus, Edit, Trash2, Users } from 'lucide-react'
-import AdminCard from './AdminCard'
-import AdminFormField from './AdminFormField'
-import AdminInput from './AdminInput'
-import AdminButton from './AdminButton'
-import AdminModal from './AdminModal'
-import AdminAlert from './AdminAlert'
-import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner'
+import { AdminCard, AdminFormField, AdminInput, AdminButton } from './komponenForm'
+import { AdminModal, AdminAlert } from './komponenUI'
+import { LoadingSpinner } from '@/components/loadingSpinner'
 
 interface KategoriGuru {
   id: number
@@ -177,7 +173,7 @@ export default function AdminKategoriGuru() {
           description="Tambah, edit, dan hapus kategori guru dan staff"
           icon={Settings}
         >
-          <AdminLoadingSpinner message="Memuat data kategori..." />
+          <LoadingSpinner message="Memuat data kategori..." />
         </AdminCard>
       </div>
     )

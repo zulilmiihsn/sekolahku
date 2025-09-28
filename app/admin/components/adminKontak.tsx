@@ -2,13 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { MapPin, Save, Phone, Mail, Clock, Globe } from 'lucide-react'
-import AdminCard from './AdminCard'
-import AdminFormField from './AdminFormField'
-import AdminInput from './AdminInput'
-import AdminTextarea from './AdminTextarea'
-import AdminButton from './AdminButton'
-import AdminAlert from './AdminAlert'
-import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner'
+import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm'
+import { AdminAlert } from './komponenUI'
+import { LoadingSpinner } from '@/components/loadingSpinner'
 
 interface KontakData {
   alamat: string
@@ -180,7 +176,7 @@ export default function AdminKontak() {
           description="Edit informasi kontak dan lokasi sekolah"
           icon={MapPin}
         >
-          <AdminLoadingSpinner message="Memuat data kontak dan lokasi..." />
+          <LoadingSpinner message="Memuat data kontak dan lokasi..." />
         </AdminCard>
       </div>
     )

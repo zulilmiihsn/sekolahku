@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import PageEnter from '../../components/masukHalaman'
+import AnimasiHalaman from '../../components/animasiHalaman'
 
 const faq = [
   { q: 'Bagaimana cara mendaftar?', a: 'Silakan kunjungi halaman Pendaftaran dan isi formulir yang tersedia.' },
@@ -9,7 +9,7 @@ const faq = [
 
 export default function FAQ() {
   return (
-    <PageEnter>
+    <AnimasiHalaman>
       <main className="max-w-2xl mx-auto py-24 px-4 min-h-screen flex flex-col justify-center">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">FAQ</h1>
         <div className="space-y-6">
@@ -21,6 +21,6 @@ export default function FAQ() {
           ))}
         </div>
       </main>
-    </PageEnter>
+    </AnimasiHalaman>
   )
 } 

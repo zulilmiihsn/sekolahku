@@ -90,7 +90,7 @@ export async function GET() {
       .from('ProfilSekolah')
       .select('*')
       .order('id', { ascending: true })
-
+    
     if (error || !data || data.length === 0) {
       // Jika tidak ada data, return data default
       return NextResponse.json(defaultData)
@@ -101,4 +101,4 @@ export async function GET() {
     console.error('Error fetching profil sekolah:', error)
     return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 })
   }
-}
+} 

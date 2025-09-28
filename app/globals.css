@@ -7,6 +7,10 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  /* Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -16,6 +20,31 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  /* Prevent horizontal scroll */
+  overflow-x: hidden;
+}
+
+/* Focus styles for better accessibility */
+*:focus {
+  outline: 2px solid theme('colors.primary');
+  outline-offset: 2px;
+}
+
+/* Skip to content link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: theme('colors.primary');
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
 }
 
 /* Animasi Aurora */
@@ -39,11 +68,144 @@ body {
 /* Micro-interaction untuk tombol dan link */
 a, button, .btn {
   transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+  /* Ensure minimum touch target size */
+  min-height: 44px;
+  min-width: 44px;
 }
-a:hover, button:hover, .btn:hover {
-  transform: scale(1.04);
-  box-shadow: 0 4px 24px 0 rgb(0 90 156 / 8%);
+
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) {
+  a:hover, button:hover, .btn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 24px 0 rgb(0 90 156 / 8%);
+  }
 }
+
 a:active, button:active, .btn:active {
   transform: scale(0.97);
+}
+
+/* Improved focus styles */
+a:focus-visible, button:focus-visible, .btn:focus-visible {
+  outline: 2px solid theme('colors.primary');
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1025px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-white\/70 {
+    background-color: white;
+  }
+  
+  .text-text\/70 {
+    color: theme('colors.text');
+  }
+  
+  .border-primary\/30 {
+    border-color: theme('colors.primary');
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-aurora, .animate-aurora2 {
+    animation: none;
+  }
+}
+
+/* Dark mode support (if needed in future) */
+@media (prefers-color-scheme: dark) {
+  /* Add dark mode styles here if needed */
+}
+
+/* Minimalis Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a, a:visited {
+    text-decoration: underline;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  
+  .no-print {
+    display: none !important;
+  }
 } 

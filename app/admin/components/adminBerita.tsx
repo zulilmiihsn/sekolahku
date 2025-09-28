@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { Trash2, Edit, Plus } from 'lucide-react'
+import { Plus, Edit, Trash2, Save, X, Image as ImageIcon } from 'lucide-react'
+import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm'
+import { AdminAlert, AdminModal } from './komponenUI'
 
 interface Berita {
   id: number
@@ -21,13 +22,16 @@ interface AdminBeritaProps {
 export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
   const [berita, setBerita] = useState<Berita[]>([])
   const [loading, setLoading] = useState(true)
-  const [formBerita, setFormBerita] = useState({ judul: "", deskripsi: "", gambar: "", konten: "" })
-  const [kontenBerita, setKontenBerita] = useState("")
-  const [editIdBerita, setEditIdBerita] = useState<number | null>(null)
-  const [notifBerita, setNotifBerita] = useState("")
-  const [showModalBerita, setShowModalBerita] = useState(false)
-  const [showConfirmBerita, setShowConfirmBerita] = useState<{ id: number, judul: string } | null>(null)
-  const [deleteLoadingBerita, setDeleteLoadingBerita] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [message, setMessage] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [editingBerita, setEditingBerita] = useState<Berita | null>(null)
+  const [formData, setFormData] = useState({
+    judul: '',
+    deskripsi: '',
+    gambar: '',
+    konten: ''
+  })
 
   useEffect(() => {
     fetchBerita()
@@ -39,260 +43,248 @@ export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
       if (res.ok) {
         const data = await res.json()
         setBerita(Array.isArray(data) ? data : [])
-      } else {
-        setBerita([])
       }
     } catch (error) {
       console.error('Error fetching berita:', error)
-      setBerita([])
     } finally {
       setLoading(false)
     }
   }
 
-  const handleSaveBerita = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setNotifBerita("")
-    
-    if (!formBerita.judul || !formBerita.deskripsi || !kontenBerita) {
-      setNotifBerita("Judul, deskripsi, dan konten wajib diisi!")
+  const handleSave = async () => {
+    if (!formData.judul.trim() || !formData.deskripsi.trim() || !formData.konten.trim()) {
+      setMessage('Judul, deskripsi, dan konten wajib diisi!')
       return
     }
+
+    setSaving(true)
+    setMessage('')
 
     try {
       const res = await fetch('/api/berita', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formBerita,
-          konten: kontenBerita,
-          id: editIdBerita
+          ...formData,
+          id: editingBerita?.id
         })
       })
 
       if (res.ok) {
-        setFormBerita({ judul: "", deskripsi: "", gambar: "", konten: "" })
-        setKontenBerita("")
-        setEditIdBerita(null)
-        setShowModalBerita(false)
-        setNotifBerita(editIdBerita ? 'Berita berhasil diupdate!' : 'Berita berhasil ditambahkan!')
+        setMessage(editingBerita ? 'Berita berhasil diupdate!' : 'Berita berhasil ditambahkan!')
+        onNotif(editingBerita ? 'Berita berhasil diupdate!' : 'Berita berhasil ditambahkan!')
         fetchBerita()
-        onNotif(editIdBerita ? 'Berita berhasil diupdate!' : 'Berita berhasil ditambahkan!')
+        handleCloseModal()
       } else {
-        setNotifBerita('Gagal menyimpan berita!')
+        setMessage('Gagal menyimpan berita!')
       }
     } catch (error) {
-      setNotifBerita('Gagal menyimpan berita!')
+      setMessage('Gagal menyimpan berita!')
+    } finally {
+      setSaving(false)
     }
   }
 
-  const handleEditBerita = (item: Berita) => {
-    setFormBerita({
-      judul: item.judul,
-      deskripsi: item.deskripsi,
-      gambar: item.gambar || "",
-      konten: ""
+  const handleEdit = (berita: Berita) => {
+    setEditingBerita(berita)
+    setFormData({
+      judul: berita.judul,
+      deskripsi: berita.deskripsi,
+      gambar: berita.gambar || '',
+      konten: berita.konten
     })
-    setKontenBerita(item.konten)
-    setEditIdBerita(item.id)
-    setShowModalBerita(true)
+    setShowModal(true)
   }
 
-  const handleDeleteBerita = async (id: number) => {
-    setDeleteLoadingBerita(true)
+  const handleDelete = async (id: number) => {
+    if (!confirm('Yakin ingin menghapus berita ini?')) return
+
     try {
       const res = await fetch(`/api/berita/${id}`, { method: 'DELETE' })
       if (res.ok) {
-        setNotifBerita('Berita berhasil dihapus!')
+        setMessage('Berita berhasil dihapus!')
         onNotif('Berita berhasil dihapus!')
         fetchBerita()
-        setShowConfirmBerita(null)
       } else {
-        setNotifBerita('Gagal menghapus berita!')
+        setMessage('Gagal menghapus berita!')
       }
     } catch (error) {
-      setNotifBerita('Gagal menghapus berita!')
-    } finally {
-      setDeleteLoadingBerita(false)
+      setMessage('Gagal menghapus berita!')
     }
   }
 
-  const handleCancelEdit = () => {
-    setFormBerita({ judul: "", deskripsi: "", gambar: "", konten: "" })
-    setKontenBerita("")
-    setEditIdBerita(null)
-    setShowModalBerita(false)
+  const handleCloseModal = () => {
+    setShowModal(false)
+    setEditingBerita(null)
+    setFormData({ judul: '', deskripsi: '', gambar: '', konten: '' })
+    setMessage('')
+  }
+
+  const handleOpenModal = () => {
+    setEditingBerita(null)
+    setFormData({ judul: '', deskripsi: '', gambar: '', konten: '' })
+    setShowModal(true)
   }
 
   if (loading) {
     return (
-      <div className="bg-white rounded-2xl shadow-lg p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-lg font-bold text-primary">Kelola Berita</h2>
-        </div>
-        <div className="flex items-center justify-center py-16">
-          <div className="text-center">
-            <div className="w-8 h-8 border-3 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat data berita...</p>
+      <div className="space-y-6">
+        <AdminCard title="Kelola Berita" description="Tambah, edit, dan hapus berita sekolah" icon={Plus}>
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-2 text-gray-500">Memuat data berita...</p>
           </div>
-        </div>
+        </AdminCard>
       </div>
     )
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-primary">Kelola Berita</h2>
-        <button
-          onClick={() => setShowModalBerita(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors"
+    <div className="space-y-6">
+      {message && (
+        <AdminAlert 
+          type={message.includes('berhasil') ? 'success' : 'error'}
+          onClose={() => setMessage('')}
         >
-          <Plus className="w-4 h-4" />
-          Tambah Berita
-        </button>
-      </div>
-
-      {notifBerita && (
-        <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
-          {notifBerita}
-        </div>
+          {message}
+        </AdminAlert>
       )}
 
+      {/* Header */}
+      <AdminCard title="Kelola Berita" description="Tambah, edit, dan hapus berita sekolah" icon={Plus}>
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">Daftar Berita</h3>
+            <p className="text-sm text-gray-500">Total {berita.length} berita</p>
+          </div>
+          <AdminButton onClick={handleOpenModal} icon={Plus}>
+            Tambah Berita
+          </AdminButton>
+        </div>
+      </AdminCard>
+
+      {/* Daftar Berita */}
       <div className="space-y-4">
-        {Array.isArray(berita) && berita.map((item) => (
-          <div key={item.id} className="border border-gray-200 rounded-lg p-4">
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg text-primary mb-2">{item.judul}</h3>
-                <p className="text-gray-600 mb-2">{item.deskripsi}</p>
-                <p className="text-sm text-gray-500">
-                  {new Date(item.tanggal).toLocaleDateString('id-ID')}
-                </p>
-              </div>
-              <div className="flex gap-2 ml-4">
-                <button
-                  onClick={() => handleEditBerita(item)}
-                  className="p-2 text-blue-600 hover:bg-blue-50 rounded"
-                >
-                  <Edit className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setShowConfirmBerita({ id: item.id, judul: item.judul })}
-                  className="p-2 text-red-600 hover:bg-red-50 rounded"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
+        {berita.length === 0 ? (
+          <AdminCard>
+            <div className="text-center py-8">
+              <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Belum ada berita</h3>
+              <p className="text-gray-500 mb-4">Mulai dengan menambahkan berita pertama Anda</p>
+              <AdminButton onClick={handleOpenModal} icon={Plus}>
+                Tambah Berita Pertama
+              </AdminButton>
             </div>
-            {item.gambar && (
-              <div className="mt-3">
-                <Image
-                  src={item.gambar}
-                  alt={item.judul}
-                  width={200}
-                  height={120}
-                  className="rounded-lg object-cover"
-                />
+          </AdminCard>
+        ) : (
+          berita.map((item) => (
+            <AdminCard key={item.id}>
+              <div className="flex items-start gap-4">
+                {item.gambar && (
+                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                    <img
+                      src={item.gambar}
+                      alt={item.judul}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                    {item.judul}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                    {item.deskripsi}
+                  </p>
+                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <span>{new Date(item.tanggal).toLocaleDateString('id-ID')}</span>
+                    <span>{item.konten.length} karakter</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <AdminButton
+                    onClick={() => handleEdit(item)}
+                    size="sm"
+                    variant="outline"
+                    icon={Edit}
+                  >
+                    Edit
+                  </AdminButton>
+                  <AdminButton
+                    onClick={() => handleDelete(item.id)}
+                    size="sm"
+                    variant="danger"
+                    icon={Trash2}
+                  >
+                    Hapus
+                  </AdminButton>
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+            </AdminCard>
+          ))
+        )}
       </div>
 
-      {/* Modal Form Berita */}
-      {showModalBerita && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-bold text-primary mb-4">
-              {editIdBerita ? 'Edit Berita' : 'Tambah Berita Baru'}
-            </h3>
-            <form onSubmit={handleSaveBerita} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Judul</label>
-                <input
-                  type="text"
-                  value={formBerita.judul}
-                  onChange={(e) => setFormBerita({ ...formBerita, judul: e.target.value })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                <textarea
-                  value={formBerita.deskripsi}
-                  onChange={(e) => setFormBerita({ ...formBerita, deskripsi: e.target.value })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  rows={3}
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Gambar URL (opsional)</label>
-                <input
-                  type="url"
-                  value={formBerita.gambar}
-                  onChange={(e) => setFormBerita({ ...formBerita, gambar: e.target.value })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Konten</label>
-                <textarea
-                  value={kontenBerita}
-                  onChange={(e) => setKontenBerita(e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  rows={10}
-                  required
-                />
-              </div>
-              <div className="flex gap-3 justify-end">
-                <button
-                  type="button"
-                  onClick={handleCancelEdit}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors"
-                >
-                  {editIdBerita ? 'Update' : 'Simpan'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Modal Form */}
+      <AdminModal
+        isOpen={showModal}
+        onClose={handleCloseModal}
+        title={editingBerita ? 'Edit Berita' : 'Tambah Berita Baru'}
+      >
+        <div className="space-y-6">
+          <AdminFormField label="Judul Berita" required>
+            <AdminInput
+              value={formData.judul}
+              onChange={(val) => setFormData(prev => ({ ...prev, judul: val }))}
+              placeholder="Masukkan judul berita"
+            />
+          </AdminFormField>
 
-      {/* Modal Konfirmasi Hapus */}
-      {showConfirmBerita && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-bold text-primary mb-4">Hapus Berita?</h3>
-            <p className="text-gray-600 mb-6">
-              Yakin ingin menghapus berita <strong>&quot;{showConfirmBerita.judul}&quot;</strong>?
-            </p>
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={() => setShowConfirmBerita(null)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Batal
-              </button>
-              <button
-                onClick={() => handleDeleteBerita(showConfirmBerita.id)}
-                disabled={deleteLoadingBerita}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50"
-              >
-                {deleteLoadingBerita ? 'Menghapus...' : 'Hapus'}
-              </button>
-            </div>
+          <AdminFormField label="Deskripsi Singkat" required>
+            <AdminTextarea
+              value={formData.deskripsi}
+              onChange={(val) => setFormData(prev => ({ ...prev, deskripsi: val }))}
+              placeholder="Deskripsi singkat berita"
+              rows={3}
+            />
+          </AdminFormField>
+
+          <AdminFormField label="URL Gambar">
+            <AdminInput
+              value={formData.gambar}
+              onChange={(val) => setFormData(prev => ({ ...prev, gambar: val }))}
+              placeholder="https://example.com/gambar.jpg"
+            />
+          </AdminFormField>
+
+          <AdminFormField label="Konten Berita" required>
+            <AdminTextarea
+              value={formData.konten}
+              onChange={(val) => setFormData(prev => ({ ...prev, konten: val }))}
+              placeholder="Tulis konten berita lengkap di sini..."
+              rows={8}
+            />
+          </AdminFormField>
+
+          <div className="flex justify-end gap-3">
+            <AdminButton
+              onClick={handleCloseModal}
+              variant="secondary"
+              icon={X}
+            >
+              Batal
+            </AdminButton>
+            <AdminButton
+              onClick={handleSave}
+              disabled={saving}
+              loading={saving}
+              icon={Save}
+            >
+              {editingBerita ? 'Update Berita' : 'Simpan Berita'}
+            </AdminButton>
           </div>
         </div>
-      )}
+      </AdminModal>
     </div>
   )
 }

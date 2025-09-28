@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, supabaseAdmin } from '@/app/utils/supabaseClient';
+import { supabase } from '@/app/utils/supabaseClient';
 
 export async function GET() {
   try {
@@ -29,7 +29,7 @@ export async function PUT(req: NextRequest) {
     if (typeof jumlah_staff !== 'number' || isNaN(jumlah_staff)) {
       return NextResponse.json({ error: 'Jumlah staff wajib diisi' }, { status: 400 });
     }
-    const { error } = await supabaseAdmin
+    const { error } = await supabase
       .from('Setting')
       .upsert([{ key: 'jumlah_staff', value: jumlah_staff.toString() }]);
     if (error) {

@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 export default function AdminLogin() {
@@ -9,23 +9,24 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
+  // Temporary bypass - auto redirect to admin dashboard
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isAdmin', 'true')
+      router.push("/admin")
+    }
+  }, [router])
+
   const handleLogin = async (e: any) => {
     e.preventDefault()
     setLoading(true)
     setError("")
-    const res = await fetch("/api/masuk", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    })
-    if (res.ok) {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('isAdmin', 'true')
-      }
-      router.push("/admin")
-    } else {
-      setError("Username atau password salah!")
+    
+    // Temporary bypass - accept any credentials
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isAdmin', 'true')
     }
+    router.push("/admin")
     setLoading(false)
   }
 

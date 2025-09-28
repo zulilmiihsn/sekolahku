@@ -2,15 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { Award, Plus, Edit, Trash2, Trophy, Medal, Star, Calendar } from 'lucide-react'
-import AdminCard from './AdminCard'
-import AdminFormField from './AdminFormField'
-import AdminInput from './AdminInput'
-import AdminTextarea from './AdminTextarea'
-import AdminSelect from './AdminSelect'
-import AdminButton from './AdminButton'
-import AdminModal from './AdminModal'
-import AdminAlert from './AdminAlert'
-import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner'
+import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminSelect, AdminButton } from './komponenForm'
+import { AdminModal, AdminAlert } from './komponenUI'
+import { LoadingSpinner } from '@/components/loadingSpinner'
 
 interface Prestasi {
   id: number
@@ -76,42 +70,16 @@ export default function AdminPrestasi() {
 
   const fetchPrestasi = async () => {
     try {
-      // Simulasi data untuk demo
-      const mockData: Prestasi[] = [
-        {
-          id: 1,
-          judul: 'Juara 1 Lomba Matematika Tingkat Provinsi',
-          deskripsi: 'Siswa berhasil meraih juara 1 dalam lomba matematika tingkat provinsi Jawa Barat',
-          kategori: 'akademik',
-          tingkat: 'provinsi',
-          tahun: '2024',
-          pencapaian: 'juara_1',
-          foto: ''
-        },
-        {
-          id: 2,
-          judul: 'Juara 2 Futsal Antar Sekolah',
-          deskripsi: 'Tim futsal sekolah berhasil meraih juara 2 dalam turnamen futsal antar sekolah se-kabupaten',
-          kategori: 'olahraga',
-          tingkat: 'kabupaten',
-          tahun: '2024',
-          pencapaian: 'juara_2',
-          foto: ''
-        },
-        {
-          id: 3,
-          judul: 'Finalis Lomba Robotik Nasional',
-          deskripsi: 'Tim robotik sekolah berhasil menjadi finalis dalam lomba robotik tingkat nasional',
-          kategori: 'teknologi',
-          tingkat: 'nasional',
-          tahun: '2023',
-          pencapaian: 'finalis',
-          foto: ''
-        }
-      ]
-      setPrestasi(mockData)
+      const res = await fetch('/api/prestasi')
+      if (res.ok) {
+        const data = await res.json()
+        setPrestasi(Array.isArray(data) ? data : [])
+      } else {
+        setPrestasi([])
+      }
     } catch (error) {
       console.error('Error fetching prestasi:', error)
+      setPrestasi([])
     } finally {
       setLoading(false)
     }
@@ -127,31 +95,29 @@ export default function AdminPrestasi() {
     }
 
     try {
-      // Simulasi save
-      const newPrestasi: Prestasi = {
-        id: editId || Date.now(),
-        ...formPrestasi
-      }
-
-      if (editId) {
-        setPrestasi(prev => prev.map(p => p.id === editId ? newPrestasi : p))
-        setNotif('Prestasi berhasil diupdate!')
-      } else {
-        setPrestasi(prev => [...prev, newPrestasi])
-        setNotif('Prestasi berhasil ditambahkan!')
-      }
-
-      setFormPrestasi({
-        judul: '',
-        deskripsi: '',
-        kategori: '',
-        tingkat: '',
-        tahun: new Date().getFullYear().toString(),
-        pencapaian: '',
-        foto: ''
+      const res = await fetch('/api/prestasi', {
+        method: editId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editId ? { id: editId, ...formPrestasi } : formPrestasi)
       })
-      setEditId(null)
-      setShowModal(false)
+
+      if (res.ok) {
+        setNotif(editId ? 'Prestasi berhasil diupdate!' : 'Prestasi berhasil ditambahkan!')
+        fetchPrestasi()
+        setFormPrestasi({
+          judul: '',
+          deskripsi: '',
+          kategori: '',
+          tingkat: '',
+          tahun: new Date().getFullYear().toString(),
+          pencapaian: '',
+          foto: ''
+        })
+        setEditId(null)
+        setShowModal(false)
+      } else {
+        setNotif('Gagal menyimpan prestasi!')
+      }
     } catch (error) {
       setNotif('Gagal menyimpan prestasi!')
     }
@@ -174,9 +140,14 @@ export default function AdminPrestasi() {
   const handleDelete = async (id: number) => {
     setDeleteLoading(true)
     try {
-      setPrestasi(prev => prev.filter(p => p.id !== id))
-      setNotif('Prestasi berhasil dihapus!')
-      setShowConfirm(null)
+      const res = await fetch(`/api/prestasi?id=${id}`, { method: 'DELETE' })
+      if (res.ok) {
+        setNotif('Prestasi berhasil dihapus!')
+        fetchPrestasi()
+        setShowConfirm(null)
+      } else {
+        setNotif('Gagal menghapus prestasi!')
+      }
     } catch (error) {
       setNotif('Gagal menghapus prestasi!')
     } finally {
@@ -232,7 +203,7 @@ export default function AdminPrestasi() {
           description="Tambah, edit, dan hapus prestasi sekolah"
           icon={Award}
         >
-          <AdminLoadingSpinner message="Memuat data prestasi..." />
+          <LoadingSpinner message="Memuat data prestasi..." />
         </AdminCard>
       </div>
     )

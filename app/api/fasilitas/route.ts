@@ -1,84 +1,110 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/app/utils/supabaseClient'
-const revalidate = 120
+import { logError } from '@/app/utils/logger'
 
-// GET: List fasilitas dengan pagination dan filtering
-export async function GET(req: NextRequest) {
+// GET: Ambil semua fasilitas
+export async function GET() {
+  try {
+    const { data, error } = await supabase
+      .from('Fasilitas')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      if (!error.message.includes('Could not find the table')) {
+        logError('Fasilitas GET error', error.message, 'API')
+      }
+      return NextResponse.json([])
+    }
+
+    return NextResponse.json(data || [])
+  } catch (e: unknown) {
+    const error = e instanceof Error ? e : new Error('Unknown error')
+    logError('Fasilitas GET exception', error.message, 'API')
+    return NextResponse.json([])
+  }
+}
+
+// POST: Tambah fasilitas baru
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json()
+    const { nama, deskripsi, kategori, kapasitas, status, foto } = body
+
+    const { data, error } = await supabase
+      .from('Fasilitas')
+      .insert([{
+        nama,
+        deskripsi,
+        kategori,
+        kapasitas: kapasitas || 0,
+        status: status || 'tersedia',
+        foto: foto || ''
+      }])
+      .select()
+
+    if (error) {
+      logError('Fasilitas POST error', error.message, 'API')
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    return NextResponse.json(data?.[0] || {})
+  } catch (e: unknown) {
+    const error = e instanceof Error ? e : new Error('Unknown error')
+    logError('Fasilitas POST exception', error.message, 'API')
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+// PUT: Update fasilitas
+export async function PUT(req: NextRequest) {
+  try {
+    const body = await req.json()
+    const { id, ...updateData } = body
+
+    const { data, error } = await supabase
+      .from('Fasilitas')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+
+    if (error) {
+      logError('Fasilitas PUT error', error.message, 'API')
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    return NextResponse.json(data?.[0] || {})
+  } catch (e: unknown) {
+    const error = e instanceof Error ? e : new Error('Unknown error')
+    logError('Fasilitas PUT exception', error.message, 'API')
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+// DELETE: Hapus fasilitas
+export async function DELETE(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const category = searchParams.get('category')
-    const search = searchParams.get('search')
-    const offset = (page - 1) * limit
+    const id = searchParams.get('id')
 
-    let query = supabase
+    if (!id) {
+      return NextResponse.json({ error: 'ID fasilitas wajib diisi' }, { status: 400 })
+    }
+
+    const { error } = await supabase
       .from('Fasilitas')
-      .select('id, nama, deskripsi, foto, kategori', { count: 'exact' })
-      .eq('status', 'active')
-      .order('id', { ascending: true })
-      .range(offset, offset + limit - 1)
+      .delete()
+      .eq('id', id)
 
-    if (category) {
-      query = query.eq('kategori', category)
-    }
-
-    if (search) {
-      query = query.textSearch('nama', search, { type: 'websearch' })
-    }
-
-    const { data, error, count } = await query
-    
     if (error) {
-      // Hanya log error jika bukan error tabel tidak ditemukan
-      if (!error.message.includes('Could not find the table')) {
-        console.error('Fasilitas GET error:', error.message);
-      }
-      return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
+      logError('Fasilitas DELETE error', error.message, 'API')
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    const cacheTime = search || category ? 60 : revalidate // Shorter cache for filtered results
-
-    return NextResponse.json({
-      data: data || [],
-      pagination: {
-        page,
-        limit,
-        total: count || 0,
-        totalPages: Math.ceil((count || 0) / limit)
-      }
-    }, { headers: { 'Cache-Control': `public, s-maxage=${cacheTime}, stale-while-revalidate=${cacheTime}` } })
-  } catch (err) {
-    console.error('Fasilitas GET exception:', err);
-    return NextResponse.json([], { headers: { 'Cache-Control': `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}` } });
+    return NextResponse.json({ success: true })
+  } catch (e: unknown) {
+    const error = e instanceof Error ? e : new Error('Unknown error')
+    logError('Fasilitas DELETE exception', error.message, 'API')
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-
-// POST: Tambah atau edit fasilitas
-export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const { id, nama, deskripsi, foto } = body
-  if (!nama) return NextResponse.json({ error: 'Nama wajib diisi' }, { status: 400 })
-  if (!Array.isArray(foto)) return NextResponse.json({ error: 'Foto harus array' }, { status: 400 })
-
-  if (id) {
-    // Update
-    const { error } = await supabase.from('Fasilitas').update({ nama, deskripsi, foto }).eq('id', id)
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ success: true, updated: true })
-  } else {
-    // Insert
-    const { data, error } = await supabase.from('Fasilitas').insert([{ nama, deskripsi, foto }]).select().single()
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ success: true, fasilitas: data })
-  }
-}
-
-// DELETE: Hapus fasilitas berdasarkan id
-export async function DELETE(req: NextRequest) {
-  const { id } = await req.json()
-  if (!id) return NextResponse.json({ error: 'ID wajib' }, { status: 400 })
-  const { error } = await supabase.from('Fasilitas').delete().eq('id', id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ success: true })
-} 

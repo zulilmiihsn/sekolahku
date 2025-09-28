@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { User, Mail, Phone, MapPin, Calendar, GraduationCap, FileText, CheckCircle } from 'lucide-react'
-import MasukHalaman from '../../components/masukHalaman'
+import AnimasiHalaman from '../../components/animasiHalaman'
 
 export default function Pendaftaran() {
   const [formData, setFormData] = useState({
@@ -41,7 +41,7 @@ export default function Pendaftaran() {
 
   if (isSubmitted) {
     return (
-      <MasukHalaman>
+      <AnimasiHalaman>
         <main className="max-w-2xl mx-auto py-24 px-4 min-h-screen flex flex-col justify-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -85,12 +85,12 @@ export default function Pendaftaran() {
             </button>
           </motion.div>
         </main>
-      </MasukHalaman>
+      </AnimasiHalaman>
     )
   }
 
   return (
-    <MasukHalaman>
+    <AnimasiHalaman>
       <main className="max-w-4xl mx-auto py-12 px-4 min-h-screen">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -277,6 +277,6 @@ export default function Pendaftaran() {
           </button>
         </motion.form>
       </main>
-    </MasukHalaman>
+    </AnimasiHalaman>
   )
 } 

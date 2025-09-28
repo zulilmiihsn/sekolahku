@@ -1,200 +1,251 @@
 "use client"
 
-import PageTemplate, { PageCard, PageGrid, EmptyState } from '../../components/PageTemplate'
 import { useEffect, useState, useRef } from 'react'
-import NoPhotoPlaceholder from '../../components/penggantiTanpaFoto'
-import { X, ChevronLeft, ChevronRight, Trophy, Award } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, Trophy, Award, Calendar } from 'lucide-react'
 import Image from 'next/image'
-import useSWR from 'swr'
+import AnimasiHalaman from '../../components/animasiHalaman'
+import AnimasiSection from '../../components/animasiSection'
 
-const fetcher = (url: string) => fetch(url).then(res => res.json())
-
-export default function Prestasi() {
-  const { data: prestasi = [], error, isLoading } = useSWR('/api/prestasi', fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    refreshInterval: 0,
-    dedupingInterval: 60000,
-  })
-  const [galeriOpen, setGaleriOpen] = useState(false)
-  const [galeriFoto, setGaleriFoto] = useState<string[]>([])
-  const [galeriIdx, setGaleriIdx] = useState(0)
-
-  function openGaleri(foto: string[], idx: number) {
-    setGaleriFoto(foto)
-    setGaleriIdx(idx)
-    setGaleriOpen(true)
-  }
-  function closeGaleri() {
-    setGaleriOpen(false)
-    setGaleriFoto([])
-    setGaleriIdx(0)
-  }
-
-  if (isLoading) {
-    return (
-      <PageTemplate title="Prestasi">
-        <div className="text-center py-16">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-text/60">Memuat data prestasi...</p>
-        </div>
-      </PageTemplate>
-    )
-  }
-
-  if (error) {
-    return (
-      <PageTemplate title="Prestasi">
-        <EmptyState 
-          message="Gagal memuat data prestasi"
-          icon={
-            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto">
-              <X className="w-8 h-8 text-red-500" />
-            </div>
-          }
-        />
-      </PageTemplate>
-    )
-  }
-
-  return (
-    <PageTemplate title="Prestasi" maxWidth="6xl">
-      {prestasi.length > 0 ? (
-        <PageGrid cols={2} gap={8}>
-          {prestasi.map((item: { judul: string; peraih: string; tahun: number | string; foto?: string[]; tingkat?: string; kategori?: string; deskripsi?: string }, i: number) => (
-            <PageCard key={i} className="group">
-              <div className="relative mb-4">
-                {Array.isArray(item.foto) && item.foto.length > 0 ? (
-                  <PrestasiSlider foto={item.foto as string[]} onClick={idx => openGaleri(item.foto as string[], idx)} />
-                ) : (
-                  <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center">
-                    <NoPhotoPlaceholder />
-                  </div>
-                )}
-                <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                  <Trophy className="w-5 h-5 text-white" />
-                </div>
-              </div>
-              <div className="space-y-3">
-                <h3 className="font-bold text-xl text-primary group-hover:text-accent transition-colors">
-                  {item.judul}
-                </h3>
-                <div className="flex items-center gap-2 text-text/70">
-                  <Award className="w-4 h-4" />
-                  <span>{item.peraih}</span>
-                </div>
-                {item.tingkat && (
-                  <div className="text-sm text-text/60 bg-accent/10 px-3 py-1 rounded-full inline-block">
-                    {item.tingkat}
-                  </div>
-                )}
-                <div className="text-sm text-text/60 bg-primary/5 px-3 py-1 rounded-full inline-block">
-                  Tahun {item.tahun}
-                </div>
-              </div>
-            </PageCard>
-          ))}
-        </PageGrid>
-      ) : (
-        <EmptyState 
-          message="Belum ada data prestasi."
-          icon={
-            <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto">
-              <Trophy className="w-8 h-8 text-primary" />
-            </div>
-          }
-        />
-      )}
-
-      {/* Modal galeri */}
-      {galeriOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="relative bg-white rounded-2xl shadow-2xl p-4 md:p-8 flex flex-col items-center max-w-2xl w-full">
-            <button className="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors" onClick={closeGaleri}>
-              <X className="w-7 h-7" />
-            </button>
-            <div className="flex items-center gap-4 w-full">
-              <button
-                className="p-2 rounded-full bg-primary/10 hover:bg-accent/10 text-primary disabled:opacity-30 transition-colors"
-                onClick={() => setGaleriIdx(idx => (idx === 0 ? galeriFoto.length - 1 : idx - 1))}
-                disabled={galeriFoto.length <= 1}
-              >
-                <ChevronLeft className="w-7 h-7" />
-              </button>
-              <Image
-                src={galeriFoto[galeriIdx]}
-                alt={`Galeri Prestasi ${galeriIdx+1}`}
-                width={900}
-                height={600}
-                sizes="(max-width: 768px) 90vw, 900px"
-                className="max-h-[60vh] max-w-[60vw] rounded-xl object-contain mx-auto"
-                style={{ boxShadow: '0 4px 32px 0 rgba(0,0,0,0.10)' }}
-              />
-              <button
-                className="p-2 rounded-full bg-primary/10 hover:bg-accent/10 text-primary disabled:opacity-30 transition-colors"
-                onClick={() => setGaleriIdx(idx => (idx === galeriFoto.length - 1 ? 0 : idx + 1))}
-                disabled={galeriFoto.length <= 1}
-              >
-                <ChevronRight className="w-7 h-7" />
-              </button>
-            </div>
-            <div className="mt-4 text-center text-text/70 text-sm">
-              Foto {galeriIdx + 1} dari {galeriFoto.length}
-            </div>
-          </div>
-        </div>
-      )}
-    </PageTemplate>
-  )
+interface PrestasiItem {
+  id: number
+  judul: string
+  deskripsi: string
+  gambar?: string
+  tanggal: string
+  kategori: string
+  tingkat: string
 }
 
-// Komponen slider prestasi
-function PrestasiSlider({ foto, onClick }: { foto: string[], onClick: (idx: number) => void }) {
-  const [activeIdx, setActiveIdx] = useState(0)
-  const scrollRef = useRef<HTMLDivElement>(null)
+export default function Prestasi() {
+  const [prestasi, setPrestasi] = useState<PrestasiItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedPrestasi, setSelectedPrestasi] = useState<PrestasiItem | null>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const scrollToIdx = (idx: number) => {
-    setActiveIdx(idx)
-    const node = scrollRef.current?.children[idx] as HTMLElement
-    node?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+  useEffect(() => {
+    const fetchPrestasi = async () => {
+      try {
+        const res = await fetch('/api/prestasi')
+        if (res.ok) {
+          const data = await res.json()
+          setPrestasi(Array.isArray(data) ? data : [])
+        }
+      } catch (error) {
+        console.error('Error fetching prestasi:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPrestasi()
+  }, [])
+
+  const openModal = (prestasi: PrestasiItem, index: number) => {
+    setSelectedPrestasi(prestasi)
+    setCurrentIndex(index)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setSelectedPrestasi(null)
+  }
+
+  const nextPrestasi = () => {
+    if (selectedPrestasi) {
+      const nextIndex = (currentIndex + 1) % prestasi.length
+      setSelectedPrestasi(prestasi[nextIndex])
+      setCurrentIndex(nextIndex)
+    }
+  }
+
+  const prevPrestasi = () => {
+    if (selectedPrestasi) {
+      const prevIndex = currentIndex === 0 ? prestasi.length - 1 : currentIndex - 1
+      setSelectedPrestasi(prestasi[prevIndex])
+      setCurrentIndex(prevIndex)
+    }
+  }
+
+  const getKategoriIcon = (kategori: string) => {
+    switch (kategori.toLowerCase()) {
+      case 'akademik':
+        return <Trophy className="w-5 h-5" />
+      case 'non-akademik':
+        return <Award className="w-5 h-5" />
+      default:
+        return <Trophy className="w-5 h-5" />
+    }
+  }
+
+  const getTingkatColor = (tingkat: string) => {
+    switch (tingkat.toLowerCase()) {
+      case 'nasional':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'provinsi':
+        return 'bg-blue-100 text-blue-800'
+      case 'kabupaten':
+        return 'bg-green-100 text-green-800'
+      case 'sekolah':
+        return 'bg-gray-100 text-gray-800'
+      default:
+        return 'bg-primary/10 text-primary'
+    }
+  }
+
+  if (loading) {
+    return (
+      <AnimasiHalaman>
+        <main className="pt-16 min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+          <div className="container mx-auto px-4 py-16">
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-text/60">Memuat data prestasi...</p>
+            </div>
+          </div>
+        </main>
+      </AnimasiHalaman>
+    )
   }
 
   return (
-    <div className="relative mb-3">
-      <div
-        ref={scrollRef}
-        className="flex overflow-x-auto gap-2 scroll-snap-x scroll-smooth rounded-lg aspect-video"
-        style={{ scrollSnapType: 'x mandatory' }}
-      >
-        {foto.map((url, i) => (
-          <div
-            key={i}
-            className="flex-shrink-0 w-full aspect-video rounded-lg overflow-hidden bg-gray-100 cursor-pointer scroll-snap-align-center"
-            style={{ scrollSnapAlign: 'center', minWidth: '100%' }}
-            onClick={() => onClick(i)}
-          >
-            <Image src={url} alt={`Foto prestasi ${i+1}`} width={600} height={340} sizes="(max-width: 768px) 100vw, 600px" className="object-cover w-full h-full" />
+    <AnimasiHalaman>
+      <main className="pt-16 min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+        <div className="container mx-auto px-4 py-16 max-w-6xl">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl font-bold text-primary mb-4">Prestasi Sekolah</h1>
+            <p className="text-text/70 text-lg">Pencapaian dan prestasi yang membanggakan</p>
           </div>
-        ))}
-      </div>
-      {foto.length > 1 && (
-        <>
-          <button
-            className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-primary/20 text-primary rounded-full p-1 shadow"
-            onClick={() => scrollToIdx(activeIdx === 0 ? foto.length - 1 : activeIdx - 1)}
-            style={{ zIndex: 2 }}
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-primary/20 text-primary rounded-full p-1 shadow"
-            onClick={() => scrollToIdx(activeIdx === foto.length - 1 ? 0 : activeIdx + 1)}
-            style={{ zIndex: 2 }}
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-        </>
+          
+          {prestasi.length > 0 ? (
+            <AnimasiSection>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {prestasi.map((item, index) => (
+                  <div 
+                    key={item.id}
+                    className="bg-white/70 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-white/40 group cursor-pointer"
+                    onClick={() => openModal(item, index)}
+                  >
+                    <div className="aspect-video relative overflow-hidden">
+                      {item.gambar ? (
+                        <Image
+                          src={item.gambar}
+                          alt={item.judul}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                          <Trophy className="w-12 h-12 text-primary/60" />
+                        </div>
+                      )}
+                      <div className="absolute top-4 right-4">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTingkatColor(item.tingkat)}`}>
+                          {item.tingkat}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        {getKategoriIcon(item.kategori)}
+                        <span className="text-sm text-text/60 capitalize">{item.kategori}</span>
+                      </div>
+                      <h3 className="font-bold text-lg text-primary mb-2 line-clamp-2 group-hover:text-accent transition-colors">
+                        {item.judul}
+                      </h3>
+                      <p className="text-text/70 text-sm line-clamp-3 mb-4">
+                        {item.deskripsi}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-text/50">
+                        <Calendar className="w-4 h-4" />
+                        <span>{new Date(item.tanggal).toLocaleDateString('id-ID')}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </AnimasiSection>
+          ) : (
+            <AnimasiSection>
+              <div className="text-center py-16">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Trophy className="w-8 h-8 text-primary/60" />
+                </div>
+                <h3 className="text-xl font-semibold text-primary mb-2">Belum ada prestasi</h3>
+                <p className="text-text/60">Prestasi akan ditampilkan di sini</p>
+              </div>
+            </AnimasiSection>
+          )}
+        </div>
+      </main>
+
+      {/* Modal */}
+      {isModalOpen && selectedPrestasi && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex">
+              <div className="flex-1 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    {getKategoriIcon(selectedPrestasi.kategori)}
+                    <span className="text-sm text-text/60 capitalize">{selectedPrestasi.kategori}</span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTingkatColor(selectedPrestasi.tingkat)}`}>
+                      {selectedPrestasi.tingkat}
+                    </span>
+                  </div>
+                  <button
+                    onClick={closeModal}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                <h2 className="text-2xl font-bold text-primary mb-4">{selectedPrestasi.judul}</h2>
+                <p className="text-text/70 mb-6">{selectedPrestasi.deskripsi}</p>
+                
+                <div className="flex items-center gap-2 text-sm text-text/50">
+                  <Calendar className="w-4 h-4" />
+                  <span>{new Date(selectedPrestasi.tanggal).toLocaleDateString('id-ID')}</span>
+                </div>
+              </div>
+              
+              {selectedPrestasi.gambar && (
+                <div className="w-80 h-80 relative">
+                  <Image
+                    src={selectedPrestasi.gambar}
+                    alt={selectedPrestasi.judul}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+            </div>
+            
+            {prestasi.length > 1 && (
+              <div className="flex items-center justify-between p-4 border-t">
+                <button
+                  onClick={prevPrestasi}
+                  className="flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Sebelumnya
+                </button>
+                <span className="text-sm text-text/60">
+                  {currentIndex + 1} dari {prestasi.length}
+                </span>
+                <button
+                  onClick={nextPrestasi}
+                  className="flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                >
+                  Selanjutnya
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       )}
-    </div>
+    </AnimasiHalaman>
   )
-} 
+}

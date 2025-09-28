@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react'
-import MasukHalaman from '../../../components/masukHalaman'
+import AnimasiHalaman from '../../../components/animasiHalaman'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Head from 'next/head'
@@ -38,7 +38,7 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
   }, [params.id])
 
   return (
-    <MasukHalaman>
+    <AnimasiHalaman>
       {berita && (
         <Head>
           <title>{berita.judul} | Berita Sekolah</title>
@@ -64,6 +64,6 @@ export default function DetailBerita({ params }: { params: { id: string } }) {
           </article>
         )}
       </main>
-    </MasukHalaman>
+    </AnimasiHalaman>
   )
 } 

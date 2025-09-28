@@ -1,5 +1,5 @@
-import PageEnter from '@/components/masukHalaman'
-import SectionReveal from '@/components/sectionReveal'
+import AnimasiHalaman from '@/components/animasiHalaman'
+import AnimasiSection from '@/components/animasiSection'
 import EkstraClient from './ekstraClient'
 
 export const revalidate = 300
@@ -29,11 +29,11 @@ async function getEkstra(): Promise<EkstraItem[]> {
 export default async function Ekstrakurikuler() {
   const ekstrakurikuler = await getEkstra()
   return (
-    <PageEnter>
+    <AnimasiHalaman>
       <main className="max-w-5xl mx-auto py-24 px-4 min-h-screen">
         <h1 className="text-4xl font-extrabold text-primary mb-8 text-center">Ekstrakurikuler</h1>
         <EkstraClient ekstrakurikuler={ekstrakurikuler} />
       </main>
-    </PageEnter>
+    </AnimasiHalaman>
   )
 }

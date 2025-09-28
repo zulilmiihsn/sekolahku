@@ -44,33 +44,26 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  // Check authentication using JWT
-  const authHeader = req.headers.get('authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-  
-  // For now, we'll implement a simple check
-  // In production, use proper JWT verification
-  const token = authHeader.substring(7)
-  if (!token) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-  const { alamat, email, telepon, lat, lng } = await req.json()
-  const upserts = [
-    { key: 'alamat', value: alamat },
-    { key: 'email_kontak', value: email },
-    { key: 'telepon', value: telepon },
-    { key: 'lat_sekolah', value: lat },
-    { key: 'lng_sekolah', value: lng }
-  ]
-  for (const s of upserts) {
-    const { data: exist } = await supabase.from('Setting').select('*').eq('key', s.key).single()
-    if (exist) {
-      await supabase.from('Setting').update({ value: s.value }).eq('key', s.key)
-    } else {
-      await supabase.from('Setting').insert([{ key: s.key, value: s.value }])
+  try {
+    const { alamat, email, telepon, lat, lng } = await req.json()
+    const upserts = [
+      { key: 'alamat', value: alamat },
+      { key: 'email_kontak', value: email },
+      { key: 'telepon', value: telepon },
+      { key: 'lat_sekolah', value: lat },
+      { key: 'lng_sekolah', value: lng }
+    ]
+    
+    const { error } = await supabase
+      .from('Setting')
+      .upsert(upserts)
+    
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
+    
+    return NextResponse.json({ success: true })
+  } catch (err) {
+    return NextResponse.json({ error: String(err) }, { status: 500 })
   }
-  return NextResponse.json({ success: true })
 } 

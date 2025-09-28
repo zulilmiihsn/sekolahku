@@ -85,22 +85,22 @@ export default function AdminDashboardClient() {
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
+    <div className="h-screen w-screen flex bg-gray-50 overflow-hidden">
       {/* Sidebar */}
-      <aside className="hidden md:flex flex-col w-72 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-r border-gray-100 min-h-screen sticky top-0 left-0 shadow-sm z-20">
-        <div className="px-6 py-6 border-b border-gray-100">
+      <aside className="hidden md:flex flex-col w-72 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-r border-gray-100 h-full shadow-sm z-20">
+        <div className="px-6 py-6 border-b border-gray-100 flex-shrink-0">
           <span className="font-extrabold text-xl tracking-wide bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             {siteName || "Sekolah Modern"}
           </span>
         </div>
-        <nav className="flex-1 py-4 flex flex-col gap-1">
+        <nav className="flex-1 py-4 flex flex-col gap-1 overflow-hidden">
           {menu.map(item => {
             const active = activeTab === item.key
             return (
               <button
                 key={item.key}
                 onClick={() => setActiveTab(item.key)}
-                className={`group flex items-center gap-3 mx-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${active ? 'bg-primary/10 text-primary shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-primary'}`}
+                className={`group flex items-center gap-3 mx-3 px-4 py-3 rounded-xl text-sm font-medium transition-all flex-shrink-0 ${active ? 'bg-primary/10 text-primary shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-primary'}`}
               >
                 <span className={`transition-colors ${active ? 'text-primary' : 'text-gray-500 group-hover:text-primary'}`}>{item.icon}</span>
                 {item.label}
@@ -108,7 +108,7 @@ export default function AdminDashboardClient() {
             )
           })}
         </nav>
-        <div className="mt-auto px-6 py-5 border-t border-gray-100">
+        <div className="mt-auto px-6 py-5 border-t border-gray-100 flex-shrink-0">
           <button className="flex items-center gap-2 text-gray-600 hover:text-primary font-semibold text-sm">
             <LogOut className="w-5 h-5" />Keluar
           </button>
@@ -121,16 +121,16 @@ export default function AdminDashboardClient() {
       </aside>
       
       {/* Konten utama */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Topbar */}
-        <header className="sticky top-0 z-10 bg-white/90 backdrop-blur border-b border-gray-100 flex items-center justify-between px-6 md:px-8 py-4">
+        <header className="sticky top-0 z-10 bg-white/90 backdrop-blur border-b border-gray-100 flex items-center justify-between px-6 md:px-8 py-4 flex-shrink-0">
           <h1 className="text-lg md:text-2xl font-bold text-primary">{menu.find(m => m.key === activeTab)?.label || "Dashboard"}</h1>
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <span className="h-2 w-2 rounded-full bg-emerald-500" /> Online
           </div>
         </header>
         
-        <main className="flex-1 p-4 md:p-8 bg-gray-50">
+        <main className="flex-1 p-4 md:p-8 bg-gray-50 overflow-y-auto">
           <div className="max-w-5xl mx-auto">
             {/* Tab content */}
             {activeTab === "dashboard" && (

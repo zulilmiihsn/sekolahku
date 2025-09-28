@@ -2,16 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { Building2, Plus, Edit, Trash2, Wifi, Car, BookOpen, Users, Camera, Monitor } from 'lucide-react'
-import AdminCard from './AdminCard'
-import AdminFormField from './AdminFormField'
-import AdminInput from './AdminInput'
-import AdminTextarea from './AdminTextarea'
-import AdminSelect from './AdminSelect'
-import AdminButton from './AdminButton'
-import AdminModal from './AdminModal'
-import AdminAlert from './AdminAlert'
-import AdminLoadingSpinner from '../../../components/AdminLoadingSpinner'
-import AdminSkeletonLoader from '../../../components/AdminSkeletonLoader'
+import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminSelect, AdminButton } from './komponenForm'
+import { AdminModal, AdminAlert } from './komponenUI'
+import { LoadingSpinner, SkeletonLoader } from '@/components/loadingSpinner'
 
 interface Fasilitas {
   id: number
@@ -61,39 +54,16 @@ export default function AdminFasilitas() {
 
   const fetchFasilitas = async () => {
     try {
-      // Simulasi data untuk demo
-      const mockData: Fasilitas[] = [
-        {
-          id: 1,
-          nama: 'Laboratorium Komputer',
-          deskripsi: 'Laboratorium komputer dengan 30 unit PC terbaru untuk pembelajaran IT',
-          kategori: 'teknologi',
-          kapasitas: 30,
-          status: 'tersedia',
-          foto: ''
-        },
-        {
-          id: 2,
-          nama: 'Perpustakaan Digital',
-          deskripsi: 'Perpustakaan modern dengan koleksi buku digital dan fisik',
-          kategori: 'akademik',
-          kapasitas: 50,
-          status: 'tersedia',
-          foto: ''
-        },
-        {
-          id: 3,
-          nama: 'Lapangan Basket',
-          deskripsi: 'Lapangan basket outdoor dengan standar internasional',
-          kategori: 'olahraga',
-          kapasitas: 20,
-          status: 'maintenance',
-          foto: ''
-        }
-      ]
-      setFasilitas(mockData)
+      const res = await fetch('/api/fasilitas')
+      if (res.ok) {
+        const data = await res.json()
+        setFasilitas(Array.isArray(data) ? data : [])
+      } else {
+        setFasilitas([])
+      }
     } catch (error) {
       console.error('Error fetching fasilitas:', error)
+      setFasilitas([])
     } finally {
       setLoading(false)
     }
@@ -109,30 +79,28 @@ export default function AdminFasilitas() {
     }
 
     try {
-      // Simulasi save
-      const newFasilitas: Fasilitas = {
-        id: editId || Date.now(),
-        ...formFasilitas
-      }
-
-      if (editId) {
-        setFasilitas(prev => prev.map(f => f.id === editId ? newFasilitas : f))
-        setNotif('Fasilitas berhasil diupdate!')
-      } else {
-        setFasilitas(prev => [...prev, newFasilitas])
-        setNotif('Fasilitas berhasil ditambahkan!')
-      }
-
-      setFormFasilitas({
-        nama: '',
-        deskripsi: '',
-        kategori: '',
-        kapasitas: 0,
-        status: 'tersedia',
-        foto: ''
+      const res = await fetch('/api/fasilitas', {
+        method: editId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editId ? { id: editId, ...formFasilitas } : formFasilitas)
       })
-      setEditId(null)
-      setShowModal(false)
+
+      if (res.ok) {
+        setNotif(editId ? 'Fasilitas berhasil diupdate!' : 'Fasilitas berhasil ditambahkan!')
+        fetchFasilitas()
+        setFormFasilitas({
+          nama: '',
+          deskripsi: '',
+          kategori: '',
+          kapasitas: 0,
+          status: 'tersedia',
+          foto: ''
+        })
+        setEditId(null)
+        setShowModal(false)
+      } else {
+        setNotif('Gagal menyimpan fasilitas!')
+      }
     } catch (error) {
       setNotif('Gagal menyimpan fasilitas!')
     }
@@ -154,9 +122,14 @@ export default function AdminFasilitas() {
   const handleDelete = async (id: number) => {
     setDeleteLoading(true)
     try {
-      setFasilitas(prev => prev.filter(f => f.id !== id))
-      setNotif('Fasilitas berhasil dihapus!')
-      setShowConfirm(null)
+      const res = await fetch(`/api/fasilitas?id=${id}`, { method: 'DELETE' })
+      if (res.ok) {
+        setNotif('Fasilitas berhasil dihapus!')
+        fetchFasilitas()
+        setShowConfirm(null)
+      } else {
+        setNotif('Gagal menghapus fasilitas!')
+      }
     } catch (error) {
       setNotif('Gagal menghapus fasilitas!')
     } finally {
@@ -205,7 +178,7 @@ export default function AdminFasilitas() {
           description="Tambah, edit, dan hapus fasilitas sekolah"
           icon={Building2}
         >
-          <AdminLoadingSpinner message="Memuat data fasilitas..." />
+          <LoadingSpinner message="Memuat data fasilitas..." />
         </AdminCard>
       </div>
     )
