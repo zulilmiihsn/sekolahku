@@ -204,9 +204,8 @@ export default function AdminProgram() {
       {/* Daftar Program */}
       <div className="space-y-4">
         {program.length === 0 ? (
-          <AdminCard>
+          <AdminCard title="Data Kosong" description="Belum ada program" icon={BookOpen}>
             <div className="text-center py-8">
-              <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">Belum ada program</h3>
               <p className="text-gray-500 mb-4">Mulai dengan menambahkan program pertama Anda</p>
               <AdminButton onClick={handleOpenModal} icon={Plus}>
@@ -216,7 +215,7 @@ export default function AdminProgram() {
           </AdminCard>
         ) : (
           program.map((item) => (
-            <AdminCard key={item.id}>
+            <AdminCard key={item.id} title={item.nama} description={item.kategori} icon={BookOpen}>
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">

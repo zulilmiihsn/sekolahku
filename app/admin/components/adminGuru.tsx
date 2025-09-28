@@ -185,9 +185,8 @@ export default function AdminGuru() {
       {/* Daftar Guru & Staff */}
       <div className="space-y-6">
         {Object.keys(groupedGuru).length === 0 ? (
-          <AdminCard>
+          <AdminCard title="Data Kosong" description="Belum ada data guru & staff" icon={Users}>
             <div className="text-center py-8">
-              <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">Belum ada data guru & staff</h3>
               <p className="text-gray-500 mb-4">Mulai dengan menambahkan data pertama</p>
               <AdminButton onClick={handleOpenModal} icon={Plus}>
@@ -199,16 +198,9 @@ export default function AdminGuru() {
           Object.entries(groupedGuru).map(([kategori, data]) => {
             const KategoriIcon = getKategoriIcon(kategori)
             return (
-              <AdminCard key={kategori}>
+              <AdminCard key={kategori} title={getKategoriLabel(kategori)} description={`${data.length} orang`} icon={KategoriIcon}>
                 <div className="mb-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <KategoriIcon className="w-5 h-5 text-primary" />
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {getKategoriLabel(kategori)} ({data.length} orang)
-                    </h3>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {data.map((item) => (
                     <div key={item.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                       <div className="flex items-start gap-3">
@@ -248,6 +240,7 @@ export default function AdminGuru() {
                       </div>
                     </div>
                   ))}
+                  </div>
                 </div>
               </AdminCard>
             )

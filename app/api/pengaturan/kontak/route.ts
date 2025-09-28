@@ -46,7 +46,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { alamat, email, telepon, lat, lng } = await req.json()
-    const upserts = [
+    
+    // Update atau insert setiap setting satu per satu
+    const settings = [
       { key: 'alamat', value: alamat },
       { key: 'email_kontak', value: email },
       { key: 'telepon', value: telepon },
@@ -54,16 +56,44 @@ export async function POST(req: NextRequest) {
       { key: 'lng_sekolah', value: lng }
     ]
     
-    const { error } = await supabase
-      .from('Setting')
-      .upsert(upserts)
-    
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+    for (const setting of settings) {
+      // Cek apakah record sudah ada
+      const { data: existingData } = await supabase
+        .from('Setting')
+        .select('id')
+        .eq('key', setting.key)
+        .maybeSingle();
+      
+      if (existingData) {
+        // Update existing record
+        const { error } = await supabase
+          .from('Setting')
+          .update({ 
+            value: setting.value, 
+            updated_at: new Date().toISOString() 
+          })
+          .eq('key', setting.key);
+        
+        if (error) {
+          console.error(`Setting UPDATE error for ${setting.key}:`, error);
+          return NextResponse.json({ error: `Gagal mengupdate ${setting.key}` }, { status: 500 });
+        }
+      } else {
+        // Insert new record
+        const { error } = await supabase
+          .from('Setting')
+          .insert([setting]);
+        
+        if (error) {
+          console.error(`Setting INSERT error for ${setting.key}:`, error);
+          return NextResponse.json({ error: `Gagal menyimpan ${setting.key}` }, { status: 500 });
+        }
+      }
     }
     
     return NextResponse.json({ success: true })
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 })
+    console.error('Setting POST exception:', err);
+    return NextResponse.json({ error: 'Terjadi kesalahan server' }, { status: 500 })
   }
 } 

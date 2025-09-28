@@ -29,14 +29,40 @@ export async function PUT(req: NextRequest) {
     if (!deskripsi || typeof deskripsi !== 'string') {
       return NextResponse.json({ error: 'Deskripsi wajib diisi' }, { status: 400 });
     }
-    const { error } = await supabase
+    
+    // Cek apakah record sudah ada
+    const { data: existingData } = await supabase
       .from('Setting')
-      .upsert([{ key: 'deskripsi', value: deskripsi.trim() }]);
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      .select('id')
+      .eq('key', 'deskripsi')
+      .maybeSingle();
+    
+    if (existingData) {
+      // Update existing record
+      const { error } = await supabase
+        .from('Setting')
+        .update({ value: deskripsi.trim(), updated_at: new Date().toISOString() })
+        .eq('key', 'deskripsi');
+      
+      if (error) {
+        console.error('Setting UPDATE error:', error);
+        return NextResponse.json({ error: 'Gagal mengupdate deskripsi' }, { status: 500 });
+      }
+    } else {
+      // Insert new record
+      const { error } = await supabase
+        .from('Setting')
+        .insert([{ key: 'deskripsi', value: deskripsi.trim() }]);
+      
+      if (error) {
+        console.error('Setting INSERT error:', error);
+        return NextResponse.json({ error: 'Gagal menyimpan deskripsi' }, { status: 500 });
+      }
     }
+    
     return NextResponse.json({ success: true, deskripsi: deskripsi.trim() });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    console.error('Setting PUT exception:', err);
+    return NextResponse.json({ error: 'Terjadi kesalahan server' }, { status: 500 });
   }
 } 

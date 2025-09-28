@@ -166,9 +166,8 @@ export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
       {/* Daftar Berita */}
       <div className="space-y-4">
         {berita.length === 0 ? (
-          <AdminCard>
+          <AdminCard title="Data Kosong" description="Belum ada berita" icon={ImageIcon}>
             <div className="text-center py-8">
-              <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">Belum ada berita</h3>
               <p className="text-gray-500 mb-4">Mulai dengan menambahkan berita pertama Anda</p>
               <AdminButton onClick={handleOpenModal} icon={Plus}>
@@ -178,7 +177,7 @@ export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
           </AdminCard>
         ) : (
           berita.map((item) => (
-            <AdminCard key={item.id}>
+            <AdminCard key={item.id} title={item.judul} description={item.deskripsi} icon={ImageIcon}>
               <div className="flex items-start gap-4">
                 {item.gambar && (
                   <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">

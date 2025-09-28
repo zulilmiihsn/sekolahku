@@ -8,7 +8,7 @@ interface AdminButtonProps {
   children: ReactNode
   onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
-  variant?: 'primary' | 'secondary' | 'danger' | 'outline'
+  variant?: 'primary' | 'secondary' | 'danger' | 'outline' | 'success'
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
   loading?: boolean
@@ -30,10 +30,11 @@ export function AdminButton({
   const baseClasses = "inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
   
   const variantClasses = {
-    primary: "bg-primary text-white hover:bg-primary/90 focus:ring-primary disabled:bg-gray-300",
+    primary: "bg-gradient-to-r from-primary to-accent text-white hover:from-primary/90 hover:to-accent/90 focus:ring-primary disabled:bg-gray-300 shadow-lg hover:shadow-xl transform hover:scale-105",
     secondary: "bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500 disabled:bg-gray-100",
     danger: "bg-red-500 text-white hover:bg-red-600 focus:ring-red-500 disabled:bg-gray-300",
-    outline: "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 disabled:bg-gray-50"
+    outline: "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 disabled:bg-gray-50",
+    success: "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 focus:ring-green-500 shadow-lg hover:shadow-xl transform hover:scale-105"
   }
   
   const sizeClasses = {

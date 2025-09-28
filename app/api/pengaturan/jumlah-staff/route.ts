@@ -29,14 +29,40 @@ export async function PUT(req: NextRequest) {
     if (typeof jumlah_staff !== 'number' || isNaN(jumlah_staff)) {
       return NextResponse.json({ error: 'Jumlah staff wajib diisi' }, { status: 400 });
     }
-    const { error } = await supabase
+    
+    // Cek apakah record sudah ada
+    const { data: existingData } = await supabase
       .from('Setting')
-      .upsert([{ key: 'jumlah_staff', value: jumlah_staff.toString() }]);
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      .select('id')
+      .eq('key', 'jumlah_staff')
+      .maybeSingle();
+    
+    if (existingData) {
+      // Update existing record
+      const { error } = await supabase
+        .from('Setting')
+        .update({ value: jumlah_staff.toString(), updated_at: new Date().toISOString() })
+        .eq('key', 'jumlah_staff');
+      
+      if (error) {
+        console.error('Setting UPDATE error:', error);
+        return NextResponse.json({ error: 'Gagal mengupdate jumlah staff' }, { status: 500 });
+      }
+    } else {
+      // Insert new record
+      const { error } = await supabase
+        .from('Setting')
+        .insert([{ key: 'jumlah_staff', value: jumlah_staff.toString() }]);
+      
+      if (error) {
+        console.error('Setting INSERT error:', error);
+        return NextResponse.json({ error: 'Gagal menyimpan jumlah staff' }, { status: 500 });
+      }
     }
+    
     return NextResponse.json({ success: true, jumlah_staff });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    console.error('Setting PUT exception:', err);
+    return NextResponse.json({ error: 'Terjadi kesalahan server' }, { status: 500 });
   }
 } 

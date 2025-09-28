@@ -1,10 +1,1 @@
-{
-  "/page": "app/page.js",
-  "/api/pengaturan/deskripsi/route": "app/api/pengaturan/deskripsi/route.js",
-  "/api/pengaturan/jumlah-siswa/route": "app/api/pengaturan/jumlah-siswa/route.js",
-  "/api/pengaturan/jumlah-guru/route": "app/api/pengaturan/jumlah-guru/route.js",
-  "/api/pengaturan/kontak/route": "app/api/pengaturan/kontak/route.js",
-  "/api/pengaturan/nama-situs/route": "app/api/pengaturan/nama-situs/route.js",
-  "/api/pengaturan/jumlah-staff/route": "app/api/pengaturan/jumlah-staff/route.js",
-  "/admin/page": "app/admin/page.js"
-}
+{}

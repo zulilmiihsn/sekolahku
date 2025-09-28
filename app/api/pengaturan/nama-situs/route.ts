@@ -29,14 +29,40 @@ export async function PUT(req: NextRequest) {
     if (!site_name || typeof site_name !== 'string') {
       return NextResponse.json({ error: 'Nama sekolah wajib diisi' }, { status: 400 });
     }
-    const { error } = await supabase
+    
+    // Cek apakah record sudah ada
+    const { data: existingData } = await supabase
       .from('Setting')
-      .upsert([{ key: 'site_name', value: site_name.trim() }]);
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      .select('id')
+      .eq('key', 'site_name')
+      .maybeSingle();
+    
+    if (existingData) {
+      // Update existing record
+      const { error } = await supabase
+        .from('Setting')
+        .update({ value: site_name.trim(), updated_at: new Date().toISOString() })
+        .eq('key', 'site_name');
+      
+      if (error) {
+        console.error('Setting UPDATE error:', error);
+        return NextResponse.json({ error: 'Gagal mengupdate nama sekolah' }, { status: 500 });
+      }
+    } else {
+      // Insert new record
+      const { error } = await supabase
+        .from('Setting')
+        .insert([{ key: 'site_name', value: site_name.trim() }]);
+      
+      if (error) {
+        console.error('Setting INSERT error:', error);
+        return NextResponse.json({ error: 'Gagal menyimpan nama sekolah' }, { status: 500 });
+      }
     }
+    
     return NextResponse.json({ success: true, site_name: site_name.trim() });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    console.error('Setting PUT exception:', err);
+    return NextResponse.json({ error: 'Terjadi kesalahan server' }, { status: 500 });
   }
 } 

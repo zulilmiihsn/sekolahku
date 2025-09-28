@@ -14,10 +14,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {/* Skip to content link for accessibility */}
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
       <Navbar />
       <main id="main-content" className="flex-1 min-h-screen" role="main">
         <div className="min-h-screen">
