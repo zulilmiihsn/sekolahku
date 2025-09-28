@@ -11,8 +11,6 @@ import Image from 'next/image'
 import { supabase } from "../utils/supabaseClient"
 const Cropper = dynamic(() => import('react-easy-crop'), { ssr: false })
 import { DragDropContext, Droppable, Draggable } from './components/dndClient'
-const ReactMde = dynamic(() => import("react-mde"), { ssr: false })
-import "react-mde/lib/styles/css/react-mde-all.css"
 import Showdown from "showdown"
 const AdminBerita = dynamic(() => import("./components/adminBerita"), { ssr: false })
 const AdminFasilitas = dynamic(() => import("./components/adminFasilitas"), { ssr: false })
