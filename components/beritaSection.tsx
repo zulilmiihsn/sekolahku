@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight } from 'lucide-react'
-import { LoadingSpinner, CardSkeleton } from './loadingSpinner'
+import { LoadingSpinner, CardSkeleton } from './loadingSpinner.tsx'
 
 interface Berita {
   id: number

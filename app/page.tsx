@@ -1,4 +1,4 @@
-import Hero from '../components/sampul'
+import Hero from '../components/sampul.tsx'
 import PageWrapper from '../components/pageWrapper'
 import dynamic from 'next/dynamic'
 import SectionWrapper from '../components/sectionWrapper'
