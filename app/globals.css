@@ -47,23 +47,7 @@ body {
   top: 6px;
 }
 
-/* Animasi Aurora */
-@keyframes aurora {
-  0% { transform: scale(1) translateY(0) rotate(0deg); }
-  50% { transform: scale(1.1) translateY(-20px) rotate(8deg); }
-  100% { transform: scale(1) translateY(0) rotate(0deg); }
-}
-.animate-aurora {
-  animation: aurora 8s ease-in-out infinite;
-}
-@keyframes aurora2 {
-  0% { transform: scale(1) translateX(0) rotate(0deg); }
-  50% { transform: scale(1.08) translateX(30px) rotate(-6deg); }
-  100% { transform: scale(1) translateX(0) rotate(0deg); }
-}
-.animate-aurora2 {
-  animation: aurora2 10s ease-in-out infinite;
-}
+/* Aurora animations moved to Tailwind config */
 
 /* Micro-interaction untuk tombol dan link */
 a, button, .btn {

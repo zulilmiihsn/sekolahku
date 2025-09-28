@@ -31,48 +31,54 @@ async function getServerData() {
     kontak: { alamat: '', email: '', telepon: '', lat: '', lng: '' }
   }
 
-  // Skip fetch saat build time untuk menghindari ECONNREFUSED
-  if (process.env.NODE_ENV === 'production' && !process.env.VERCEL_URL && !process.env.NEXT_PUBLIC_BASE_URL) {
-    return fallbackData
-  }
-
   try {
-    // Gunakan path relatif untuk menghindari masalah build
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ''
+    // Import Supabase client untuk server-side
+    const { supabase } = await import('./utils/supabaseClient')
     
-    // Timeout untuk fetch agar tidak hang saat build
-    const fetchWithTimeout = (url: string, timeout = 5000) => {
-      return Promise.race([
-        fetch(url, { next: { revalidate: 60 } }),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Fetch timeout')), timeout)
-        )
-      ])
-    }
-
+    // Fetch data langsung dari database
     const [profilRes, beritaRes, programRes, kontakRes] = await Promise.allSettled([
-      fetchWithTimeout(`${baseUrl}/api/pengaturan/deskripsi`),
-      fetchWithTimeout(`${baseUrl}/api/berita?limit=3`),
-      fetchWithTimeout(`${baseUrl}/api/program`),
-      fetchWithTimeout(`${baseUrl}/api/pengaturan/kontak`)
+      supabase.from('Setting').select('value').eq('key', 'deskripsi').maybeSingle(),
+      supabase.from('Berita').select('*').eq('status', 'published').order('created_at', { ascending: false }).limit(3),
+      supabase.from('Program').select('*').eq('aktif', true).order('created_at', { ascending: false }).limit(4),
+      supabase.from('Setting').select('key, value').in('key', ['alamat', 'email_kontak', 'telepon', 'lat_sekolah', 'lng_sekolah'])
     ])
     
-    const profilData = profilRes.status === 'fulfilled' ? await profilRes.value.json() : fallbackData.profil
-    const beritaDataRaw = beritaRes.status === 'fulfilled' ? await beritaRes.value.json() : fallbackData.berita
-    const programDataRaw = programRes.status === 'fulfilled' ? await programRes.value.json() : fallbackData.program
-    const kontakData = kontakRes.status === 'fulfilled' ? await kontakRes.value.json() : fallbackData.kontak
+    // Process profil data
+    const profilData = profilRes.status === 'fulfilled' && profilRes.value.data 
+      ? { deskripsi: profilRes.value.data.value || fallbackData.profil.deskripsi }
+      : fallbackData.profil
     
-    const beritaData: any[] = Array.isArray(beritaDataRaw) ? beritaDataRaw : (beritaDataRaw.data || [])
-    const programData: any[] = Array.isArray(programDataRaw) ? programDataRaw : []
+    // Process berita data
+    const beritaData = beritaRes.status === 'fulfilled' && beritaRes.value.data 
+      ? beritaRes.value.data 
+      : fallbackData.berita
+    
+    // Process program data
+    const programData = programRes.status === 'fulfilled' && programRes.value.data 
+      ? programRes.value.data 
+      : fallbackData.program
+    
+    // Process kontak data
+    let kontakData = fallbackData.kontak
+    if (kontakRes.status === 'fulfilled' && kontakRes.value.data) {
+      const settings = kontakRes.value.data
+      kontakData = {
+        alamat: settings.find(s => s.key === 'alamat')?.value || '',
+        email: settings.find(s => s.key === 'email_kontak')?.value || '',
+        telepon: settings.find(s => s.key === 'telepon')?.value || '',
+        lat: settings.find(s => s.key === 'lat_sekolah')?.value || '',
+        lng: settings.find(s => s.key === 'lng_sekolah')?.value || ''
+      }
+    }
     
     return {
       profil: profilData,
-      program: programData.filter((item: any) => item.aktif).slice(0, 4),
-      berita: beritaData.slice(0, 3),
+      program: programData,
+      berita: beritaData,
       kontak: kontakData
     }
   } catch (error) {
-    // Return fallback data tanpa log error
+    console.error('Server data fetch error:', error)
     return fallbackData
   }
 }

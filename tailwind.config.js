@@ -23,9 +23,21 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateX(32px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' },
         },
+        'aurora': {
+          '0%': { transform: 'scale(1) translateY(0) rotate(0deg)' },
+          '50%': { transform: 'scale(1.1) translateY(-20px) rotate(8deg)' },
+          '100%': { transform: 'scale(1) translateY(0) rotate(0deg)' },
+        },
+        'aurora2': {
+          '0%': { transform: 'scale(1) translateX(0) rotate(0deg)' },
+          '50%': { transform: 'scale(1.08) translateX(30px) rotate(-6deg)' },
+          '100%': { transform: 'scale(1) translateX(0) rotate(0deg)' },
+        },
       },
       animation: {
         'page-enter': 'page-enter 0.38s cubic-bezier(0.4,0,0.2,1) forwards',
+        'aurora': 'aurora 8s ease-in-out infinite',
+        'aurora2': 'aurora2 10s ease-in-out infinite',
       },
     },
   },

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/app/utils/supabaseClient'
-import { logError } from '@/app/utils/logger'
 
 // GET: Ambil semua program
 export async function GET() {
@@ -11,16 +10,13 @@ export async function GET() {
       .order('created_at', { ascending: false })
 
     if (error) {
-      if (!error.message.includes('Could not find the table')) {
-        logError('Program GET error', error.message, 'API')
-      }
+      console.error('Program GET error:', error.message)
       return NextResponse.json([])
     }
 
     return NextResponse.json(data || [])
-  } catch (e: unknown) {
-    const error = e instanceof Error ? e : new Error('Unknown error')
-    logError('Program GET exception', error.message, 'API')
+  } catch (error) {
+    console.error('Program GET exception:', error)
     return NextResponse.json([])
   }
 }

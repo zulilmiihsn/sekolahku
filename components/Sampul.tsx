@@ -35,16 +35,13 @@ export default function Hero() {
   return (
     <section className="relative flex flex-col items-center justify-center min-h-[85vh] sm:min-h-[90vh] overflow-hidden px-4 sm:px-6 lg:px-8">
       {/* Aurora Gradient */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2 }}
+      <div
         aria-hidden
         className="absolute inset-0 -z-10"
       >
         <div className="absolute left-1/2 top-1/3 w-[400px] sm:w-[600px] h-[250px] sm:h-[400px] -translate-x-1/2 rounded-full blur-3xl opacity-60 bg-gradient-to-tr from-primary via-accent to-purple-400 animate-aurora" />
         <div className="absolute right-1/4 top-1/2 w-[200px] sm:w-[300px] h-[120px] sm:h-[200px] rounded-full blur-2xl opacity-40 bg-gradient-to-tr from-accent via-primary to-blue-300 animate-aurora2" />
-      </motion.div>
+      </div>
       
       <div className="transform -translate-y-5 sm:-translate-y-10 max-w-6xl mx-auto text-center">
         <motion.h1

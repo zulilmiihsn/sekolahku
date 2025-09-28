@@ -9,17 +9,16 @@ export async function GET() {
       .eq('key', 'deskripsi')
       .limit(1)
       .maybeSingle();
+    
     if (error) {
-      // Hanya log error jika bukan error tabel tidak ditemukan
-      if (!error.message.includes('Could not find the table')) {
-        console.error('Setting deskripsi GET error:', error.message);
-      }
-      return NextResponse.json({ deskripsi: '' });
+      console.error('Setting deskripsi GET error:', error.message);
+      return NextResponse.json({ deskripsi: 'Deskripsi singkat tentang sekolah, visi, misi, dan keunggulan utama.' });
     }
+    
     return NextResponse.json({ deskripsi: data?.value || 'Deskripsi singkat tentang sekolah, visi, misi, dan keunggulan utama.' });
   } catch (err) {
     console.error('Setting deskripsi GET exception:', err);
-    return NextResponse.json({ deskripsi: '' });
+    return NextResponse.json({ deskripsi: 'Deskripsi singkat tentang sekolah, visi, misi, dan keunggulan utama.' });
   }
 }
 
