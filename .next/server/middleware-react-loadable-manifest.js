@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"components\\\\petaSekolah.tsx -> react-leaflet\":{\"id\":\"components\\\\petaSekolah.tsx -> react-leaflet\",\"files\":[\"static/chunks/_app-pages-browser_node_modules_react-leaflet_lib_index_js.js\"]}}"

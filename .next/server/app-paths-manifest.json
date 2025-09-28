@@ -1,1 +1,6 @@
-{}
+{
+  "/page": "app/page.js",
+  "/api/pengaturan/nama-situs/route": "app/api/pengaturan/nama-situs/route.js",
+  "/api/galeri/route": "app/api/galeri/route.js",
+  "/api/pengaturan/kontak/route": "app/api/pengaturan/kontak/route.js"
+}

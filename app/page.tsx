@@ -97,7 +97,8 @@ export default async function Home() {
     <PageWrapper>
       <main className="pt-16">
         <Hero />
-        <SectionWrapper>
+        <div className="bg-gradient-to-br from-background via-background to-primary/5">
+          <SectionWrapper>
           <Section id="profil" title="Profil Sekolah">
             {profil.deskripsi && profil.deskripsi !== 'Belum ada deskripsi sekolah yang tersedia.' ? (
               <p className="text-lg text-text/80 text-center">{profil.deskripsi}</p>
@@ -287,6 +288,7 @@ export default async function Home() {
             )}
           </Section>
         </SectionWrapper>
+        </div>
       </main>
     </PageWrapper>
   )

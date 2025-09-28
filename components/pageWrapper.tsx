@@ -7,7 +7,7 @@ interface PageWrapperProps {
 
 export default function PageWrapper({ children, className = "" }: PageWrapperProps) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-background via-background to-primary/5 ${className}`}>
+    <div className={`min-h-screen ${className}`}>
       {children}
     </div>
   )

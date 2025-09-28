@@ -1,1 +1,0 @@
-{"kind":"FETCH","data":{"headers":{"connection":"keep-alive","content-type":"application/json","date":"Sun, 28 Sep 2025 12:16:33 GMT","keep-alive":"timeout=5","transfer-encoding":"chunked","vary":"RSC, Next-Router-State-Tree, Next-Router-Prefetch"},"body":"W10=","status":200,"url":"http://localhost:3000/api/program"},"revalidate":60,"tags":[]}

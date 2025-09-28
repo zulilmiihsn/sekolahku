@@ -38,9 +38,22 @@ export default function Hero() {
       <div
         aria-hidden
         className="absolute inset-0 -z-10"
+        style={{ zIndex: -1 }}
       >
-        <div className="absolute left-1/2 top-1/3 w-[400px] sm:w-[600px] h-[250px] sm:h-[400px] -translate-x-1/2 rounded-full blur-3xl opacity-60 bg-gradient-to-tr from-primary via-accent to-purple-400 animate-aurora" />
-        <div className="absolute right-1/4 top-1/2 w-[200px] sm:w-[300px] h-[120px] sm:h-[200px] rounded-full blur-2xl opacity-40 bg-gradient-to-tr from-accent via-primary to-blue-300 animate-aurora2" />
+        <div 
+          className="absolute left-1/2 top-1/3 w-[400px] sm:w-[600px] h-[250px] sm:h-[400px] -translate-x-1/2 rounded-full blur-3xl opacity-60 bg-gradient-to-tr from-primary via-accent to-purple-400 animate-aurora" 
+          style={{ 
+            background: 'linear-gradient(to top right, #005A9C, #00C49A, #c084fc)',
+            zIndex: -1
+          }}
+        />
+        <div 
+          className="absolute right-1/4 top-1/2 w-[200px] sm:w-[300px] h-[120px] sm:h-[200px] rounded-full blur-2xl opacity-40 bg-gradient-to-tr from-accent via-primary to-blue-300 animate-aurora2" 
+          style={{ 
+            background: 'linear-gradient(to top right, #00C49A, #005A9C, #93c5fd)',
+            zIndex: -1
+          }}
+        />
       </div>
       
       <div className="transform -translate-y-5 sm:-translate-y-10 max-w-6xl mx-auto text-center">
