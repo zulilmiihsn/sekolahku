@@ -2,8 +2,8 @@ import './globals.css'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { ProviderAnimasiHalaman } from '../components/animasiHalaman'
 import { fetchSiteName } from './utils/api'
-import { ErrorBoundary } from '@/components/errorBoundary'
-import AppShell from '@/components/appShell'
+import { ErrorBoundary } from '../components/errorBoundary'
+import AppShell from '../components/appShell'
 
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
