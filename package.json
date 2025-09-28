@@ -10,7 +10,12 @@
     "start": "next start",
     "lint": "next lint",
     "analyze": "ANALYZE=true npm run build",
-    "clean": "powershell -ExecutionPolicy Bypass -File scripts/clean-dev.ps1"
+    "clean": "powershell -ExecutionPolicy Bypass -File scripts/clean-dev.ps1",
+    "postinstall": "next telemetry disable"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
@@ -36,7 +41,7 @@
     "zod": "^4.1.8"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^15.5.4",
+    "@next/bundle-analyzer": "^14.2.33",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/leaflet": "^1.9.19",
