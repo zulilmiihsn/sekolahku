@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Settings, Plus, Edit, Trash2, Users } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminButton } from './komponenForm'
 import { AdminModal, AdminAlert } from './komponenUI'
-import { LoadingSpinner } from '@/components/loadingSpinner'
+import { LoadingSpinner } from '../../../components/loadingSpinner'
 
 interface KategoriGuru {
   id: number

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/app/utils/supabaseClient'
-import { logError } from '@/app/utils/logger'
+import { supabase } from '../../utils/supabaseClient'
+import { logError } from '../../utils/logger'
 
 // GET: Ambil semua fasilitas
 export async function GET() {

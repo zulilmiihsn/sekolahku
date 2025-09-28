@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/app/utils/supabaseClient';
+import { supabase } from '../../utils/supabaseClient';
 
 // GET: List semua galeri dengan pagination dan filtering
 export async function GET(req: NextRequest) {

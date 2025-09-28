@@ -1,5 +1,5 @@
-import AnimasiHalaman from '@/components/animasiHalaman'
-import AnimasiSection from '@/components/animasiSection'
+import AnimasiHalaman from '../../components/animasiHalaman'
+import AnimasiSection from '../../components/animasiSection'
 import EkstraClient from './ekstraClient'
 
 export const revalidate = 300

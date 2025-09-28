@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { School, Users, User, BookOpen, MapPin, Mail, Phone, Calendar, Award, Building2, Save, Check } from 'lucide-react';
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm';
 import { AdminAlert } from './komponenUI';
-import { LoadingSpinner } from '@/components/loadingSpinner';
-import { SkeletonLoader } from '@/components/loadingSpinner';
+import { LoadingSpinner, SkeletonLoader } from '../../../components/loadingSpinner';
 
 export default function AdminProfil() {
   const [siteName, setSiteName] = useState('');

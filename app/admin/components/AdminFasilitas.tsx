@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Building2, Plus, Edit, Trash2, Wifi, Car, BookOpen, Users, Camera, Monitor } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminSelect, AdminButton } from './komponenForm'
 import { AdminModal, AdminAlert } from './komponenUI'
-import { LoadingSpinner, SkeletonLoader } from '@/components/loadingSpinner'
+import { LoadingSpinner, SkeletonLoader } from '../../../components/loadingSpinner'
 
 interface Fasilitas {
   id: number

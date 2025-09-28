@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/app/utils/supabaseClient'
-import { getCacheHeaders, getCacheTime } from '@/app/utils/cache'
-import { logError } from '@/app/utils/logger'
+import { supabase } from '../../utils/supabaseClient'
+import { getCacheHeaders, getCacheTime } from '../../utils/cache'
+import { logError } from '../../utils/logger'
 
 // GET: Ambil berita dengan pagination dan filtering
 export const revalidate = getCacheTime('berita')

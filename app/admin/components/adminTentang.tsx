@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { BookOpen, Save, Target, Heart, Users } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm'
 import { AdminAlert } from './komponenUI'
-import { LoadingSpinner } from '@/components/loadingSpinner'
+import { LoadingSpinner } from '../../../components/loadingSpinner'
 
 interface TentangData {
   sejarah: string

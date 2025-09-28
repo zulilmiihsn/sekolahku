@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { MapPin, Save, Phone, Mail, Clock, Globe } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm'
 import { AdminAlert } from './komponenUI'
-import { LoadingSpinner } from '@/components/loadingSpinner'
+import { LoadingSpinner } from '../../../components/loadingSpinner'
 
 interface KontakData {
   alamat: string

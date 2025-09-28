@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/app/utils/supabaseClient'
-import { generateTokenPair } from '@/app/utils/jwt'
-import { rateLimits } from '@/app/utils/rateLimit'
+import { supabaseAdmin } from '../../utils/supabaseClient'
+import { generateTokenPair } from '../../utils/jwt'
+import { rateLimits } from '../../utils/rateLimit'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 
