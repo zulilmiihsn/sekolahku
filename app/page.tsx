@@ -94,7 +94,7 @@ export default async function Home() {
         <SectionWrapper>
           <Section id="profil" title="Profil Sekolah">
             {profil.deskripsi && profil.deskripsi !== 'Belum ada deskripsi sekolah yang tersedia.' ? (
-              <p className="text-lg text-text/80 text-justify">{profil.deskripsi}</p>
+              <p className="text-lg text-text/80 text-center">{profil.deskripsi}</p>
             ) : (
               <div className="text-center py-8">
                 <p className="text-gray-500">Belum ada deskripsi sekolah yang tersedia.</p>
@@ -108,10 +108,10 @@ export default async function Home() {
               <div className="grid md:grid-cols-2 gap-6">
                 {programs.map((program: any, i: number) => (
                   <div key={i} className="p-6 rounded-xl bg-background shadow transition hover:scale-105">
-                    <h3 className="font-bold text-lg text-primary mb-2">{program.nama}</h3>
-                    <p className="text-text/70 text-sm leading-relaxed">{program.deskripsi}</p>
+                    <h3 className="font-bold text-lg text-primary mb-2 text-center">{program.nama}</h3>
+                    <p className="text-text/70 text-sm leading-relaxed text-center">{program.deskripsi}</p>
                     {program.durasi && (
-                      <div className="mt-3 text-xs text-text/50">
+                      <div className="mt-3 text-xs text-text/50 text-center">
                         Durasi: {program.durasi}
                       </div>
                     )}
@@ -140,7 +140,7 @@ export default async function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
               {/* Informasi Kontak */}
               <div className="space-y-4 sm:space-y-6 order-2 lg:order-1">
-                <div className="text-center lg:text-left">
+                <div className="text-center">
                   <h3 className="text-xl sm:text-2xl font-bold text-primary mb-3 sm:mb-4">Hubungi Kami</h3>
                   <p className="text-text/70 text-base sm:text-lg leading-relaxed">
                     Ada pertanyaan atau ingin mengetahui lebih lanjut tentang sekolah kami? 
@@ -158,8 +158,8 @@ export default async function Home() {
                         </svg>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h4 className="font-semibold text-primary mb-1 text-sm sm:text-base">Alamat</h4>
-                        <p className="text-text/70 text-xs sm:text-sm leading-relaxed">{kontak.alamat}</p>
+                        <h4 className="font-semibold text-primary mb-1 text-sm sm:text-base text-center">Alamat</h4>
+                        <p className="text-text/70 text-xs sm:text-sm leading-relaxed text-center">{kontak.alamat}</p>
                       </div>
                     </div>
                   )}
@@ -172,8 +172,8 @@ export default async function Home() {
                         </svg>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h4 className="font-semibold text-primary mb-1 text-sm sm:text-base">Telepon</h4>
-                        <a href={`tel:${kontak.telepon}`} className="text-text/70 text-xs sm:text-sm hover:text-primary transition-colors">
+                        <h4 className="font-semibold text-primary mb-1 text-sm sm:text-base text-center">Telepon</h4>
+                        <a href={`tel:${kontak.telepon}`} className="text-text/70 text-xs sm:text-sm hover:text-primary transition-colors text-center block">
                           {kontak.telepon}
                         </a>
                       </div>
@@ -188,8 +188,8 @@ export default async function Home() {
                         </svg>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h4 className="font-semibold text-primary mb-1 text-sm sm:text-base">Email</h4>
-                        <a href={`mailto:${kontak.email}`} className="text-text/70 text-xs sm:text-sm hover:text-primary transition-colors break-all">
+                        <h4 className="font-semibold text-primary mb-1 text-sm sm:text-base text-center">Email</h4>
+                        <a href={`mailto:${kontak.email}`} className="text-text/70 text-xs sm:text-sm hover:text-primary transition-colors break-all text-center block">
                           {kontak.email}
                         </a>
                       </div>
@@ -201,7 +201,7 @@ export default async function Home() {
               {/* Form Kontak */}
               <div className="bg-white/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/40 order-1 lg:order-2">
                 <h3 className="text-lg sm:text-xl font-bold text-primary mb-4 text-center">Kirim Pesan</h3>
-                {kontak.email ? (
+            {kontak.email ? (
                   <form className="space-y-3 sm:space-y-4" action={`mailto:${kontak.email}`} method="POST" encType="text/plain">
                     <div>
                       <label htmlFor="nama" className="block text-sm font-medium text-text/80 mb-2">Nama Lengkap</label>
@@ -248,8 +248,8 @@ export default async function Home() {
                     >
                       Kirim Pesan
                     </button>
-                  </form>
-                ) : (
+              </form>
+            ) : (
                   <div className="text-center py-6 sm:py-8">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
