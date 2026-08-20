@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Save, X, User, Users, GraduationCap, Briefcase } from 'lucide-react'
+import Image from 'next/image'
 import { AdminCard, AdminFormField, AdminInput, AdminSelect, AdminButton } from './komponenForm'
-import { AdminAlert, AdminModal } from './komponenUI'
+import { AdminAlert, AdminModal } from './komponen-ui'
 
 interface Guru {
   id: number
@@ -206,9 +207,11 @@ export default function AdminGuru() {
                       <div className="flex items-start gap-3">
                         <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
                           {item.foto ? (
-                            <img
+                            <Image
                               src={item.foto}
                               alt={item.nama}
+                              width={48}
+                              height={48}
                               className="w-12 h-12 rounded-full object-cover"
                             />
                           ) : (

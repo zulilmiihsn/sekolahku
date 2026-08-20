@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { School, Users, User, BookOpen, MapPin, Mail, Phone, Calendar, Award, Building2, Save, Check } from 'lucide-react';
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm';
-import { AdminAlert } from './komponenUI';
+import { AdminAlert } from './komponen-ui';
 import { LoadingSpinner, SkeletonLoader } from '../../../components/loadingSpinner';
 
 export default function AdminProfil() {

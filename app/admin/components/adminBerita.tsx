@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Save, X, Image as ImageIcon } from 'lucide-react'
+import Image from 'next/image'
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm'
-import { AdminAlert, AdminModal } from './komponenUI'
+import { AdminAlert, AdminModal } from './komponen-ui'
 
 interface Berita {
   id: number
@@ -181,9 +182,11 @@ export default function AdminBerita({ siteName, onNotif }: AdminBeritaProps) {
               <div className="flex items-start gap-4">
                 {item.gambar && (
                   <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                    <img
+                    <Image
                       src={item.gambar}
                       alt={item.judul}
+                      width={80}
+                      height={80}
                       className="w-full h-full object-cover"
                     />
                   </div>

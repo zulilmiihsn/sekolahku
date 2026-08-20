@@ -92,10 +92,15 @@ export default function AdminDashboardClient() {
         headers: { 'Content-Type': 'application/json' }
       })
       if (res.ok) {
+        // Clear localStorage
+        localStorage.removeItem('isAdmin')
+        // Use router for proper navigation
         window.location.href = '/'
       }
     } catch (error) {
       console.error('Logout error:', error)
+      // Clear localStorage anyway
+      localStorage.removeItem('isAdmin')
       // Fallback: redirect to homepage anyway
       window.location.href = '/'
     }

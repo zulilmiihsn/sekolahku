@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Building2, Plus, Edit, Trash2, Wifi, Car, BookOpen, Users, Camera, Monitor } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminSelect, AdminButton } from './komponenForm'
-import { AdminModal, AdminAlert } from './komponenUI'
+import { AdminModal, AdminAlert } from './komponen-ui'
 import { LoadingSpinner, SkeletonLoader } from '../../../components/loadingSpinner'
 
 interface Fasilitas {
@@ -333,7 +333,7 @@ export default function AdminFasilitas() {
       >
         <div className="space-y-4">
           <p className="text-gray-600">
-            Yakin ingin menghapus fasilitas <strong>"{showConfirm?.nama}"</strong>?
+            Yakin ingin menghapus fasilitas <strong>&quot;{showConfirm?.nama}&quot;</strong>?
           </p>
           <div className="flex gap-3 justify-end">
             <AdminButton

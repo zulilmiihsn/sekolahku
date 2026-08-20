@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { BookOpen, Save, Target, Heart, Users } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminButton } from './komponenForm'
-import { AdminAlert } from './komponenUI'
+import { AdminAlert } from './komponen-ui'
 import { LoadingSpinner } from '../../../components/loadingSpinner'
 
 interface TentangData {

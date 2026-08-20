@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Settings, Plus, Edit, Trash2, Users } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminButton } from './komponenForm'
-import { AdminModal, AdminAlert } from './komponenUI'
+import { AdminModal, AdminAlert } from './komponen-ui'
 import { LoadingSpinner } from '../../../components/loadingSpinner'
 
 interface KategoriGuru {
@@ -347,7 +347,7 @@ export default function AdminKategoriGuru() {
       >
         <div className="space-y-4">
           <p className="text-gray-600">
-            Yakin ingin menghapus kategori <strong>"{showConfirm?.label}"</strong>?
+            Yakin ingin menghapus kategori <strong>&quot;{showConfirm?.label}&quot;</strong>?
           </p>
           <div className="flex gap-3 justify-end">
             <AdminButton

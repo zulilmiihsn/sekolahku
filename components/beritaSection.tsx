@@ -45,7 +45,7 @@ export default function BeritaSection({ initialBerita = [] }: BeritaSectionProps
       }
       fetchBerita()
     }
-  }, []) // Hanya jalankan sekali saat mount
+  }, [initialBerita.length]) // Hanya jalankan sekali saat mount atau jika initialBerita berubah
 
   return (
     <div className="space-y-4 sm:space-y-6">

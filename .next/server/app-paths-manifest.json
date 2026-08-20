@@ -1,7 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/api/berita/route": "app/api/berita/route.js",
-  "/api/galeri/route": "app/api/galeri/route.js",
-  "/api/fasilitas/route": "app/api/fasilitas/route.js",
-  "/api/program/route": "app/api/program/route.js"
-}

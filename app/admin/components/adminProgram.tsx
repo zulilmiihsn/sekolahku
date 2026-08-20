@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Save, X, BookOpen } from 'lucide-react'
 import { AdminCard, AdminFormField, AdminInput, AdminTextarea, AdminSelect, AdminButton } from './komponenForm'
-import { AdminAlert, AdminModal } from './komponenUI'
+import { AdminAlert, AdminModal } from './komponen-ui'
 
 interface Program {
   id: number
